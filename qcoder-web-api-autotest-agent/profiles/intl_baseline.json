@@ -1,0 +1,22 @@
+{
+  "profile": "intl_baseline",
+  "product": "International Gateway Baseline",
+  "base_url": "http://127.0.0.1:8088",
+  "auth": {
+    "username": "admin",
+    "password": "admin123"
+  },
+  "api": {
+    "login": "/api/login",
+    "status": "/api/status",
+    "wifi_get": "/api/wifi",
+    "wifi_set": "/api/wifi",
+    "wan_status": "/api/wan",
+    "reboot": "/api/reboot"
+  },
+  "timeouts": {
+    "request_seconds": 5,
+    "reboot_wait_seconds": 2
+  }
+}
+

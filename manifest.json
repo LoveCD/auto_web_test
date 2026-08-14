@@ -1,0 +1,14 @@
+{
+  "type": "skillhub-expert-package",
+  "slug": "tech-test-automation",
+  "displayName": "自动化测试",
+  "summary": "从TDD方法论指导到自动生成单元测试代码、跨语言测试编写与运行、Playwright/Cypress E2E测试编排、REST/GraphQL API测试自动化，再到QA测试计划与覆盖率矩阵生成的完整自动化测试工作流。支持Python(pytest)、JavaScript(Jest/Vitest/Mocha)、Go等多语言，覆盖单元测试、集成测试、E2E测试、API测试和性能测试。",
+  "skillSlugs": [
+    "superpowers-tdd",
+    "test-case-generator",
+    "test-patterns",
+    "e2e-testing-patterns",
+    "api-test-automation",
+    "afrexai-qa-test-plan"
+  ]
+}

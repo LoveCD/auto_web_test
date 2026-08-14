@@ -1,0 +1,391 @@
+{
+  "run_id": "20260813_102731_317125_regression",
+  "suite_id": "REG-INTL-WEB-API-CORE",
+  "profile": "intl_baseline",
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "failed": 0,
+    "duration_seconds": 0.2
+  },
+  "cases": [
+    {
+      "id": "TC-API-LOGIN-002",
+      "title": "Login fails with invalid password",
+      "module": "Login",
+      "priority": "P1",
+      "tags": [
+        "regression",
+        "auth",
+        "negative"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.login",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 401,
+            "json": {
+              "error": "invalid credentials"
+            },
+            "duration_ms": 8
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/login",
+          "payload": {
+            "username": "admin",
+            "password": "bad-password"
+          },
+          "use_auth": false,
+          "response": {
+            "status_code": 401,
+            "json": {
+              "error": "invalid credentials"
+            },
+            "duration_ms": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-AUTH-001",
+      "title": "Status API rejects unauthenticated access",
+      "module": "Login",
+      "priority": "P1",
+      "tags": [
+        "regression",
+        "auth",
+        "negative"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.get_status",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 401,
+            "json": {
+              "error": "unauthorized"
+            },
+            "duration_ms": 14
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:8088/api/status",
+          "payload": null,
+          "use_auth": false,
+          "response": {
+            "status_code": 401,
+            "json": {
+              "error": "unauthorized"
+            },
+            "duration_ms": 14
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-WIFI-002",
+      "title": "Wi-Fi rejects SSID longer than 32 characters",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": [
+        "regression",
+        "wifi",
+        "boundary"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.login",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 1
+          }
+        },
+        {
+          "action": "api.set_wifi",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 400,
+            "json": {
+              "error": "ssid length must be 1-32"
+            },
+            "duration_ms": 15
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/login",
+          "payload": {
+            "username": "admin",
+            "password": "admin123"
+          },
+          "use_auth": false,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 1
+          }
+        },
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/wifi",
+          "payload": {
+            "ssid": "SSID_123456789012345678901234567890123",
+            "password": "Test123456"
+          },
+          "use_auth": true,
+          "response": {
+            "status_code": 400,
+            "json": {
+              "error": "ssid length must be 1-32"
+            },
+            "duration_ms": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-WIFI-003",
+      "title": "Wi-Fi rejects password shorter than 8 characters",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": [
+        "regression",
+        "wifi",
+        "boundary"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.login",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 2
+          }
+        },
+        {
+          "action": "api.set_wifi",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 400,
+            "json": {
+              "error": "password length must be 8-63"
+            },
+            "duration_ms": 0
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/login",
+          "payload": {
+            "username": "admin",
+            "password": "admin123"
+          },
+          "use_auth": false,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 2
+          }
+        },
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/wifi",
+          "payload": {
+            "ssid": "AutoTest_24G",
+            "password": "1234567"
+          },
+          "use_auth": true,
+          "response": {
+            "status_code": 400,
+            "json": {
+              "error": "password length must be 8-63"
+            },
+            "duration_ms": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-WAN-001",
+      "title": "WAN status returns connected DHCP baseline",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": [
+        "regression",
+        "wan",
+        "status"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.login",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 22
+          }
+        },
+        {
+          "action": "api.get_wan_status",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "status": "connected",
+              "type": "dhcp",
+              "ip": "100.64.1.10"
+            },
+            "duration_ms": 18
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/login",
+          "payload": {
+            "username": "admin",
+            "password": "admin123"
+          },
+          "use_auth": false,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 22
+          }
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:8088/api/wan",
+          "payload": null,
+          "use_auth": true,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "status": "connected",
+              "type": "dhcp",
+              "ip": "100.64.1.10"
+            },
+            "duration_ms": 18
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-SYSTEM-001",
+      "title": "Reboot API accepts authenticated request",
+      "module": "System",
+      "priority": "P1",
+      "tags": [
+        "regression",
+        "system"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.login",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 0
+          }
+        },
+        {
+          "action": "api.reboot",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 202,
+            "json": {
+              "result": "rebooting"
+            },
+            "duration_ms": 117
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/login",
+          "payload": {
+            "username": "admin",
+            "password": "admin123"
+          },
+          "use_auth": false,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 0
+          }
+        },
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/reboot",
+          "payload": {},
+          "use_auth": true,
+          "response": {
+            "status_code": 202,
+            "json": {
+              "result": "rebooting"
+            },
+            "duration_ms": 117
+          }
+        }
+      ]
+    }
+  ]
+}

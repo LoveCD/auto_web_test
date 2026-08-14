@@ -1,0 +1,65 @@
+{
+  "suite_id": "SMOKE-INTL-WEB-API",
+  "title": "International gateway baseline Web API smoke suite",
+  "cases": [
+    {
+      "id": "TC-API-LOGIN-001",
+      "title": "Admin login succeeds with valid credentials",
+      "module": "Login",
+      "priority": "P0",
+      "tags": ["smoke", "auth"],
+      "steps": [
+        {
+          "action": "api.login"
+        }
+      ]
+    },
+    {
+      "id": "TC-API-STATUS-001",
+      "title": "Device status returns baseline version and online state",
+      "module": "Status",
+      "priority": "P0",
+      "tags": ["smoke", "status"],
+      "steps": [
+        {
+          "action": "api.login"
+        },
+        {
+          "action": "api.get_status",
+          "expect": {
+            "software_version": "INTL_BASELINE_1.0.0",
+            "wan.status": "connected",
+            "wifi.enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-WIFI-001",
+      "title": "Wi-Fi SSID can be updated and queried",
+      "module": "WiFi",
+      "priority": "P0",
+      "tags": ["smoke", "wifi", "config"],
+      "steps": [
+        {
+          "action": "api.login"
+        },
+        {
+          "action": "api.set_wifi",
+          "params": {
+            "ssid": "AutoTest_24G",
+            "password": "Test123456"
+          }
+        },
+        {
+          "action": "api.get_wifi",
+          "expect": {
+            "ssid": "AutoTest_24G",
+            "enabled": true
+          }
+        }
+      ]
+    }
+  ]
+}
+

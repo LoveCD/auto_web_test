@@ -1,0 +1,130 @@
+{
+  "suite_id": "REG-INTL-WEB-API-CORE",
+  "title": "International gateway baseline Web API core regression suite",
+  "cases": [
+    {
+      "id": "TC-API-LOGIN-002",
+      "title": "Login fails with invalid password",
+      "module": "Login",
+      "priority": "P1",
+      "tags": ["regression", "auth", "negative"],
+      "steps": [
+        {
+          "action": "api.login",
+          "params": {
+            "username": "admin",
+            "password": "bad-password"
+          },
+          "expect": {
+            "status_code": 401,
+            "json.error": "invalid credentials"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-AUTH-001",
+      "title": "Status API rejects unauthenticated access",
+      "module": "Login",
+      "priority": "P1",
+      "tags": ["regression", "auth", "negative"],
+      "steps": [
+        {
+          "action": "api.get_status",
+          "params": {
+            "use_auth": false
+          },
+          "expect": {
+            "status_code": 401,
+            "json.error": "unauthorized"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-WIFI-002",
+      "title": "Wi-Fi rejects SSID longer than 32 characters",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["regression", "wifi", "boundary"],
+      "steps": [
+        {
+          "action": "api.login"
+        },
+        {
+          "action": "api.set_wifi",
+          "params": {
+            "ssid": "SSID_123456789012345678901234567890123",
+            "password": "Test123456"
+          },
+          "expect": {
+            "status_code": 400,
+            "json.error": "ssid length must be 1-32"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-WIFI-003",
+      "title": "Wi-Fi rejects password shorter than 8 characters",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["regression", "wifi", "boundary"],
+      "steps": [
+        {
+          "action": "api.login"
+        },
+        {
+          "action": "api.set_wifi",
+          "params": {
+            "ssid": "AutoTest_24G",
+            "password": "1234567"
+          },
+          "expect": {
+            "status_code": 400,
+            "json.error": "password length must be 8-63"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-WAN-001",
+      "title": "WAN status returns connected DHCP baseline",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": ["regression", "wan", "status"],
+      "steps": [
+        {
+          "action": "api.login"
+        },
+        {
+          "action": "api.get_wan_status",
+          "expect": {
+            "status": "connected",
+            "type": "dhcp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-SYSTEM-001",
+      "title": "Reboot API accepts authenticated request",
+      "module": "System",
+      "priority": "P1",
+      "tags": ["regression", "system"],
+      "steps": [
+        {
+          "action": "api.login"
+        },
+        {
+          "action": "api.reboot",
+          "expect": {
+            "status_code": 202,
+            "json.result": "rebooting"
+          }
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,253 @@
+{
+  "run_id": "20260813_103005_757811_smoke",
+  "suite_id": "SMOKE-INTL-WEB-API",
+  "profile": "intl_baseline",
+  "summary": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "duration_seconds": 0.07
+  },
+  "cases": [
+    {
+      "id": "TC-API-LOGIN-001",
+      "title": "Admin login succeeds with valid credentials",
+      "module": "Login",
+      "priority": "P0",
+      "tags": [
+        "smoke",
+        "auth"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.login",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 10
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/login",
+          "payload": {
+            "username": "admin",
+            "password": "admin123"
+          },
+          "use_auth": false,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-STATUS-001",
+      "title": "Device status returns baseline version and online state",
+      "module": "Status",
+      "priority": "P0",
+      "tags": [
+        "smoke",
+        "status"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.login",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 24
+          }
+        },
+        {
+          "action": "api.get_status",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "software_version": "INTL_BASELINE_1.0.0",
+              "uptime": 3600,
+              "wan": {
+                "status": "connected",
+                "type": "dhcp",
+                "ip": "100.64.1.10"
+              },
+              "wifi": {
+                "enabled": true
+              }
+            },
+            "duration_ms": 0
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/login",
+          "payload": {
+            "username": "admin",
+            "password": "admin123"
+          },
+          "use_auth": false,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 24
+          }
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:8088/api/status",
+          "payload": null,
+          "use_auth": true,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "software_version": "INTL_BASELINE_1.0.0",
+              "uptime": 3600,
+              "wan": {
+                "status": "connected",
+                "type": "dhcp",
+                "ip": "100.64.1.10"
+              },
+              "wifi": {
+                "enabled": true
+              }
+            },
+            "duration_ms": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-API-WIFI-001",
+      "title": "Wi-Fi SSID can be updated and queried",
+      "module": "WiFi",
+      "priority": "P0",
+      "tags": [
+        "smoke",
+        "wifi",
+        "config"
+      ],
+      "status": "pass",
+      "steps": [
+        {
+          "action": "api.login",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 16
+          }
+        },
+        {
+          "action": "api.set_wifi",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "result": "ok",
+              "ssid": "AutoTest_24G",
+              "enabled": true
+            },
+            "duration_ms": 15
+          }
+        },
+        {
+          "action": "api.get_wifi",
+          "status": "pass",
+          "failures": [],
+          "response": {
+            "status_code": 200,
+            "json": {
+              "enabled": true,
+              "ssid": "AutoTest_24G",
+              "security": "WPA2-PSK"
+            },
+            "duration_ms": 0
+          }
+        }
+      ],
+      "http_logs": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/login",
+          "payload": {
+            "username": "admin",
+            "password": "admin123"
+          },
+          "use_auth": false,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "token": "demo-token",
+              "role": "admin"
+            },
+            "duration_ms": 16
+          }
+        },
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8088/api/wifi",
+          "payload": {
+            "ssid": "AutoTest_24G",
+            "password": "Test123456"
+          },
+          "use_auth": true,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "result": "ok",
+              "ssid": "AutoTest_24G",
+              "enabled": true
+            },
+            "duration_ms": 15
+          }
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:8088/api/wifi",
+          "payload": null,
+          "use_auth": true,
+          "response": {
+            "status_code": 200,
+            "json": {
+              "enabled": true,
+              "ssid": "AutoTest_24G",
+              "security": "WPA2-PSK"
+            },
+            "duration_ms": 0
+          }
+        }
+      ]
+    }
+  ]
+}

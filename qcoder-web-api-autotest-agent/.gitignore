@@ -1,0 +1,20 @@
+# 运行产物（自动生成，不入库）
+reports/
+ai_outputs/
+suites/generated/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

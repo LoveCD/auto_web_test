@@ -1250,4 +1250,25 @@ class SelfTestReportReporter {
   }
 }
 
+// 附加导出模板渲染工具函数，供 scripts/gen-case-doc.js（用例设计文档生成）复用。
+// 注意：module.exports 仍为 class，Playwright reporter 配置无需变更。
+SelfTestReportReporter.renderTemplateDocx = renderTemplateDocx;
+SelfTestReportReporter.replaceTokenAll = replaceTokenAll;
+SelfTestReportReporter.replaceTokenSequence = replaceTokenSequence;
+SelfTestReportReporter.toWordInlineXml = toWordInlineXml;
+SelfTestReportReporter.xmlEscape = xmlEscape;
+SelfTestReportReporter.regexEscape = regexEscape;
+SelfTestReportReporter.toNumberedText = toNumberedText;
+SelfTestReportReporter.extractCaseBlockByMarker = extractCaseBlockByMarker;
+SelfTestReportReporter.appendExtraCaseTables = appendExtraCaseTables;
+SelfTestReportReporter.resolveCaseTitleMarkers = resolveCaseTitleMarkers;
+SelfTestReportReporter.findParagraphStartBefore = findParagraphStartBefore;
+SelfTestReportReporter.findSummaryInsertPos = findSummaryInsertPos;
+SelfTestReportReporter.detectCaseFieldCountFromTemplate = detectCaseFieldCountFromTemplate;
+SelfTestReportReporter.buildCaseOrderedValuesByTemplate = buildCaseOrderedValuesByTemplate;
+SelfTestReportReporter.formatCaseDisplayName = formatCaseDisplayName;
+SelfTestReportReporter.safeName = safeName;
+SelfTestReportReporter.nowParts = nowParts;
+SelfTestReportReporter.dateForView = dateForView;
+
 module.exports = SelfTestReportReporter;

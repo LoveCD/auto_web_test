@@ -60,6 +60,21 @@ Node 端 Playwright 基线（模板来自 web-playwright-e2e-bootstrap 技能）
 → HTML + DOCX 自测报告（截图嵌入每条用例备注）。详见 `e2e_bootstrap/README.md`。
 触发语："用 e2e_bootstrap 生成用例和报告"。
 
+**用例文档 / 执行报告统一模板**：所有用例文档与测试报告按 e2e-bootstrap 模板生成
+（同一 DOCX 模板、同版式），`gen-case-doc.js` 三种模式（在 e2e_bootstrap 目录下执行）：
+
+```bash
+# ① 单套件设计文档（结果/结论=待执行）
+node scripts/gen-case-doc.js ../operators/cm/cases/login.json --topic "CM登录界面验证用例" --out ../reports
+# ② 批量设计文档（operators 下全部套件，排除 generated/）
+node scripts/gen-case-doc.js --all --out ../reports
+# ③ 执行报告（读取 run_suite.py 的 result.json，自动填充结果/结论并嵌入截图）
+node scripts/gen-case-doc.js --result ../reports/<run_id>/result.json --out ../reports
+```
+
+（`--project-code`/`--base-url`/`--preconditions`/`--qcoder-root` 可选；
+run_suite.py 的 `real.screenshot` 步骤会把截图路径写入 `result.detail`，报告模式据此嵌入截图。）
+
 ## 环境与账号（CM 真机）
 
 ```text

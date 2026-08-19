@@ -155,6 +155,14 @@ npm run test:generate -- --input ./TEST_CASE_SPEC.md --name 新人快速上手
 
 # 3. 执行并生成 HTML + DOCX 报告（截图嵌入用例备注）
 npm test
+
+# 4. 用例文档 / 执行报告（同一模板）：
+#    ① 单套件设计文档（结果/结论=待执行）
+node scripts/gen-case-doc.js ../operators/cm/cases/login.json --topic "CM登录界面验证用例" --out ../reports
+#    ② 批量设计文档（operators 下全部套件，排除 generated/）
+node scripts/gen-case-doc.js --all --out ../reports
+#    ③ 执行报告（读取 run_suite.py 的 result.json，自动填充结果/结论并嵌入截图）
+node scripts/gen-case-doc.js --result ../reports/<run_id>/result.json --out ../reports
 ```
 
 对**其他新工程**引导时，若需重新注入模板，可使用本技能自带脚本（脚本位于本技能目录
@@ -176,6 +184,8 @@ powershell -ExecutionPolicy Bypass -File <本技能目录>\scripts\bootstrap-web
 2. Keep baseline test minimal (`tests/demo.spec.js`) for new projects.
 3. Keep DOCX template placeholders unchanged unless reporter logic is updated together.
 4. Do not write files outside project root (except generated test reports).
+5. 用例设计文档一律用 `scripts/gen-case-doc.js` 生成（复用同一 DOCX 模板），不要另写文档格式。
+6. `reporters/self-test-report-reporter.js` 末尾附带的工具函数导出（`renderTemplateDocx` 等）供 gen-case-doc 复用；修改渲染逻辑时两者需同步验证（`npm test` 回归）。
 
 ## References
 

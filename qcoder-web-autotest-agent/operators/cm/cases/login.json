@@ -1,0 +1,149 @@
+{
+  "suite_id": "CM-REAL-LOGIN",
+  "operator": "cm",
+  "env": "real",
+  "cases": [
+    {
+      "id": "TC-CM-LOGIN-UI-001",
+      "module": "Login",
+      "priority": "P0",
+      "auto_login": false,
+      "title": "登录页元素完整性（用户名/密码/登录/重置按钮均可见）",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"},
+          "expect": {"visible": ["login.username", "login.password", "login.submit", "login.reset"]}},
+        {"action": "real.screenshot", "params": {"name": "login_page_elements"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-002",
+      "module": "Login",
+      "priority": "P1",
+      "auto_login": false,
+      "title": "重置按钮清空已填写的用户名和密码",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.fill", "params": {"selector": "login.username", "value": "testuser"}},
+        {"action": "real.fill", "params": {"selector": "login.password", "value": "testpass"}},
+        {"action": "real.click", "params": {"selector": "login.reset"}},
+        {"action": "real.wait", "params": {"ms": 500}},
+        {"action": "real.assert_input_value", "params": {"selector": "login.username", "value": ""}},
+        {"action": "real.assert_input_value", "params": {"selector": "login.password", "value": ""}},
+        {"action": "real.screenshot", "params": {"name": "login_reset_cleared"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-003",
+      "module": "Login",
+      "priority": "P0",
+      "auto_login": false,
+      "title": "管理员账号登录成功并跳转主页",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.login", "params": {"role": "admin"},
+          "expect": {"url_contains": "main.html", "visible": "main.app_container", "text_contains": "main.gateway_model_label"}},
+        {"action": "real.screenshot", "params": {"name": "login_admin_success"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-004",
+      "module": "Login",
+      "priority": "P1",
+      "auto_login": false,
+      "title": "普通用户账号登录成功并跳转主页",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.login", "params": {"role": "user"},
+          "expect": {"url_contains": "main.html"}},
+        {"action": "real.screenshot", "params": {"name": "login_user_success"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-005",
+      "module": "Login",
+      "priority": "P1",
+      "auto_login": false,
+      "title": "错误密码登录失败弹出错误提示并留在登录页",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.fill", "params": {"selector": "login.username", "value": "${QCT_CM_ADMIN_USER}"}},
+        {"action": "real.fill", "params": {"selector": "login.password", "value": "wrongpass"}},
+        {"action": "real.click", "params": {"selector": "login.submit"}},
+        {"action": "real.wait", "params": {"ms": 1500}},
+        {"action": "real.screenshot", "params": {"name": "login_wrong_password"}},
+        {"action": "real.assert_login_error"},
+        {"action": "real.assert_url_contains", "params": {"substring": "login.html"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-006",
+      "module": "Login",
+      "priority": "P1",
+      "auto_login": false,
+      "title": "空用户名提交被拦截并提示错误",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.fill", "params": {"selector": "login.password", "value": "somepass"}},
+        {"action": "real.click", "params": {"selector": "login.submit"}},
+        {"action": "real.wait", "params": {"ms": 1500}},
+        {"action": "real.screenshot", "params": {"name": "login_empty_username"}},
+        {"action": "real.assert_login_error"},
+        {"action": "real.assert_url_contains", "params": {"substring": "login.html"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-007",
+      "module": "Login",
+      "priority": "P1",
+      "auto_login": false,
+      "title": "空密码提交被拦截并提示错误",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.fill", "params": {"selector": "login.username", "value": "${QCT_CM_ADMIN_USER}"}},
+        {"action": "real.click", "params": {"selector": "login.submit"}},
+        {"action": "real.wait", "params": {"ms": 1500}},
+        {"action": "real.screenshot", "params": {"name": "login_empty_password"}},
+        {"action": "real.assert_login_error"},
+        {"action": "real.assert_url_contains", "params": {"substring": "login.html"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-008",
+      "module": "Login",
+      "priority": "P0",
+      "title": "退出登录后跳转回登录页",
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.logout"},
+        {"action": "real.assert_url_contains", "params": {"substring": "login.html"}},
+        {"action": "real.screenshot", "params": {"name": "logout_back_to_login"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-009",
+      "module": "Login",
+      "priority": "P1",
+      "title": "已登录状态访问主页保持会话不被踢回",
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate", "params": {"path": "/main.html"}},
+        {"action": "real.assert_url_contains", "params": {"substring": "main.html"}},
+        {"action": "real.assert_visible", "params": {"selector_key": "main.app_container"}},
+        {"action": "real.screenshot", "params": {"name": "session_keep_main"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-UI-010",
+      "module": "Login",
+      "priority": "P2",
+      "auto_login": false,
+      "title": "未登录直接访问主页被重定向回登录页",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/main.html"}},
+        {"action": "real.wait", "params": {"ms": 1000}},
+        {"action": "real.assert_url_contains", "params": {"substring": "login.html"}},
+        {"action": "real.screenshot", "params": {"name": "unauth_redirect_login"}}
+      ]
+    }
+  ]
+}

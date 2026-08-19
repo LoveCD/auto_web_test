@@ -115,21 +115,26 @@ class StepRunner:
         params = step.get("params", {})
         expect = step.get("expect", {})
         failures = []
+        detail = None
 
         try:
-            self._execute_action(action, params)
+            # 部分 action 返回额外信息（如 real.screenshot 返回截图路径），写入 result.detail
+            detail = self._execute_action(action, params)
         except Exception as exc:
             failures.append(f"action {action} failed: {exc}")
 
         if not failures:
             failures.extend(self._check_expect(expect, params))
 
-        return {
+        result = {
             "action": action,
             "params": params,
             "status": "fail" if failures else "pass",
             "failures": failures,
         }
+        if detail is not None:
+            result["detail"] = detail
+        return result
 
     def _execute_action(self, action, params):
         if action.startswith("real."):
@@ -152,6 +157,7 @@ class StepRunner:
             elif method == "screenshot":
                 path = m(params.get("name", "shot"))
                 print(f"  screenshot -> {path}")
+                return path
             elif method == "assert_page":
                 m(params.get("component", ""))
             elif method == "assert_login_error":

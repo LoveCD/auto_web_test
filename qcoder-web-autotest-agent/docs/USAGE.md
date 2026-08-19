@@ -229,6 +229,30 @@ npm test
 - 报告顺序跟随 `tests/case-plan.js`（结构化测试计划）
 - 业务示例见 `tests_examples/roaming-settings.spec.example.js`（不参与运行）
 
+**用例文档 / 执行报告（统一模板）**：所有用例文档与测试报告按 e2e-bootstrap 模板生成
+（与执行报告同版式），`gen-case-doc.js` 三种模式：
+
+```bash
+cd e2e_bootstrap
+# ① 单套件设计文档（结果/结论=待执行）
+node scripts/gen-case-doc.js ../operators/cm/cases/login.json \
+  --topic "CM登录界面验证用例" --project-code CM-REAL-LOGIN --out ../reports
+# ② 批量设计文档（operators 下全部套件，排除 generated/）
+node scripts/gen-case-doc.js --all --out ../reports
+# ③ 执行报告（读取 run_suite.py 输出的 result.json，自动匹配套件并填充结果/结论/截图）
+node scripts/gen-case-doc.js --result ../reports/<run_id>/result.json --out ../reports
+```
+
+- 输出 `reports/用例文档-<主题>-<时间戳>.docx` 或 `reports/测试报告-<主题>-<时间戳>.docx`，
+  每条用例一页测试项表格（测试类型/目的/预置条件/测试浏览器/环境/步骤/期望/结果/结论/备注）
+- 设计文档结果/结论列填"待执行"；执行报告自动填充：用例结论（通过/失败）、失败步骤与原因、
+  汇总区（总用例/通过/失败/跳过/超时/中断/结论），截图嵌入各用例备注
+- 步骤渲染人性化（`real.navigate` → "导航"、`real.assert_login_error` → "断言登录失败"等）
+- 选项：`--template`（自定义模板）、`--base-url`（目标地址）、`--preconditions`（预置条件）、
+  `--qcoder-root`（工程根目录，默认自动定位）、`--operator`/`--suite`（报告模式指定匹配套件）
+- 执行链路已打通：`run_suite.py` 的 `real.screenshot` 步骤会把截图路径写入 `result.detail`，
+  `--result` 模式据此嵌入截图（旧结果无 detail 时自动跳过）
+
 ## 8. 用例编写规范（real 模式）
 
 用例 JSON 位于 `operators/{operator}/cases/*.json`：

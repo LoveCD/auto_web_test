@@ -1,0 +1,77 @@
+{
+  "operator": "intl",
+  "name": "International Baseline (FiberHome FG-8040H)",
+  "description": "国际通用运营商 Web UI，多 HTML 页面结构（Mock 离线环境）",
+  "env": {
+    "mock": {
+      "base_url": "http://127.0.0.1:8090",
+      "login_path": "/login.html",
+      "auth": {
+        "admin": {"username": "admin", "password": "admin123"},
+        "user": {"username": "user", "password": "user123"}
+      }
+    },
+    "real": {
+      "base_url": "http://127.0.0.1:8090",
+      "login_path": "/login.html",
+      "auth": {
+        "admin": {"username": "admin", "password": "admin123"},
+        "user": {"username": "user", "password": "user123"}
+      }
+    }
+  },
+  "spa": {
+    "enabled": false,
+    "route_prefix": "",
+    "navigation": "direct_url",
+    "menu_id_prefix": "",
+    "page_container_prefix": ""
+  },
+  "routes": {
+    "login": "/login.html",
+    "status": "/status.html",
+    "wifi": "/wifi.html",
+    "wan": "/wan.html",
+    "lan": "/lan.html",
+    "system": "/system.html",
+    "upgrade": "/upgrade.html"
+  },
+  "browser": {
+    "default": "chromium",
+    "headless": true,
+    "viewport": {"width": 1440, "height": 900},
+    "locale": "en-US",
+    "timezone": "UTC"
+  },
+  "timeouts": {
+    "goto": 15000,
+    "element": 10000,
+    "page_load_extra": 2000
+  },
+  "expected": {
+    "software_version": "INTL_BASELINE_1.0.0",
+    "wan_status": "connected",
+    "wan_type": "dhcp",
+    "default_ssid": "INTL_GW_24G",
+    "security_mode": "WPA2-PSK",
+    "lan_ip": "192.168.1.1"
+  },
+  "modules": {
+    "login": {"title": "Login", "pages": [{"route": "/login.html", "component": "login", "critical": true}]},
+    "status": {"title": "Status", "pages": [{"route": "/status.html", "component": "status", "critical": true}]},
+    "network": {"title": "Network", "pages": [
+      {"route": "/wifi.html", "component": "wifi", "critical": true},
+      {"route": "/wan.html", "component": "wan", "critical": true},
+      {"route": "/lan.html", "component": "lan", "critical": true}
+    ]},
+    "system": {"title": "System", "pages": [
+      {"route": "/system.html", "component": "system", "critical": true, "danger": true},
+      {"route": "/upgrade.html", "component": "upgrade", "critical": true, "danger": true}
+    ]}
+  },
+  "safety": {
+    "dangerous_actions_readonly": true,
+    "screenshot_on_every_page": true,
+    "max_failed_login_attempts": 3
+  }
+}

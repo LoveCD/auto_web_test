@@ -1,0 +1,154 @@
+{
+  "suite_id": "CM-WIFI-BAND-STEERING",
+  "operator": "cm",
+  "env": "real",
+  "title": "烽火 HG3142F2 FTTR 网关 双频合一（Band Steering）功能用例",
+  "description": "双频合一开关位于「网络 -> 无线基本配置」（wificonfig 组件，route /network/wifiSettings/wificonfig，菜单 fhId_wifiBasicSettings_L3），元素 #fhId_onApplySameSSID（el-switch，active-value=1/inactive-value=0）。开启后 2.4G/5G 信号合并显示并优选 5G，5G 独立配置区域隐藏；关闭后可单独设置 2.4G 与 5G。",
+  "ui_source": {
+    "component": "wificonfig",
+    "file": "html/src/content/pages/wificonfig.js",
+    "switch_selector": "#fhId_onApplySameSSID",
+    "save_button_text": "保存",
+    "xml_node": "x_wifi_WifiBandSteering_obj + x_BandSteering_Enable"
+  },
+  "requires_keywords": [
+    "real.ensure_switch",
+    "real.assert_switch_checked",
+    "real.assert_element_hidden",
+    "real.assert_input_value",
+    "real.click_button"
+  ],
+  "cases": [
+    {
+      "id": "TC-CM-WBS-001",
+      "title": "双频合一开关在无线基本配置页可见",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["wifi", "band-steering", "element", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wificonfig"}},
+        {"action": "real.assert_page", "params": {"component": "wificonfig"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_onApplySameSSID"},
+         "note": "双频合一开关（isShowSphy 需 FTTR_MAIN/FTTR_SUB 或广西地区才显示；双频设备需 wifi&&wifi5）"},
+        {"action": "real.screenshot", "params": {"name": "wbs_01_switch_present"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WBS-002",
+      "title": "开启双频合一后 5G 独立配置区域隐藏且保存持久化",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["wifi", "band-steering", "config", "positive"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wificonfig"}},
+        {"action": "real.assert_page", "params": {"component": "wificonfig"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.ensure_switch", "params": {"selector": "#fhId_onApplySameSSID", "checked": true},
+         "note": "幂等前置：确保开关开启"},
+        {"action": "real.assert_switch_checked", "params": {"selector": "#fhId_onApplySameSSID", "checked": true}},
+        {"action": "real.assert_element_hidden", "params": {"selector": "#fhId_Enable5G"},
+         "note": "开启合一后 5G 配置区域 v-if=sameSSIDEnable!=1 隐藏"},
+        {"action": "real.assert_element_hidden", "params": {"selector": "#fhId_SSID5G"}},
+        {"action": "real.screenshot", "params": {"name": "wbs_02_enabled_area_hidden"}},
+        {"action": "real.click_button", "params": {"text": "保存"}},
+        {"action": "real.wait", "params": {"ms": 3000}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wificonfig"},
+         "note": "重新加载页面，验证保存已持久化"},
+        {"action": "real.assert_page", "params": {"component": "wificonfig"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_switch_checked", "params": {"selector": "#fhId_onApplySameSSID", "checked": true}},
+        {"action": "real.assert_element_hidden", "params": {"selector": "#fhId_Enable5G"}},
+        {"action": "real.screenshot", "params": {"name": "wbs_02_enabled_persisted"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WBS-003",
+      "title": "关闭双频合一后 5G 独立配置区域恢复且保存持久化",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["wifi", "band-steering", "config", "positive"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wificonfig"}},
+        {"action": "real.assert_page", "params": {"component": "wificonfig"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.ensure_switch", "params": {"selector": "#fhId_onApplySameSSID", "checked": false},
+         "note": "幂等前置：确保开关关闭"},
+        {"action": "real.assert_switch_checked", "params": {"selector": "#fhId_onApplySameSSID", "checked": false}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_Enable5G"},
+         "note": "关闭合一后 5G 独立配置区域显示"},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_SSID5G"}},
+        {"action": "real.screenshot", "params": {"name": "wbs_03_disabled_area_visible"}},
+        {"action": "real.click_button", "params": {"text": "保存"}},
+        {"action": "real.wait", "params": {"ms": 3000}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wificonfig"},
+         "note": "重新加载页面，验证保存已持久化"},
+        {"action": "real.assert_page", "params": {"component": "wificonfig"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_switch_checked", "params": {"selector": "#fhId_onApplySameSSID", "checked": false}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_Enable5G"}},
+        {"action": "real.screenshot", "params": {"name": "wbs_03_disabled_persisted"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WBS-004",
+      "title": "双频合一开启时修改 SSID 同步到 5G 频段",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["wifi", "band-steering", "sync", "config"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wificonfig"}},
+        {"action": "real.assert_page", "params": {"component": "wificonfig"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.ensure_switch", "params": {"selector": "#fhId_onApplySameSSID", "checked": false},
+         "note": "先关闭合一，显示 2.4G/5G 独立配置区域"},
+        {"action": "real.fill", "params": {"selector": "#fhId_SSID", "value": "CM_BS_2026_A"}},
+        {"action": "real.fill", "params": {"selector": "#fhId_PreSharedKey", "value": "Cmb5Test@2026"},
+         "note": "使用强密码避免保存时触发弱密钥 fh_confirm 确认框"},
+        {"action": "real.click_button", "params": {"text": "保存"}},
+        {"action": "real.wait", "params": {"ms": 3000}},
+        {"action": "real.ensure_switch", "params": {"selector": "#fhId_onApplySameSSID", "checked": true},
+         "note": "开启双频合一（5G 配置区域隐藏）"},
+        {"action": "real.fill", "params": {"selector": "#fhId_SSID", "value": "CM_BS_2026_AB"},
+         "note": "合一模式下修改 SSID，保存时 onSubmit 将 2.4G SSID 同步写入 5G（seturl.SSID5G）"},
+        {"action": "real.click_button", "params": {"text": "保存"}},
+        {"action": "real.wait", "params": {"ms": 3000}},
+        {"action": "real.ensure_switch", "params": {"selector": "#fhId_onApplySameSSID", "checked": false},
+         "note": "关闭合一，显示 5G 配置区域以读取同步结果"},
+        {"action": "real.assert_input_value", "params": {"selector": "#fhId_SSID", "value": "CM_BS_2026_AB"}},
+        {"action": "real.assert_input_value", "params": {"selector": "#fhId_SSID5G", "value": "CM_BS_2026_AB"},
+         "note": "5G SSID 已与 2.4G 同步（双频合一效果）"},
+        {"action": "real.screenshot", "params": {"name": "wbs_04_ssid_synced"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WBS-005",
+      "title": "gap check：双频合一开关是否出现在 2.4G 无线高级配置页",
+      "module": "WiFi",
+      "priority": "P2",
+      "tags": ["wifi", "band-steering", "gap", "requirement"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wifiAdvanced"}},
+        {"action": "real.assert_page", "params": {"component": "wifiAdvanced"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_onApplySameSSID"},
+         "note": "gap check: 需求文案「wifi高级设置双频合一」。若要求开关位于高级设置页，此步失败即证明需求未实现 —— 当前实现位于无线基本配置页（wificonfig），高级设置页（wifiAdvanced）无双频合一入口"},
+        {"action": "real.screenshot", "params": {"name": "wbs_05_gap_check"}}
+      ],
+      "requirement_gaps": [
+        {
+          "page": "wifiAdvanced",
+          "element": "onApplySameSSID",
+          "required": "双频合一开关（wifi高级设置）",
+          "available_options": "wifiAdvanced 页无该元素；实际位于 wificonfig（无线基本配置）页",
+          "note": "真机执行此用例将失败，用于暴露「双频合一不在高级设置页」的需求差异"
+        }
+      ]
+    }
+  ]
+}

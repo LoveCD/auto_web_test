@@ -1,0 +1,9 @@
+{
+  "slug": "qcoder-web-autotest",
+  "version": "2.0.0",
+  "name": "QCoder Web AutoTest Agent",
+  "description": "运营商网关 Web UI 端到端自动化测试：CM/INTL 双运营商、真机/Mock 双环境、自然语言生成用例、全菜单遍历截图",
+  "category": "testing",
+  "compatibility": "WorkBuddy skill (SKILL.md) + QCoder SkillHub (zip)",
+  "keywords": ["web-autotest", "gateway-ui", "playwright", "e2e", "natural-language-test-generation"]
+}

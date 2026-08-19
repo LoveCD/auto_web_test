@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home Gateway - LAN</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">FiberHome <span>Home Gateway</span></div>
+  <div class="user-area">
+    <span id="login_user">admin</span>
+    <a href="#" id="logout_link" onclick="doLogout()">Logout</a>
+  </div>
+</div>
+<div class="layout">
+  <div class="menu">
+    <div class="menu-title">Status</div>
+    <a class="menu-item" id="menu_status" href="/status.html">Device Info</a>
+    <div class="menu-title">Network</div>
+    <a class="menu-item" id="menu_wifi" href="/wifi.html">Wi-Fi</a>
+    <a class="menu-item" id="menu_wan" href="/wan.html">WAN</a>
+    <a class="menu-item active" id="menu_lan" href="/lan.html">LAN</a>
+    <div class="menu-title">Maintenance</div>
+    <a class="menu-item" id="menu_system" href="/system.html">System</a>
+    <a class="menu-item" id="menu_upgrade" href="/upgrade.html">Firmware Upgrade</a>
+  </div>
+  <div class="content">
+    <div class="card">
+      <h2>LAN Settings</h2>
+      <div class="form-row">
+        <label for="lan_ip">LAN IP Address</label>
+        <input type="text" id="lan_ip" />
+        <span class="form-error" id="lan_ip_error"></span>
+      </div>
+      <div class="form-row">
+        <label for="lan_mask">Subnet Mask</label>
+        <input type="text" id="lan_mask" />
+        <span class="form-error" id="lan_mask_error"></span>
+      </div>
+      <div class="form-row">
+        <label>DHCP Server</label>
+        <input type="checkbox" id="dhcp_enabled" />
+        <span class="hint">Assign IPs automatically to LAN clients</span>
+      </div>
+      <div class="form-row">
+        <label>DHCP Pool</label>
+        <span id="dhcp_pool">-</span>
+      </div>
+      <div class="form-row">
+        <label></label>
+        <button class="btn btn-primary" id="save_lan" onclick="saveLan()">Apply</button>
+        <button class="btn btn-default" id="reset_lan" onclick="loadLan()" style="margin-left:10px;">Reset</button>
+      </div>
+      <div class="toast" id="lan_msg"></div>
+    </div>
+  </div>
+</div>
+<script>
+function doLogout() {
+  fetch("/api/logout", { method: "POST" }).then(function () {
+    window.location.href = "/login.html";
+  });
+}
+function loadLan() {
+  fetch("/api/lan").then(function (r) { return r.json(); }).then(function (l) {
+    document.getElementById("lan_ip").value = l.ip;
+    document.getElementById("lan_mask").value = l.mask;
+    document.getElementById("dhcp_enabled").checked = !!l.dhcp_enabled;
+    document.getElementById("dhcp_pool").textContent = l.dhcp_pool_start + " - " + l.dhcp_pool_end;
+  });
+}
+function showMsg(ok, text) {
+  var el = document.getElementById("lan_msg");
+  el.className = "toast " + (ok ? "success" : "error");
+  el.style.display = "block";
+  el.textContent = text;
+}
+function saveLan() {
+  document.getElementById("lan_ip_error").textContent = "";
+  document.getElementById("lan_mask_error").textContent = "";
+  var payload = {
+    ip: document.getElementById("lan_ip").value.trim(),
+    mask: document.getElementById("lan_mask").value.trim(),
+    dhcp_enabled: document.getElementById("dhcp_enabled").checked
+  };
+  fetch("/api/lan", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  }).then(function (resp) {
+    return resp.json().then(function (data) {
+      if (resp.ok) {
+        showMsg(true, "LAN settings applied successfully. New IP: " + data.ip);
+      } else if (data.error && data.error.indexOf("lan ip") !== -1) {
+        document.getElementById("lan_ip_error").textContent = "Invalid IPv4 address";
+        showMsg(false, data.error);
+      } else if (data.error && data.error.indexOf("netmask") !== -1) {
+        document.getElementById("lan_mask_error").textContent = "Invalid subnet mask";
+        showMsg(false, data.error);
+      } else {
+        showMsg(false, data.error || "Apply failed");
+      }
+    });
+  }).catch(function () { showMsg(false, "Network error"); });
+}
+loadLan();
+</script>
+</body>
+</html>

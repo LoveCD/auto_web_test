@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home Gateway - System</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">FiberHome <span>Home Gateway</span></div>
+  <div class="user-area">
+    <span id="login_user">admin</span>
+    <a href="#" id="logout_link" onclick="doLogout()">Logout</a>
+  </div>
+</div>
+<div class="layout">
+  <div class="menu">
+    <div class="menu-title">Status</div>
+    <a class="menu-item" id="menu_status" href="/status.html">Device Info</a>
+    <div class="menu-title">Network</div>
+    <a class="menu-item" id="menu_wifi" href="/wifi.html">Wi-Fi</a>
+    <a class="menu-item" id="menu_wan" href="/wan.html">WAN</a>
+    <a class="menu-item" id="menu_lan" href="/lan.html">LAN</a>
+    <div class="menu-title">Maintenance</div>
+    <a class="menu-item active" id="menu_system" href="/system.html">System</a>
+    <a class="menu-item" id="menu_upgrade" href="/upgrade.html">Firmware Upgrade</a>
+  </div>
+  <div class="content">
+    <div class="card">
+      <h2>Device Information</h2>
+      <table class="info">
+        <tr><th>Product Model</th><td id="sys_model">-</td></tr>
+        <tr><th>Serial Number</th><td id="sys_serial">-</td></tr>
+        <tr><th>Software Version</th><td id="sys_sw_version">-</td></tr>
+        <tr><th>Firmware Version</th><td id="sys_fw_version">-</td></tr>
+        <tr><th>CPU Usage</th><td id="sys_cpu">-</td></tr>
+        <tr><th>Memory Usage</th><td id="sys_memory">-</td></tr>
+        <tr><th>Temperature</th><td id="sys_temperature">-</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Reboot</h2>
+      <p style="color:#667; margin-bottom:14px;">Rebooting the gateway will disconnect all connected clients for about 1 minute.</p>
+      <button class="btn btn-danger" id="reboot_btn" onclick="doReboot()">Reboot</button>
+      <div class="toast" id="reboot_msg"></div>
+    </div>
+  </div>
+</div>
+<script>
+function doLogout() {
+  fetch("/api/logout", { method: "POST" }).then(function () {
+    window.location.href = "/login.html";
+  });
+}
+fetch("/api/system").then(function (r) { return r.json(); }).then(function (s) {
+  document.getElementById("sys_model").textContent = s.model;
+  document.getElementById("sys_serial").textContent = s.serial;
+  document.getElementById("sys_sw_version").textContent = s.software_version;
+  document.getElementById("sys_fw_version").textContent = s.firmware_version;
+  document.getElementById("sys_cpu").textContent = s.cpu_usage + "%";
+  document.getElementById("sys_memory").textContent = s.memory_usage + "%";
+  document.getElementById("sys_temperature").textContent = s.temperature_c + " °C";
+});
+function doReboot() {
+  var btn = document.getElementById("reboot_btn");
+  if (!confirm("Are you sure you want to reboot the gateway?")) return;
+  btn.disabled = true;
+  fetch("/api/reboot", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" })
+    .then(function (resp) {
+      var el = document.getElementById("reboot_msg");
+      el.className = "toast success";
+      el.style.display = "block";
+      el.textContent = "Reboot request accepted. The gateway is rebooting...";
+      btn.disabled = false;
+    }).catch(function () {
+      var el = document.getElementById("reboot_msg");
+      el.className = "toast error";
+      el.style.display = "block";
+      el.textContent = "Reboot request failed.";
+      btn.disabled = false;
+    });
+}
+</script>
+</body>
+</html>

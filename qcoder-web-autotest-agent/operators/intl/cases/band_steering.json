@@ -1,0 +1,81 @@
+{
+  "suite_id": "INTL-WIFI-BAND-STEERING",
+  "operator": "intl",
+  "env": "real",
+  "title": "INTL 运营商 Band Steering（双频合一）功能用例",
+  "description": "INTL 版双频合一（Band Steering）为独立页面，route /network/wifiSettings/bandSteering，元素 #fhId_Enable（el-switch）。开启后通过 SSID/安全策略/RSSI 阈值实现 2.4G/5G 智能引导。注意：MLO（MultiLink）开启或 FTTR_SUB 组网下表单可能禁用（disabledForm），用例将失败以暴露该限制。",
+  "ui_source": {
+    "component": "bandSteering",
+    "file": "html/src/content/pages/bandSteering.js",
+    "switch_selector": "#fhId_Enable",
+    "apply_button": "#fhId_onApply",
+    "xml_node": "x_WifiBandSteering_obj + x_WifiBandS_Enable"
+  },
+  "requires_keywords": [
+    "real.ensure_switch",
+    "real.assert_switch_checked"
+  ],
+  "cases": [
+    {
+      "id": "TC-INTL-BS-001",
+      "title": "Band Steering 页面可达且开关存在",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["wifi", "band-steering", "element", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/bandSteering"}},
+        {"action": "real.assert_page", "params": {"component": "bandSteering"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_Enable"}},
+        {"action": "real.screenshot", "params": {"name": "bs_01_switch_present"}}
+      ]
+    },
+    {
+      "id": "TC-INTL-BS-002",
+      "title": "开启 Band Steering 并保存持久化",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["wifi", "band-steering", "config", "positive"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/bandSteering"}},
+        {"action": "real.assert_page", "params": {"component": "bandSteering"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.ensure_switch", "params": {"selector": "#fhId_Enable", "checked": true},
+         "note": "幂等前置：确保开关开启；若 disabledForm（MLO 开启/FTTR_SUB 组网）点击无效将失败"},
+        {"action": "real.assert_switch_checked", "params": {"selector": "#fhId_Enable", "checked": true}},
+        {"action": "real.click", "params": {"selector": "#fhId_onApply"}},
+        {"action": "real.wait", "params": {"ms": 3000}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/bandSteering"}},
+        {"action": "real.assert_page", "params": {"component": "bandSteering"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_switch_checked", "params": {"selector": "#fhId_Enable", "checked": true}},
+        {"action": "real.screenshot", "params": {"name": "bs_02_enabled_persisted"}}
+      ]
+    },
+    {
+      "id": "TC-INTL-BS-003",
+      "title": "关闭 Band Steering 并保存持久化",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["wifi", "band-steering", "config", "positive"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/bandSteering"}},
+        {"action": "real.assert_page", "params": {"component": "bandSteering"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.ensure_switch", "params": {"selector": "#fhId_Enable", "checked": false},
+         "note": "幂等前置：确保开关关闭"},
+        {"action": "real.assert_switch_checked", "params": {"selector": "#fhId_Enable", "checked": false}},
+        {"action": "real.click", "params": {"selector": "#fhId_onApply"}},
+        {"action": "real.wait", "params": {"ms": 3000}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/bandSteering"}},
+        {"action": "real.assert_page", "params": {"component": "bandSteering"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_switch_checked", "params": {"selector": "#fhId_Enable", "checked": false}},
+        {"action": "real.screenshot", "params": {"name": "bs_03_disabled_persisted"}}
+      ]
+    }
+  ]
+}

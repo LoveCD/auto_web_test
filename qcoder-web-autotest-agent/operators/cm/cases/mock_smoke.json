@@ -1,0 +1,69 @@
+{
+  "suite_id": "MOCK-CM-SMOKE",
+  "title": "CM 运营 profile 在 Mock 通用网关模拟器上的链路验证（无真机场景）",
+  "note": "mock UI 为运营商无关的通用模拟器，本套件验证 CM profile 在 --env mock 下的登录/页面遍历链路",
+  "cases": [
+    {
+      "id": "TC-CM-MOCK-LOGIN-001",
+      "title": "CM mock 环境管理员登录成功",
+      "module": "Login",
+      "priority": "P0",
+      "steps": [
+        {
+          "action": "page.login",
+          "expect": {"url_contains": "/status.html", "title_contains": "Device Status"}
+        }
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-001",
+      "title": "CM mock 环境 WAN 状态页可访问且数据加载",
+      "module": "WAN",
+      "priority": "P0",
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wan"},
+        {
+          "action": "page.wait_wan_data",
+          "expect": {
+            "text": {"wan_status": "connected", "wan_type": "dhcp"},
+            "non_empty": ["wan_ip", "wan_gateway", "wan_dns"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WIFI-001",
+      "title": "CM mock 环境 WiFi 页 SSID 修改与持久化",
+      "module": "WiFi",
+      "priority": "P1",
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wifi"},
+        {
+          "action": "page.set_wifi",
+          "params": {"ssid": "CM_Mock_24G", "password": "Test123456"},
+          "expect": {
+            "toast_success": true,
+            "text_contains": {"wifi_msg": "applied successfully"}
+          }
+        },
+        {
+          "action": "page.goto_wifi",
+          "expect": {"input_value": {"ssid": "CM_Mock_24G"}}
+        }
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-LOGOUT-001",
+      "title": "CM mock 环境登出后回到登录页",
+      "module": "Login",
+      "priority": "P1",
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.logout"},
+        {"action": "page.goto", "params": {"page": "status"}, "expect": {"url_contains": "/login.html"}}
+      ]
+    }
+  ]
+}

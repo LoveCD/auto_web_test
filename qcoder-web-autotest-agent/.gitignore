@@ -1,0 +1,35 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ---- Node (e2e_bootstrap) ----
+node_modules/
+playwright-report/
+test-results/
+e2e_bootstrap/.env
+e2e_bootstrap/self-test-reports/
+e2e_bootstrap/screenshots/
+
+# ---- 敏感配置 ----
+.env
+
+# ---- 测试产物 / 报告（含真实设备截图，不进入版本库）----
+reports/
+*.docx
+~$*
+operators/*/cases/generated/
+
+# ---- IDE / OS ----
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---- 发布包（技能分发 zip 除外，属交付物）----
+dist/
+*.zip
+!skill_dist/*.zip

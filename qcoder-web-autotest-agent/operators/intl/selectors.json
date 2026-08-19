@@ -1,0 +1,122 @@
+{
+  "profile": "intl_baseline",
+  "selector_version": "INTL_BASELINE_1.0.0",
+  "strategy": "Prefer stable IDs and role/text selectors over CSS classes and DOM hierarchy (E2E skill: stable selectors).",
+
+  "pages": {
+    "login": {
+      "url": "/login.html",
+      "title": "Home Gateway - Login",
+      "elements": {
+        "username": "#user_name",
+        "password": "#loginpp",
+        "login_btn": "#login_btn",
+        "login_cancel": "#login_cancel",
+        "error_hint": "#login_error_hint"
+      }
+    },
+    "status": {
+      "url": "/status.html",
+      "title": "Home Gateway - Device Status",
+      "elements": {
+        "model": "#model",
+        "serial": "#serial",
+        "sw_version": "#sw_version",
+        "fw_version": "#fw_version",
+        "uptime": "#uptime",
+        "temperature": "#temperature",
+        "wan_status": "#wan_status",
+        "wan_type": "#wan_type",
+        "wan_ip": "#wan_ip",
+        "wan_gateway": "#wan_gateway",
+        "wan_dns": "#wan_dns",
+        "wifi_status": "#wifi_status",
+        "wifi_ssid": "#wifi_ssid"
+      }
+    },
+    "wifi": {
+      "url": "/wifi.html",
+      "title": "Home Gateway - Wi-Fi",
+      "elements": {
+        "wifi_enabled": "#wifi_enabled",
+        "ssid": "#ssid",
+        "security_mode": "#security_mode",
+        "wifi_password": "#wifi_password",
+        "save_wifi": "#save_wifi",
+        "reset_wifi": "#reset_wifi",
+        "wifi_msg": "#wifi_msg",
+        "ssid_error": "#ssid_error",
+        "pwd_error": "#pwd_error"
+      }
+    },
+    "wan": {
+      "url": "/wan.html",
+      "title": "Home Gateway - WAN",
+      "elements": {
+        "wan_type": "#wan_type",
+        "wan_status": "#wan_status",
+        "wan_ip": "#wan_ip",
+        "wan_mask": "#wan_mask",
+        "wan_gateway": "#wan_gateway",
+        "wan_dns": "#wan_dns",
+        "wan_mac": "#wan_mac"
+      }
+    },
+    "lan": {
+      "url": "/lan.html",
+      "title": "Home Gateway - LAN",
+      "elements": {
+        "lan_ip": "#lan_ip",
+        "lan_mask": "#lan_mask",
+        "dhcp_enabled": "#dhcp_enabled",
+        "dhcp_pool": "#dhcp_pool",
+        "save_lan": "#save_lan",
+        "reset_lan": "#reset_lan",
+        "lan_msg": "#lan_msg",
+        "lan_ip_error": "#lan_ip_error",
+        "lan_mask_error": "#lan_mask_error"
+      }
+    },
+    "system": {
+      "url": "/system.html",
+      "title": "Home Gateway - System",
+      "elements": {
+        "sys_model": "#sys_model",
+        "sys_serial": "#sys_serial",
+        "sys_sw_version": "#sys_sw_version",
+        "sys_fw_version": "#sys_fw_version",
+        "sys_cpu": "#sys_cpu",
+        "sys_memory": "#sys_memory",
+        "sys_temperature": "#sys_temperature",
+        "reboot_btn": "#reboot_btn",
+        "reboot_msg": "#reboot_msg"
+      }
+    },
+    "upgrade": {
+      "url": "/upgrade.html",
+      "title": "Home Gateway - Firmware Upgrade",
+      "elements": {
+        "cur_version": "#cur_version",
+        "new_version": "#new_version",
+        "upgrade_available": "#upgrade_available",
+        "pkg_size": "#pkg_size",
+        "upgrade_desc": "#upgrade_desc",
+        "firmware_url": "#firmware_url",
+        "upgrade_btn": "#upgrade_btn",
+        "refresh_upgrade": "#refresh_upgrade",
+        "upgrade_msg": "#upgrade_msg"
+      }
+    },
+    "nav": {
+      "elements": {
+        "menu_status": "#menu_status",
+        "menu_wifi": "#menu_wifi",
+        "menu_wan": "#menu_wan",
+        "menu_lan": "#menu_lan",
+        "menu_system": "#menu_system",
+        "menu_upgrade": "#menu_upgrade",
+        "logout_link": "#logout_link"
+      }
+    }
+  }
+}

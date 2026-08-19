@@ -1,0 +1,140 @@
+{
+  "operator": "cm",
+  "name": "中国移动 CM (China Mobile)",
+  "description": "FiberHome FTTR 网关管理界面（真机 HG3142F2，XG-PON 智能终端）。真机地址与账号通过 .env / 环境变量注入，见工程根 .env.example。",
+  "env": {
+    "real": {
+      "base_url": "${QCT_CM_BASE_URL:-http://192.168.1.1}",
+      "login_path": "/login.html",
+      "main_path": "/main.html",
+      "auth": {
+        "admin": {"username": "${QCT_CM_ADMIN_USER}", "password": "${QCT_CM_ADMIN_PASS}"},
+        "user": {"username": "${QCT_CM_USER_USER}", "password": "${QCT_CM_USER_PASS}"}
+      }
+    },
+    "mock": {
+      "base_url": "http://127.0.0.1:8090",
+      "login_path": "/login.html",
+      "main_path": "/main.html",
+      "auth": {
+        "admin": {"username": "admin", "password": "admin123"},
+        "user": {"username": "user", "password": "user123"}
+      }
+    }
+  },
+  "spa": {
+    "enabled": true,
+    "route_prefix": "main.html#",
+    "navigation": "menu_click",
+    "menu_id_prefix": "fhId_",
+    "menu_id_suffix": "_L{level}",
+    "page_container_prefix": "fhId_"
+  },
+  "browser": {
+    "default": "chromium",
+    "viewport": {"width": 1440, "height": 900},
+    "headless": true
+  },
+  "timeouts": {
+    "goto": 20000,
+    "networkidle": 15000,
+    "element": 10000,
+    "page_load_extra": 6000
+  },
+  "modules": {
+    "status": {
+      "title": "状态",
+      "L1_menu": "status",
+      "pages": [
+        {"route": "/status/deviceInfo/deviceInfo", "component": "deviceInfo", "title": "设备信息", "critical": true},
+        {"route": "/status/networkInfo/ipconInfo", "component": "ipconInfo", "title": "网络侧信息", "critical": true},
+        {"route": "/status/networkInfo/ipv6conInfo", "component": "ipv6conInfo", "title": "IPv6 连接信息"},
+        {"route": "/status/networkInfo/ponlinkInfo", "component": "ponlinkInfo", "title": "PON 链路信息"},
+        {"route": "/status/userInfo/wifiInfo", "component": "wifiInfo", "title": "WLAN 状态", "critical": true},
+        {"route": "/status/userInfo/lanInfo", "component": "lanInfo", "title": "用户侧信息", "critical": true},
+        {"route": "/status/userInfo/topo", "component": "topo", "title": "网络拓扑"},
+        {"route": "/status/voiceInfo/registerState", "component": "registerState", "title": "语音注册状态"},
+        {"route": "/status/remoteState/interaction", "component": "interaction", "title": "远程管理交互"},
+        {"route": "/status/generalState/generalInfo", "component": "generalInfo", "title": "通用状态"}
+      ]
+    },
+    "network": {
+      "title": "网络",
+      "L1_menu": "network",
+      "pages": [
+        {"route": "/network/broadband/networkConn", "component": "networkConnUser", "title": "宽带连接", "critical": true},
+        {"route": "/network/lanSettings/ipv4Settings", "component": "ipv4Settings", "title": "LAN IPv4 设置", "critical": true},
+        {"route": "/network/lanSettings/ipv6Settings", "component": "ipv6Settings", "title": "LAN IPv6 设置"},
+        {"route": "/network/wifiSettings/wifiBasic", "component": "wifiBasic", "title": "2.4G Wi-Fi 基本设置", "critical": true},
+        {"route": "/network/wifiSettings/wifiBasic_5g", "component": "wifiBasic_5g", "title": "5G Wi-Fi 基本设置", "critical": true},
+        {"route": "/network/wifiSettings/wifiguest", "component": "wifiguest", "title": "访客 Wi-Fi"},
+        {"route": "/network/wifiSettings/wifiAdvanced", "component": "wifiAdvanced", "title": "2.4G 高级设置"},
+        {"route": "/network/wifiSettings/wifiAdvanced_5g", "component": "wifiAdvanced_5g", "title": "5G 高级设置"},
+        {"route": "/network/wifiSettings/wifiMACAddressControl", "component": "wifiMACAddressControl", "title": "无线 MAC 过滤"},
+        {"route": "/network/wifiSettings/wlanShare", "component": "wlanShare", "title": "WLAN 共享"},
+        {"route": "/network/qos/qosBase", "component": "qosBase", "title": "QoS 基础配置"},
+        {"route": "/network/routeSetting/ipv4Route", "component": "ipv4Route", "title": "IPv4 路由"},
+        {"route": "/network/remoteManage/itmsServer", "component": "itmsServer", "title": "ITMS 服务器"}
+      ]
+    },
+    "security": {
+      "title": "安全",
+      "L1_menu": "security",
+      "pages": [
+        {"route": "/security/firewall/firewall", "component": "firewall", "title": "防火墙", "critical": true},
+        {"route": "/security/firewall/firewallSettings", "component": "firewallSettings", "title": "防火墙设置"},
+        {"route": "/security/macFilter/macFilter", "component": "macFilter", "title": "MAC 过滤"},
+        {"route": "/security/parentControl/parentControl", "component": "parentControl", "title": "家长控制"},
+        {"route": "/security/portFilter/ipFilterWan", "component": "ipFilterWan", "title": "WAN 侧 IP 过滤"},
+        {"route": "/security/portFilter/ipFilterLan", "component": "ipFilterLan", "title": "LAN 侧 IP 过滤"}
+      ]
+    },
+    "application": {
+      "title": "应用",
+      "L1_menu": "application",
+      "pages": [
+        {"route": "/application/nat/dmz", "component": "dmz", "title": "DMZ"},
+        {"route": "/application/nat/virtualHost", "component": "virtualHost", "title": "虚拟主机"},
+        {"route": "/application/nat/alg", "component": "alg", "title": "ALG"},
+        {"route": "/application/upnp/upnp", "component": "upnp", "title": "UPnP"},
+        {"route": "/application/ddns/ddns", "component": "ddns", "title": "DDNS"},
+        {"route": "/application/broadbandVoice/voiceBase", "component": "voiceBase", "title": "语音基本配置"},
+        {"route": "/application/igmp/multicast", "component": "multicast", "title": "组播"},
+        {"route": "/application/homeStorage/samber", "component": "samber", "title": "Samba"}
+      ]
+    },
+    "management": {
+      "title": "管理",
+      "L1_menu": "management",
+      "pages": [
+        {"route": "/management/userManagement/userManagement", "component": "userManagement", "title": "用户管理", "critical": true},
+        {"route": "/management/deviceManagement/rebootDevice", "component": "rebootDevice", "title": "重启设备", "danger": true},
+        {"route": "/management/deviceManagement/restoreDefault", "component": "restoreDefault", "title": "恢复出厂", "danger": true},
+        {"route": "/management/deviceManagement/firmwareUp", "component": "firmwareUp", "title": "固件升级", "critical": true, "danger": true},
+        {"route": "/management/deviceManagement/timedRestart", "component": "timedRestart", "title": "定时重启"},
+        {"route": "/management/deviceManagement/netAccess", "component": "netAccess", "title": "网络访问控制"}
+      ]
+    },
+    "diagnosis": {
+      "title": "诊断",
+      "L1_menu": "diagnosis",
+      "pages": [
+        {"route": "/diagnosis/networkDiagnose/ping", "component": "ping", "title": "Ping 诊断"},
+        {"route": "/diagnosis/networkDiagnose/traceroute", "component": "traceroute", "title": "Traceroute"}
+      ]
+    },
+    "help": {
+      "title": "帮助",
+      "L1_menu": "help",
+      "pages": [
+        {"route": "/help/versionHelp/deviceHelp", "component": "deviceHelp", "title": "设备帮助"},
+        {"route": "/help/versionHelp/wifiHelp", "component": "wifiHelp", "title": "Wi-Fi 帮助"}
+      ]
+    }
+  },
+  "safety": {
+    "dangerous_actions_readonly": true,
+    "screenshot_on_every_page": true,
+    "max_failed_login_attempts": 2
+  }
+}

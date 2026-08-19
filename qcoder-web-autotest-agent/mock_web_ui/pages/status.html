@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home Gateway - Device Status</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">FiberHome <span>Home Gateway</span></div>
+  <div class="user-area">
+    <span id="login_user">admin</span>
+    <a href="#" id="logout_link" onclick="doLogout()">Logout</a>
+  </div>
+</div>
+<div class="layout">
+  <div class="menu">
+    <div class="menu-title">Status</div>
+    <a class="menu-item active" id="menu_status" href="/status.html">Device Info</a>
+    <div class="menu-title">Network</div>
+    <a class="menu-item" id="menu_wifi" href="/wifi.html">Wi-Fi</a>
+    <a class="menu-item" id="menu_wan" href="/wan.html">WAN</a>
+    <a class="menu-item" id="menu_lan" href="/lan.html">LAN</a>
+    <div class="menu-title">Maintenance</div>
+    <a class="menu-item" id="menu_system" href="/system.html">System</a>
+    <a class="menu-item" id="menu_upgrade" href="/upgrade.html">Firmware Upgrade</a>
+  </div>
+  <div class="content">
+    <div class="card">
+      <h2>Device Information</h2>
+      <table class="info" id="status_table">
+        <tr><th>Product Model</th><td id="model">-</td></tr>
+        <tr><th>Serial Number</th><td id="serial">-</td></tr>
+        <tr><th>Software Version</th><td id="sw_version">-</td></tr>
+        <tr><th>Firmware Version</th><td id="fw_version">-</td></tr>
+        <tr><th>Uptime</th><td id="uptime">-</td></tr>
+        <tr><th>Temperature</th><td id="temperature">-</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>WAN Status</h2>
+      <table class="info">
+        <tr><th>Connection Status</th><td id="wan_status">-</td></tr>
+        <tr><th>Connection Type</th><td id="wan_type">-</td></tr>
+        <tr><th>IP Address</th><td id="wan_ip">-</td></tr>
+        <tr><th>Gateway</th><td id="wan_gateway">-</td></tr>
+        <tr><th>DNS</th><td id="wan_dns">-</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Wi-Fi Status</h2>
+      <table class="info">
+        <tr><th>Wi-Fi Enabled</th><td id="wifi_status">-</td></tr>
+        <tr><th>SSID</th><td id="wifi_ssid">-</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+function doLogout() {
+  fetch("/api/logout", { method: "POST" }).then(function () {
+    window.location.href = "/login.html";
+  });
+}
+function loadStatus() {
+  Promise.all([
+    fetch("/api/status").then(function (r) { return r.json(); }),
+    fetch("/api/wifi").then(function (r) { return r.json(); })
+  ]).then(function (arr) {
+    var st = arr[0], wifi = arr[1];
+    document.getElementById("model").textContent = st.model;
+    document.getElementById("serial").textContent = st.serial;
+    document.getElementById("sw_version").textContent = st.software_version;
+    document.getElementById("fw_version").textContent = st.firmware_version;
+    var up = st.uptime_seconds;
+    document.getElementById("uptime").textContent = up + " s";
+    document.getElementById("temperature").textContent = st.temperature_c + " °C";
+    document.getElementById("wan_status").textContent = st.wan.status;
+    document.getElementById("wan_type").textContent = st.wan.type;
+    document.getElementById("wan_ip").textContent = st.wan.ip;
+    document.getElementById("wan_gateway").textContent = st.wan.gateway;
+    document.getElementById("wan_dns").textContent = st.wan.dns;
+    document.getElementById("wifi_status").textContent = wifi.enabled ? "Enabled" : "Disabled";
+    document.getElementById("wifi_ssid").textContent = wifi.ssid;
+  });
+}
+loadStatus();
+</script>
+</body>
+</html>

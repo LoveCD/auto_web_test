@@ -1,0 +1,311 @@
+{
+  "suite_id": "REG-INTL-WEB-CORE",
+  "title": "International gateway baseline Web UI core regression suite",
+  "cases": [
+    {
+      "id": "TC-WEB-LOGIN-002",
+      "title": "Login fails with invalid password and shows error hint",
+      "module": "Login",
+      "priority": "P1",
+      "tags": ["regression", "auth", "negative"],
+      "steps": [
+        {
+          "action": "page.submit_login",
+          "params": {"username": "admin", "password": "bad-password"},
+          "expect": {
+            "url_contains": "/login.html",
+            "visible": ["error_hint"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-LOGIN-003",
+      "title": "Login fails with empty username",
+      "module": "Login",
+      "priority": "P1",
+      "tags": ["regression", "auth", "negative", "boundary"],
+      "steps": [
+        {
+          "action": "page.submit_login",
+          "params": {"username": "", "password": "admin123"},
+          "expect": {
+            "url_contains": "/login.html",
+            "visible": ["error_hint"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-AUTH-001",
+      "title": "Protected pages redirect to login when unauthenticated",
+      "module": "Login",
+      "priority": "P0",
+      "tags": ["regression", "auth", "security"],
+      "steps": [
+        {
+          "action": "page.goto",
+          "params": {"page": "status"},
+          "expect": {
+            "url_contains": "/login.html",
+            "visible": ["login_btn"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-LOGIN-004",
+      "title": "Logout returns to login page",
+      "module": "Login",
+      "priority": "P1",
+      "tags": ["regression", "auth"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.logout"},
+        {
+          "action": "page.wait_login",
+          "expect": {
+            "url_contains": "/login.html",
+            "visible": ["login_btn"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-WIFI-002",
+      "title": "Wi-Fi rejects SSID longer than 32 characters",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["regression", "wifi", "boundary", "negative"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wifi"},
+        {
+          "action": "page.set_wifi",
+          "params": {"ssid": "SSID_123456789012345678901234567890123", "password": "Test123456"},
+          "expect": {
+            "visible": ["ssid_error"],
+            "toast_error": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-WIFI-003",
+      "title": "Wi-Fi rejects password shorter than 8 characters",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["regression", "wifi", "boundary", "negative"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wifi"},
+        {
+          "action": "page.set_wifi",
+          "params": {"ssid": "INTL_GW_24G", "password": "1234567"},
+          "expect": {
+            "visible": ["pwd_error"],
+            "toast_error": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-WIFI-004",
+      "title": "Wi-Fi accepts 8-character password boundary",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["regression", "wifi", "boundary"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wifi"},
+        {
+          "action": "page.set_wifi",
+          "params": {"ssid": "INTL_GW_24G", "password": "12345678"},
+          "expect": {
+            "toast_success": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-WIFI-005",
+      "title": "Wi-Fi change is reflected on status page",
+      "module": "WiFi",
+      "priority": "P1",
+      "tags": ["regression", "wifi", "config", "consistency"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wifi"},
+        {
+          "action": "page.set_wifi",
+          "params": {"ssid": "StatusSync_24G", "password": "Test123456"},
+          "expect": {"toast_success": true}
+        },
+        {"action": "page.goto_status"},
+        {
+          "action": "page.wait_status_data",
+          "expect": {
+            "text": {"wifi_ssid": "StatusSync_24G"}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-WAN-002",
+      "title": "WAN page shows complete connectivity fields",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["regression", "wan", "status"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wan"},
+        {
+          "action": "page.wait_wan_data",
+          "expect": {
+            "non_empty": ["wan_type", "wan_status", "wan_ip", "wan_mask", "wan_gateway", "wan_dns", "wan_mac"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-LAN-002",
+      "title": "LAN rejects invalid IP address",
+      "module": "LAN",
+      "priority": "P1",
+      "tags": ["regression", "lan", "boundary", "negative"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_lan"},
+        {
+          "action": "page.set_lan",
+          "params": {"ip": "999.1.1.1", "mask": "255.255.255.0"},
+          "expect": {
+            "visible": ["lan_ip_error"],
+            "toast_error": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-LAN-003",
+      "title": "LAN IP change is applied and persisted",
+      "module": "LAN",
+      "priority": "P1",
+      "tags": ["regression", "lan", "config"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_lan"},
+        {
+          "action": "page.set_lan",
+          "params": {"ip": "192.168.2.1", "mask": "255.255.255.0"},
+          "expect": {
+            "toast_success": true,
+            "text_contains": {"lan_msg": "applied successfully"}
+          }
+        },
+        {
+          "action": "page.reload",
+          "expect": {
+            "input_value": {"lan_ip": "192.168.2.1"}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-SYSTEM-002",
+      "title": "Reboot request is accepted after confirmation",
+      "module": "System",
+      "priority": "P1",
+      "tags": ["regression", "system"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_system"},
+        {"action": "page.reboot"},
+        {
+          "action": "page.wait_reboot_msg",
+          "expect": {
+            "text_contains": {"reboot_msg": "accepted"}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-UPGRADE-002",
+      "title": "Firmware upgrade rejects invalid URL",
+      "module": "Upgrade",
+      "priority": "P1",
+      "tags": ["regression", "upgrade", "boundary", "negative"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_upgrade"},
+        {
+          "action": "page.upgrade",
+          "params": {"url": "not-a-valid-url"},
+          "expect": {
+            "toast_error": true,
+            "text_contains": {"upgrade_msg": "invalid"}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-UPGRADE-003",
+      "title": "Firmware upgrade starts with valid URL",
+      "module": "Upgrade",
+      "priority": "P1",
+      "tags": ["regression", "upgrade", "config"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_upgrade"},
+        {
+          "action": "page.upgrade",
+          "params": {"url": "http://fw.example.com/intl_baseline_v1.0.1.bin"},
+          "expect": {
+            "toast_success": true,
+            "text_contains": {"upgrade_msg": "Upgrade started"}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-NAV-001",
+      "title": "All core pages reachable via left menu navigation",
+      "module": "Status",
+      "priority": "P1",
+      "tags": ["regression", "navigation"],
+      "steps": [
+        {"action": "page.login"},
+        {
+          "action": "page.nav_to",
+          "params": {"page": "status"},
+          "expect": {"url_contains": "/status.html"}
+        },
+        {
+          "action": "page.nav_to",
+          "params": {"page": "wifi"},
+          "expect": {"url_contains": "/wifi.html"}
+        },
+        {
+          "action": "page.nav_to",
+          "params": {"page": "wan"},
+          "expect": {"url_contains": "/wan.html"}
+        },
+        {
+          "action": "page.nav_to",
+          "params": {"page": "lan"},
+          "expect": {"url_contains": "/lan.html"}
+        },
+        {
+          "action": "page.nav_to",
+          "params": {"page": "system"},
+          "expect": {"url_contains": "/system.html"}
+        },
+        {
+          "action": "page.nav_to",
+          "params": {"page": "upgrade"},
+          "expect": {"url_contains": "/upgrade.html"}
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home Gateway - Firmware Upgrade</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">FiberHome <span>Home Gateway</span></div>
+  <div class="user-area">
+    <span id="login_user">admin</span>
+    <a href="#" id="logout_link" onclick="doLogout()">Logout</a>
+  </div>
+</div>
+<div class="layout">
+  <div class="menu">
+    <div class="menu-title">Status</div>
+    <a class="menu-item" id="menu_status" href="/status.html">Device Info</a>
+    <div class="menu-title">Network</div>
+    <a class="menu-item" id="menu_wifi" href="/wifi.html">Wi-Fi</a>
+    <a class="menu-item" id="menu_wan" href="/wan.html">WAN</a>
+    <a class="menu-item" id="menu_lan" href="/lan.html">LAN</a>
+    <div class="menu-title">Maintenance</div>
+    <a class="menu-item" id="menu_system" href="/system.html">System</a>
+    <a class="menu-item active" id="menu_upgrade" href="/upgrade.html">Firmware Upgrade</a>
+  </div>
+  <div class="content">
+    <div class="card">
+      <h2>Firmware Upgrade</h2>
+      <table class="info">
+        <tr><th>Current Version</th><td id="cur_version">-</td></tr>
+        <tr><th>Latest Version</th><td id="new_version">-</td></tr>
+        <tr><th>Upgrade Available</th><td id="upgrade_available">-</td></tr>
+        <tr><th>Package Size</th><td id="pkg_size">-</td></tr>
+        <tr><th>Description</th><td id="upgrade_desc">-</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h2>Upgrade Now</h2>
+      <div class="form-row">
+        <label for="firmware_url">Firmware URL</label>
+        <input type="text" id="firmware_url" placeholder="http://fw.example.com/intl_baseline_v1.0.1.bin" />
+      </div>
+      <div class="form-row">
+        <label></label>
+        <button class="btn btn-primary" id="upgrade_btn" onclick="doUpgrade()">Upgrade</button>
+        <button class="btn btn-default" id="refresh_upgrade" onclick="loadUpgrade()" style="margin-left:10px;">Refresh</button>
+      </div>
+      <div class="toast" id="upgrade_msg"></div>
+    </div>
+  </div>
+</div>
+<script>
+function doLogout() {
+  fetch("/api/logout", { method: "POST" }).then(function () {
+    window.location.href = "/login.html";
+  });
+}
+function loadUpgrade() {
+  fetch("/api/upgrade").then(function (r) { return r.json(); }).then(function (u) {
+    document.getElementById("cur_version").textContent = u.current_version;
+    document.getElementById("new_version").textContent = u.latest_version;
+    document.getElementById("upgrade_available").textContent = u.available ? "Yes" : "No";
+    document.getElementById("pkg_size").textContent = u.size_mb + " MB";
+    document.getElementById("upgrade_desc").textContent = u.description;
+  });
+}
+function doUpgrade() {
+  var url = document.getElementById("firmware_url").value.trim();
+  fetch("/api/upgrade", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url: url })
+  }).then(function (resp) {
+    return resp.json().then(function (data) {
+      var el = document.getElementById("upgrade_msg");
+      if (resp.ok) {
+        el.className = "toast success";
+        el.style.display = "block";
+        el.textContent = "Upgrade started to version " + data.to_version + ". The gateway will reboot.";
+      } else {
+        el.className = "toast error";
+        el.style.display = "block";
+        el.textContent = data.error || "Upgrade failed";
+      }
+    });
+  }).catch(function () {
+    var el = document.getElementById("upgrade_msg");
+    el.className = "toast error";
+    el.style.display = "block";
+    el.textContent = "Network error";
+  });
+}
+loadUpgrade();
+</script>
+</body>
+</html>

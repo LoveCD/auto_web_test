@@ -1,0 +1,38 @@
+{
+  "profile": "intl_baseline",
+  "product": "International Gateway Baseline (FiberHome FG-8040H)",
+  "base_url": "http://127.0.0.1:8090",
+  "auth": {
+    "username": "admin",
+    "password": "admin123"
+  },
+  "routes": {
+    "login": "/login.html",
+    "status": "/status.html",
+    "wifi": "/wifi.html",
+    "wan": "/wan.html",
+    "lan": "/lan.html",
+    "system": "/system.html",
+    "upgrade": "/upgrade.html"
+  },
+  "browser": {
+    "browser_type": "chromium",
+    "headless": true,
+    "viewport": {"width": 1440, "height": 900},
+    "locale": "en-US",
+    "timezone": "UTC"
+  },
+  "timeouts": {
+    "page_load_seconds": 15,
+    "element_wait_seconds": 10,
+    "reboot_wait_seconds": 2
+  },
+  "expected": {
+    "software_version": "INTL_BASELINE_1.0.0",
+    "wan_status": "connected",
+    "wan_type": "dhcp",
+    "default_ssid": "INTL_GW_24G",
+    "security_mode": "WPA2-PSK",
+    "lan_ip": "192.168.1.1"
+  }
+}

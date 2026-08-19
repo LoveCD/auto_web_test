@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home Gateway - Login</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="login-body">
+  <div class="login-card">
+    <div class="login-logo">FH</div>
+    <h1 id="login_fiber_title">FiberHome Home Gateway</h1>
+    <div class="sub">International Baseline Firmware</div>
+    <div class="lang">
+      <a id="en_option" onclick="setLang('en')">English</a> |
+      <a id="pt_option" onclick="setLang('pt')">Português</a>
+    </div>
+    <div class="login-field">
+      <label for="user_name" id="label_username">Username</label>
+      <input type="text" id="user_name" autocomplete="username" />
+    </div>
+    <div class="login-field">
+      <label for="loginpp" id="label_password">Password</label>
+      <input type="password" id="loginpp" autocomplete="current-password" />
+    </div>
+    <div class="login-error" id="login_error_hint"></div>
+    <button class="login-btn" id="login_btn" onclick="doLogin()">Sign In</button>
+    <button class="login-cancel" id="login_cancel" onclick="cancelLogin()">Cancel</button>
+  </div>
+</div>
+<script>
+var TEXTS = {
+  en: { title: "FiberHome Home Gateway", sub: "International Baseline Firmware", user: "Username", pwd: "Password", btn: "Sign In" },
+  pt: { title: "Gateway Doméstico FiberHome", sub: "Firmware Baseline Internacional", user: "Nome de usuário", pwd: "Senha", btn: "Entrar" }
+};
+function setLang(lang) {
+  var t = TEXTS[lang] || TEXTS.en;
+  document.getElementById("login_fiber_title").textContent = t.title;
+  document.querySelector(".sub").textContent = t.sub;
+  document.getElementById("label_username").textContent = t.user;
+  document.getElementById("label_password").textContent = t.pwd;
+  document.getElementById("login_btn").textContent = t.btn;
+}
+function cancelLogin() {
+  document.getElementById("user_name").value = "";
+  document.getElementById("loginpp").value = "";
+  document.getElementById("login_error_hint").textContent = "";
+}
+function doLogin() {
+  var user = document.getElementById("user_name").value.trim();
+  var pwd = document.getElementById("loginpp").value;
+  var hint = document.getElementById("login_error_hint");
+  fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: user, password: pwd })
+  }).then(function (resp) {
+    if (resp.ok) { window.location.href = "/status.html"; return; }
+    return resp.json().then(function (data) {
+      hint.textContent = data.error === "invalid credentials"
+        ? "Invalid username or password." : "Login failed, please retry.";
+    });
+  }).catch(function () { hint.textContent = "Network error, please retry."; });
+}
+document.getElementById("loginpp").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") doLogin();
+});
+</script>
+</body>
+</html>

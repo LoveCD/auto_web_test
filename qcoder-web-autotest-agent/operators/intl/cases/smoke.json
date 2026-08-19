@@ -1,0 +1,139 @@
+{
+  "suite_id": "SMOKE-INTL-WEB",
+  "title": "International gateway baseline Web UI smoke suite",
+  "cases": [
+    {
+      "id": "TC-WEB-LOGIN-001",
+      "title": "Admin login succeeds with valid credentials",
+      "module": "Login",
+      "priority": "P0",
+      "tags": ["smoke", "auth"],
+      "steps": [
+        {
+          "action": "page.login",
+          "expect": {
+            "url_contains": "/status.html",
+            "title_contains": "Device Status"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-STATUS-001",
+      "title": "Status page shows baseline version and online WAN",
+      "module": "Status",
+      "priority": "P0",
+      "tags": ["smoke", "status"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_status"},
+        {
+          "action": "page.wait_status_data",
+          "expect": {
+            "text": {"sw_version": "INTL_BASELINE_1.0.0", "wan_status": "connected"},
+            "non_empty": ["wan_ip", "uptime"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-WIFI-001",
+      "title": "Wi-Fi SSID can be updated and persisted",
+      "module": "WiFi",
+      "priority": "P0",
+      "tags": ["smoke", "wifi", "config"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wifi"},
+        {
+          "action": "page.set_wifi",
+          "params": {"ssid": "AutoTest_24G", "password": "Test123456"},
+          "expect": {
+            "toast_success": true,
+            "text_contains": {"wifi_msg": "applied successfully"}
+          }
+        },
+        {
+          "action": "page.goto_wifi",
+          "expect": {
+            "input_value": {"ssid": "AutoTest_24G"},
+            "checked": {"wifi_enabled": true}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-WAN-001",
+      "title": "WAN status shows DHCP connected with IP",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": ["smoke", "wan", "status"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_wan"},
+        {
+          "action": "page.wait_wan_data",
+          "expect": {
+            "text": {"wan_status": "connected", "wan_type": "dhcp"},
+            "non_empty": ["wan_ip", "wan_gateway", "wan_dns"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-LAN-001",
+      "title": "LAN page shows baseline IP configuration",
+      "module": "LAN",
+      "priority": "P0",
+      "tags": ["smoke", "lan", "status"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_lan"},
+        {
+          "action": "page.wait_lan_data",
+          "expect": {
+            "input_value": {"lan_ip": "192.168.1.1", "lan_mask": "255.255.255.0"},
+            "checked": {"dhcp_enabled": true}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-SYSTEM-001",
+      "title": "System page shows device info and reboot action",
+      "module": "System",
+      "priority": "P0",
+      "tags": ["smoke", "system"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_system"},
+        {
+          "action": "page.wait_system_data",
+          "expect": {
+            "text": {"sys_sw_version": "INTL_BASELINE_1.0.0"},
+            "non_empty": ["sys_model", "sys_serial", "sys_temperature"],
+            "visible": ["reboot_btn"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "TC-WEB-UPGRADE-001",
+      "title": "Upgrade page shows current and latest firmware",
+      "module": "Upgrade",
+      "priority": "P0",
+      "tags": ["smoke", "upgrade"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto_upgrade"},
+        {
+          "action": "page.wait_upgrade_data",
+          "expect": {
+            "text": {"cur_version": "INTL_BASELINE_1.0.0", "new_version": "INTL_BASELINE_1.0.1"},
+            "visible": ["upgrade_btn"]
+          }
+        }
+      ]
+    }
+  ]
+}

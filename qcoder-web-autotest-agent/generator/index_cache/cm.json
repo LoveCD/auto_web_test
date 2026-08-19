@@ -1,0 +1,8780 @@
+{
+ "stats": {
+  "operator": "cm",
+  "pages_scanned": 139,
+  "pages_indexed": 89,
+  "elements_total": 690,
+  "routes_mapped": 83
+ },
+ "pages": [
+  {
+   "component": "OptimizeRX",
+   "file": "OptimizeRX.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/OptimizeRX",
+   "elements": [
+    {
+     "id": "OptimizeRX",
+     "selector": "#fhId_OptimizeRX",
+     "label": "光功率补偿值",
+     "type": "input",
+     "prop": "OptimizeRX",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": null,
+      "max": 10
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "alg",
+   "file": "alg.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/nat/alg",
+   "elements": [
+    {
+     "id": "H323Enable",
+     "selector": "#fhId_H323Enable",
+     "label": "启用H.323",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "RTSPEnable",
+     "selector": "#fhId_RTSPEnable",
+     "label": "启用RTSP",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "L2TPEnable",
+     "selector": "#fhId_L2TPEnable",
+     "label": "启用L2TP",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "IPSECEnable",
+     "selector": "#fhId_IPSECEnable",
+     "label": "启用IPSEC",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SIPEnable",
+     "selector": "#fhId_SIPEnable",
+     "label": "启用SIP",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "FTPEnable",
+     "selector": "#fhId_FTPEnable",
+     "label": "启用FTP",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "PPTPEnable",
+     "selector": "#fhId_PPTPEnable",
+     "label": "启用PPTP",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "changeuplinktype",
+   "file": "changeuplinktype.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/changeuplinktype",
+   "elements": [
+    {
+     "id": "uplinkType",
+     "selector": "#fhId_uplinkType",
+     "label": "上联PON模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "自适应",
+       "value": "0"
+      },
+      {
+       "label": "XG-PON",
+       "value": "1"
+      },
+      {
+       "label": "GPON",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "conenat",
+   "file": "conenat.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/nat/conenat",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "开启锥形NAT",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Name",
+     "selector": "#fhId_Name",
+     "label": "名称",
+     "type": "input",
+     "prop": "Name",
+     "options": []
+    },
+    {
+     "id": "SourcePortStart",
+     "selector": "#fhId_SourcePortStart",
+     "label": "源端口号(最小值)",
+     "type": "input",
+     "prop": "SourcePortStart",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 65535
+     }
+    },
+    {
+     "id": "SourcePortEnd",
+     "selector": "#fhId_SourcePortEnd",
+     "label": "源端口号(最大值)",
+     "type": "input",
+     "prop": "SourcePortEnd",
+     "options": []
+    },
+    {
+     "id": "DestPortStart",
+     "selector": "#fhId_DestPortStart",
+     "label": "目的端口号(最小值)",
+     "type": "input",
+     "prop": "DestPortStart",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 65535
+     }
+    },
+    {
+     "id": "DestPortEnd",
+     "selector": "#fhId_DestPortEnd",
+     "label": "目的端口号(最大值)",
+     "type": "input",
+     "prop": "DestPortEnd",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "showSetData",
+     "selector": "#fhId_showSetData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "新增"
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    },
+    {
+     "id": "Cancle",
+     "selector": "#fhId_Cancle",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "取消"
+    }
+   ]
+  },
+  {
+   "component": "configManage",
+   "file": "configManage.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/configManage",
+   "elements": [
+    {
+     "id": "configManageBackup",
+     "selector": "#fhId_configManageBackup",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "配置导出"
+    }
+   ]
+  },
+  {
+   "component": "ddns",
+   "file": "ddns.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/ddns/ddns",
+   "elements": [
+    {
+     "id": "wanSelect",
+     "selector": "#fhId_wanSelect",
+     "label": "网络连接",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.index"
+      }
+     ]
+    },
+    {
+     "id": "DDNSCfgEnabled",
+     "selector": "#fhId_DDNSCfgEnabled",
+     "label": "启用DDNS功能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "DDNSProvider",
+     "selector": "#fhId_DDNSProvider",
+     "label": "服务器",
+     "type": "input",
+     "prop": "DDNSProvider",
+     "options": []
+    },
+    {
+     "id": "ServicePort",
+     "selector": "#fhId_ServicePort",
+     "label": "端口号",
+     "type": "input",
+     "prop": "ServicePort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 65535
+     }
+    },
+    {
+     "id": "DDNSUsername",
+     "selector": "#fhId_DDNSUsername",
+     "label": "用户名",
+     "type": "input",
+     "prop": "DDNSUsername",
+     "options": []
+    },
+    {
+     "id": "DDNSPassword",
+     "selector": "#fhId_DDNSPassword",
+     "label": "密码",
+     "type": "input",
+     "prop": "DDNSPassword",
+     "options": []
+    },
+    {
+     "id": "DDNSDomainName",
+     "selector": "#fhId_DDNSDomainName",
+     "label": "域",
+     "type": "input",
+     "prop": "DDNSDomainName",
+     "options": []
+    },
+    {
+     "id": "DDNSHostName",
+     "selector": "#fhId_DDNSHostName",
+     "label": "主机",
+     "type": "input",
+     "prop": "DDNSHostName",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "deviceLanSwitch",
+   "file": "deviceLanSwitch.js",
+   "title": null,
+   "hint": null,
+   "route": null,
+   "elements": [
+    {
+     "id": "Lan2PortSwitch",
+     "selector": "#fhId_Lan2PortSwitch",
+     "label": "LAN2工作模式",
+     "type": "radio",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Lan3PortSwitch",
+     "selector": "#fhId_Lan3PortSwitch",
+     "label": "LAN3工作模式",
+     "type": "radio",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "dmz",
+   "file": "dmz.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/nat/dmz",
+   "elements": [
+    {
+     "id": "DMZHostIP",
+     "selector": "#fhId_DMZHostIP",
+     "label": "DMZ主机地址",
+     "type": "input",
+     "prop": "DMZHostIP",
+     "options": []
+    },
+    {
+     "id": "Wan",
+     "selector": "#fhId_Wan",
+     "label": "网络连接",
+     "type": "select",
+     "prop": "Wan",
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "DMZEnable",
+     "selector": "#fhId_DMZEnable",
+     "label": "开关",
+     "type": "switch",
+     "prop": "DMZEnable",
+     "options": []
+    },
+    {
+     "id": "DMZIP",
+     "selector": "#fhId_DMZIP",
+     "label": "IP地址",
+     "type": "input",
+     "prop": "DMZIP",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "ethFilter",
+   "file": "ethFilter.js",
+   "title": null,
+   "hint": null,
+   "route": "/security/portFilter/ethFilter",
+   "elements": [
+    {
+     "id": "EtherTypeFilter1",
+     "selector": "#fhId_EtherTypeFilter1",
+     "label": "协议类型：",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IPv4oE",
+       "value": "IPv4oE"
+      },
+      {
+       "label": "PPPoE",
+       "value": "PPPoE"
+      },
+      {
+       "label": "ARP",
+       "value": "ARP"
+      },
+      {
+       "label": "IPv6oE",
+       "value": "IPv6oE"
+      },
+      {
+       "label": "",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "id": "SourceMAC1",
+     "selector": "#fhId_SourceMAC1",
+     "label": "源MAC地址：",
+     "type": "input",
+     "prop": "SourceMAC1",
+     "options": []
+    },
+    {
+     "id": "DestinationMAC1",
+     "selector": "#fhId_DestinationMAC1",
+     "label": "目的MAC地址：",
+     "type": "input",
+     "prop": "DestinationMAC1",
+     "options": []
+    },
+    {
+     "id": "onApply1",
+     "selector": "#fhId_onApply1",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "EtherTypeFilter2",
+     "selector": "#fhId_EtherTypeFilter2",
+     "label": "协议类型：",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IPv4oE",
+       "value": "IPv4oE"
+      },
+      {
+       "label": "PPPoE",
+       "value": "PPPoE"
+      },
+      {
+       "label": "ARP",
+       "value": "ARP"
+      },
+      {
+       "label": "IPv6oE",
+       "value": "IPv6oE"
+      },
+      {
+       "label": "",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "id": "SourceMAC2",
+     "selector": "#fhId_SourceMAC2",
+     "label": "源MAC地址：",
+     "type": "input",
+     "prop": "SourceMAC2",
+     "options": []
+    },
+    {
+     "id": "DestinationMAC2",
+     "selector": "#fhId_DestinationMAC2",
+     "label": "目的MAC地址：",
+     "type": "input",
+     "prop": "DestinationMAC2",
+     "options": []
+    },
+    {
+     "id": "onApply2",
+     "selector": "#fhId_onApply2",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "EtherTypeFilter3",
+     "selector": "#fhId_EtherTypeFilter3",
+     "label": "协议类型：",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IPv4oE",
+       "value": "IPv4oE"
+      },
+      {
+       "label": "PPPoE",
+       "value": "PPPoE"
+      },
+      {
+       "label": "ARP",
+       "value": "ARP"
+      },
+      {
+       "label": "IPv6oE",
+       "value": "IPv6oE"
+      },
+      {
+       "label": "",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "id": "SourceMAC3",
+     "selector": "#fhId_SourceMAC3",
+     "label": "源MAC地址：",
+     "type": "input",
+     "prop": "SourceMAC3",
+     "options": []
+    },
+    {
+     "id": "DestinationMAC3",
+     "selector": "#fhId_DestinationMAC3",
+     "label": "目的MAC地址：",
+     "type": "input",
+     "prop": "DestinationMAC3",
+     "options": []
+    },
+    {
+     "id": "onApply3",
+     "selector": "#fhId_onApply3",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "EtherTypeFilter4",
+     "selector": "#fhId_EtherTypeFilter4",
+     "label": "协议类型：",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IPv4oE",
+       "value": "IPv4oE"
+      },
+      {
+       "label": "PPPoE",
+       "value": "PPPoE"
+      },
+      {
+       "label": "ARP",
+       "value": "ARP"
+      },
+      {
+       "label": "IPv6oE",
+       "value": "IPv6oE"
+      },
+      {
+       "label": "",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "id": "SourceMAC4",
+     "selector": "#fhId_SourceMAC4",
+     "label": "源MAC地址：",
+     "type": "input",
+     "prop": "SourceMAC4",
+     "options": []
+    },
+    {
+     "id": "DestinationMAC4",
+     "selector": "#fhId_DestinationMAC4",
+     "label": "目的MAC地址：",
+     "type": "input",
+     "prop": "DestinationMAC4",
+     "options": []
+    },
+    {
+     "id": "onApply4",
+     "selector": "#fhId_onApply4",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "firewall",
+   "file": "firewall.js",
+   "title": null,
+   "hint": null,
+   "route": "/security/firewall/firewall",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用防火墙",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Level",
+     "selector": "#fhId_Level",
+     "label": "防火墙等级",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "高",
+       "value": "2"
+      },
+      {
+       "label": "中",
+       "value": "1"
+      },
+      {
+       "label": "低",
+       "value": "0"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "firewallSettings",
+   "file": "firewallSettings.js",
+   "title": null,
+   "hint": null,
+   "route": "/security/firewall/firewallSettings",
+   "elements": [
+    {
+     "id": "DoSEnable",
+     "selector": "#fhId_DoSEnable",
+     "label": "启用DOS攻击保护",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "LandEnable",
+     "selector": "#fhId_LandEnable",
+     "label": "LAND 保护",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "PingOfDeathEnable",
+     "selector": "#fhId_PingOfDeathEnable",
+     "label": "Ping of Death 保护",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SynFloodEnable",
+     "selector": "#fhId_SynFloodEnable",
+     "label": "SYN Flooding 保护",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "IcmpRedirectEnable",
+     "selector": "#fhId_IcmpRedirectEnable",
+     "label": "ICMP Redirection 保护",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SmurfEnable",
+     "selector": "#fhId_SmurfEnable",
+     "label": "Smurf 保护",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "WinnukeEnable",
+     "selector": "#fhId_WinnukeEnable",
+     "label": "Winnuke 保护",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "IPv6SessionSecurityEnable",
+     "selector": "#fhId_IPv6SessionSecurityEnable",
+     "label": "IPv6防火墙开关",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "UdpFloodEnable",
+     "selector": "#fhId_UdpFloodEnable",
+     "label": "UDP Flooding",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "PortScanEnable",
+     "selector": "#fhId_PortScanEnable",
+     "label": "防止端口扫描",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "ftp",
+   "file": "ftp.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/homeStorage/ftp",
+   "elements": [
+    {
+     "id": "protocal",
+     "selector": "#fhId_protocal",
+     "label": "协议",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "FTP",
+       "value": "ftp"
+      }
+     ]
+    },
+    {
+     "id": "Server",
+     "selector": "#fhId_Server",
+     "label": "服务器地址(域名/IP地址)",
+     "type": "input",
+     "prop": "Server",
+     "options": []
+    },
+    {
+     "id": "Server_Port",
+     "selector": "#fhId_Server_Port",
+     "label": "端口号",
+     "type": "input",
+     "prop": "Server_Port",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 65535
+     }
+    },
+    {
+     "id": "Anonymouslogin",
+     "selector": "#fhId_Anonymouslogin",
+     "label": "匿名登录",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Username",
+     "selector": "#fhId_Username",
+     "label": "用户名",
+     "type": "input",
+     "prop": "Username",
+     "options": []
+    },
+    {
+     "id": "Password",
+     "selector": "#fhId_Password",
+     "label": "密码",
+     "type": "input",
+     "prop": "Password",
+     "options": []
+    },
+    {
+     "id": "Downloadpath",
+     "selector": "#fhId_Downloadpath",
+     "label": "文件下载路径",
+     "type": "input",
+     "prop": "Downloadpath",
+     "options": []
+    },
+    {
+     "id": "device",
+     "selector": "#fhId_device",
+     "label": "设备",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "filesave",
+     "selector": "#fhId_filesave",
+     "label": "文件保存路径",
+     "type": "input",
+     "prop": "filesave",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "开始下载"
+    },
+    {
+     "id": "onRefresh",
+     "selector": "#fhId_onRefresh",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "刷新下载状态"
+    },
+    {
+     "id": "onCancel",
+     "selector": "#fhId_onCancel",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "取消下载"
+    }
+   ]
+  },
+  {
+   "component": "generalService",
+   "file": "generalService.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/provincialManage/generalService",
+   "elements": [
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "identificationCode",
+   "file": "identificationCode.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/remoteManage/identificationCode",
+   "elements": [
+    {
+     "id": "UserName",
+     "selector": "#fhId_UserName",
+     "label": "逻辑ID",
+     "type": "input",
+     "prop": "UserName",
+     "options": []
+    },
+    {
+     "id": "UserId",
+     "selector": "#fhId_UserId",
+     "label": "逻辑密码",
+     "type": "input",
+     "prop": "UserId",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "ipFilterLan",
+   "file": "ipFilterLan.js",
+   "title": null,
+   "hint": null,
+   "route": "/security/portFilter/ipFilterLan",
+   "elements": [
+    {
+     "id": "IPFilterOutEnable",
+     "selector": "#fhId_IPFilterOutEnable",
+     "label": "启用IP地址过滤",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "IPFilterOutPolicy",
+     "selector": "#fhId_IPFilterOutPolicy",
+     "label": "过滤模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "黑名单",
+       "value": "0"
+      },
+      {
+       "label": "白名单",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "onApplyEnable",
+     "selector": "#fhId_onApplyEnable",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Name",
+     "selector": "#fhId_Name",
+     "label": "过滤器名:",
+     "type": "input",
+     "prop": "Name",
+     "options": []
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用:",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Protocol",
+     "selector": "#fhId_Protocol",
+     "label": "协议:",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "TCP/UDP",
+       "value": "TCP/UDP"
+      },
+      {
+       "label": "TCP",
+       "value": "TCP"
+      },
+      {
+       "label": "UDP",
+       "value": "UDP"
+      },
+      {
+       "label": "ICMP",
+       "value": "ICMP"
+      },
+      {
+       "label": "ALL",
+       "value": "ALL"
+      }
+     ]
+    },
+    {
+     "id": "SourceIPStart",
+     "selector": "#fhId_SourceIPStart",
+     "label": "源IP地址(最小值):",
+     "type": "input",
+     "prop": "SourceIPStart",
+     "options": []
+    },
+    {
+     "id": "SourceIPEnd",
+     "selector": "#fhId_SourceIPEnd",
+     "label": "源IP地址(最大值):",
+     "type": "input",
+     "prop": "SourceIPEnd",
+     "options": []
+    },
+    {
+     "id": "SourcePortStart",
+     "selector": "#fhId_SourcePortStart",
+     "label": "源端口(最小值):",
+     "type": "input",
+     "prop": "SourcePortStart",
+     "options": []
+    },
+    {
+     "id": "SourcePortEnd",
+     "selector": "#fhId_SourcePortEnd",
+     "label": "源端口(最大值):",
+     "type": "input",
+     "prop": "SourcePortEnd",
+     "options": []
+    },
+    {
+     "id": "DestIPStart",
+     "selector": "#fhId_DestIPStart",
+     "label": "目的IP地址（最小值):",
+     "type": "input",
+     "prop": "DestIPStart",
+     "options": []
+    },
+    {
+     "id": "DestIPEnd",
+     "selector": "#fhId_DestIPEnd",
+     "label": "目的IP地址（最大值):",
+     "type": "input",
+     "prop": "DestIPEnd",
+     "options": []
+    },
+    {
+     "id": "DestPortStart",
+     "selector": "#fhId_DestPortStart",
+     "label": "目的端口（最小值):",
+     "type": "input",
+     "prop": "DestPortStart",
+     "options": []
+    },
+    {
+     "id": "DestPortEnd",
+     "selector": "#fhId_DestPortEnd",
+     "label": "目的端口（最大值):",
+     "type": "input",
+     "prop": "DestPortEnd",
+     "options": []
+    },
+    {
+     "id": "addIPFilter",
+     "selector": "#fhId_addIPFilter",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "ipFilterWan",
+   "file": "ipFilterWan.js",
+   "title": null,
+   "hint": null,
+   "route": "/security/portFilter/ipFilterWan",
+   "elements": [
+    {
+     "id": "IPFilterInEnable",
+     "selector": "#fhId_IPFilterInEnable",
+     "label": "启用IP地址过滤",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "IPFilterInPolicy",
+     "selector": "#fhId_IPFilterInPolicy",
+     "label": "过滤模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "黑名单",
+       "value": "0"
+      },
+      {
+       "label": "白名单",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "onApplyEnable",
+     "selector": "#fhId_onApplyEnable",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Name",
+     "selector": "#fhId_Name",
+     "label": "过滤器名:",
+     "type": "input",
+     "prop": "Name",
+     "options": []
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用:",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Protocol",
+     "selector": "#fhId_Protocol",
+     "label": "协议:",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "TCP/UDP",
+       "value": "TCP/UDP"
+      },
+      {
+       "label": "TCP",
+       "value": "TCP"
+      },
+      {
+       "label": "UDP",
+       "value": "UDP"
+      },
+      {
+       "label": "ICMP",
+       "value": "ICMP"
+      },
+      {
+       "label": "ALL",
+       "value": "ALL"
+      }
+     ]
+    },
+    {
+     "id": "SourceIPStart",
+     "selector": "#fhId_SourceIPStart",
+     "label": "源IP地址(最小值):",
+     "type": "input",
+     "prop": "SourceIPStart",
+     "options": []
+    },
+    {
+     "id": "SourceIPEnd",
+     "selector": "#fhId_SourceIPEnd",
+     "label": "源IP地址(最大值):",
+     "type": "input",
+     "prop": "SourceIPEnd",
+     "options": []
+    },
+    {
+     "id": "SourcePortStart",
+     "selector": "#fhId_SourcePortStart",
+     "label": "源端口(最小值):",
+     "type": "input",
+     "prop": "SourcePortStart",
+     "options": []
+    },
+    {
+     "id": "SourcePortEnd",
+     "selector": "#fhId_SourcePortEnd",
+     "label": "源端口(最大值):",
+     "type": "input",
+     "prop": "SourcePortEnd",
+     "options": []
+    },
+    {
+     "id": "DestIPStart",
+     "selector": "#fhId_DestIPStart",
+     "label": "目的IP地址（最小值):",
+     "type": "input",
+     "prop": "DestIPStart",
+     "options": []
+    },
+    {
+     "id": "DestIPEnd",
+     "selector": "#fhId_DestIPEnd",
+     "label": "目的IP地址（最大值):",
+     "type": "input",
+     "prop": "DestIPEnd",
+     "options": []
+    },
+    {
+     "id": "DestPortStart",
+     "selector": "#fhId_DestPortStart",
+     "label": "目的端口（最小值):",
+     "type": "input",
+     "prop": "DestPortStart",
+     "options": []
+    },
+    {
+     "id": "DestPortEnd",
+     "selector": "#fhId_DestPortEnd",
+     "label": "目的端口（最大值):",
+     "type": "input",
+     "prop": "DestPortEnd",
+     "options": []
+    },
+    {
+     "id": "addIPFilter",
+     "selector": "#fhId_addIPFilter",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "ipv4Settings",
+   "file": "ipv4Settings.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/lanSettings/ipv4Settings",
+   "elements": [
+    {
+     "id": "IPInterfaceIPAddress",
+     "selector": "#fhId_IPInterfaceIPAddress",
+     "label": "IP地址",
+     "type": "input",
+     "prop": "IPInterfaceIPAddress",
+     "options": []
+    },
+    {
+     "id": "IPInterfaceSubnetMask",
+     "selector": "#fhId_IPInterfaceSubnetMask",
+     "label": "子网掩码",
+     "type": "input",
+     "prop": "IPInterfaceSubnetMask",
+     "options": []
+    },
+    {
+     "id": "IPv4DNSConfigType",
+     "selector": "#fhId_IPv4DNSConfigType",
+     "label": "DnsconfigtypeSelectLabel",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WANConnectionLabel",
+       "value": "WANConnection"
+      },
+      {
+       "label": "StaticLabel",
+       "value": "Static"
+      },
+      {
+       "label": "HGWProxyLabel",
+       "value": "HGWProxy"
+      }
+     ]
+    },
+    {
+     "id": "PriDNSServers",
+     "selector": "#fhId_PriDNSServers",
+     "label": "首选DNS",
+     "type": "input",
+     "prop": "PriDNSServers",
+     "options": []
+    },
+    {
+     "id": "SecDNSServers",
+     "selector": "#fhId_SecDNSServers",
+     "label": "备选DNS",
+     "type": "input",
+     "prop": "SecDNSServers",
+     "options": []
+    },
+    {
+     "id": "DNSSourceWAN",
+     "selector": "#fhId_DNSSourceWAN",
+     "label": "接口",
+     "type": "select",
+     "prop": "DNSSourceWAN",
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.url"
+      }
+     ]
+    },
+    {
+     "id": "DHCPServerEnable",
+     "selector": "#fhId_DHCPServerEnable",
+     "label": "启用DHCP Server",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MinAddress",
+     "selector": "#fhId_MinAddress",
+     "label": "初始IP地址",
+     "type": "input",
+     "prop": "MinAddress",
+     "options": []
+    },
+    {
+     "id": "MaxAddress",
+     "selector": "#fhId_MaxAddress",
+     "label": "结束IP地址",
+     "type": "input",
+     "prop": "MaxAddress",
+     "options": []
+    },
+    {
+     "id": "SubnetMask",
+     "selector": "#fhId_SubnetMask",
+     "label": "子网掩码",
+     "type": "input",
+     "prop": "SubnetMask",
+     "options": []
+    },
+    {
+     "id": "DHCPLeaseTime",
+     "selector": "#fhId_DHCPLeaseTime",
+     "label": "延续时间",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "一分钟",
+       "value": "60"
+      },
+      {
+       "label": "一小时",
+       "value": "3600"
+      },
+      {
+       "label": "一天",
+       "value": "86400"
+      },
+      {
+       "label": "一周",
+       "value": "604800"
+      }
+     ]
+    },
+    {
+     "id": "Duration",
+     "selector": "#fhId_Duration",
+     "label": "延续时间",
+     "type": "select",
+     "prop": "Duration",
+     "options": [
+      {
+       "label": "秒",
+       "value": "1"
+      },
+      {
+       "label": "分钟",
+       "value": "60"
+      },
+      {
+       "label": "小时",
+       "value": "3600"
+      },
+      {
+       "label": "天",
+       "value": "86400"
+      },
+      {
+       "label": "周",
+       "value": "604800"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "ipv6Settings",
+   "file": "ipv6Settings.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/lanSettings/ipv6Settings",
+   "elements": [
+    {
+     "id": "IPv6DNSConfigType",
+     "selector": "#fhId_IPv6DNSConfigType",
+     "label": "DnsconfigtypeSelectLabel",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WANConnectionLabel",
+       "value": "WANConnection"
+      },
+      {
+       "label": "StaticLabel",
+       "value": "Static"
+      },
+      {
+       "label": "HGWProxyLabel",
+       "value": "HGWProxy"
+      }
+     ]
+    },
+    {
+     "id": "PriDNSServers",
+     "selector": "#fhId_PriDNSServers",
+     "label": "首选DNS",
+     "type": "input",
+     "prop": "PriDNSServers",
+     "options": []
+    },
+    {
+     "id": "SecDNSServers",
+     "selector": "#fhId_SecDNSServers",
+     "label": "备选DNS",
+     "type": "input",
+     "prop": "SecDNSServers",
+     "options": []
+    },
+    {
+     "id": "DNSSourceWAN",
+     "selector": "#fhId_DNSSourceWAN",
+     "label": "接口",
+     "type": "select",
+     "prop": "DNSSourceWAN",
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.url"
+      }
+     ]
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用DHCPv6服务",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MinAddress",
+     "selector": "#fhId_MinAddress",
+     "label": "起始地址",
+     "type": "input",
+     "prop": "MinAddress",
+     "options": []
+    },
+    {
+     "id": "MaxAddress",
+     "selector": "#fhId_MaxAddress",
+     "label": "结束地址",
+     "type": "input",
+     "prop": "MaxAddress",
+     "options": []
+    },
+    {
+     "id": "Mode",
+     "selector": "#fhId_Mode",
+     "label": "前缀来源",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WANDelegated",
+       "value": "WANDelegated"
+      },
+      {
+       "label": "静态",
+       "value": "Static"
+      }
+     ]
+    },
+    {
+     "id": "Prefix",
+     "selector": "#fhId_Prefix",
+     "label": "前缀",
+     "type": "input",
+     "prop": "Prefix",
+     "options": []
+    },
+    {
+     "id": "RouterAdvertisementEnable",
+     "selector": "#fhId_RouterAdvertisementEnable",
+     "label": "使能路由通告",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "AdvManagedFlag",
+     "selector": "#fhId_AdvManagedFlag",
+     "label": "地址信息通过DHCP获取",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "AdvOtherConfigFlag",
+     "selector": "#fhId_AdvOtherConfigFlag",
+     "label": "其他信息通过DHCP获取",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MaxRtrAdvInterval",
+     "selector": "#fhId_MaxRtrAdvInterval",
+     "label": "RA报文最大自动发送时间",
+     "type": "input",
+     "prop": "MaxRtrAdvInterval",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 4,
+      "max": 1800
+     }
+    },
+    {
+     "id": "MinRtrAdvInterval",
+     "selector": "#fhId_MinRtrAdvInterval",
+     "label": "RA报文最小自动发送时间",
+     "type": "input",
+     "prop": "MinRtrAdvInterval",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 4,
+      "max": 1800
+     }
+    },
+    {
+     "id": "RtrAdvEnable",
+     "selector": "#fhId_RtrAdvEnable",
+     "label": "启用单播RA开关",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "itmsServer",
+   "file": "itmsServer.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/remoteManage/itmsServer",
+   "elements": [
+    {
+     "id": "PeriodicInformEnable",
+     "selector": "#fhId_PeriodicInformEnable",
+     "label": "启用周期上报",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "PeriodicInformInterval",
+     "selector": "#fhId_PeriodicInformInterval",
+     "label": "通知间隔时间",
+     "type": "input",
+     "prop": "PeriodicInformInterval",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 2147481
+     }
+    },
+    {
+     "id": "URLType",
+     "selector": "#fhId_URLType",
+     "label": "RMS认证类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "家宽",
+       "value": "0"
+      },
+      {
+       "label": "集客(含TR069)",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "URL",
+     "selector": "#fhId_URL",
+     "label": "RMS认证地址",
+     "type": "input",
+     "prop": "URL",
+     "options": []
+    },
+    {
+     "id": "Username",
+     "selector": "#fhId_Username",
+     "label": "RMS认证用户名",
+     "type": "input",
+     "prop": "Username",
+     "options": []
+    },
+    {
+     "id": "Password",
+     "selector": "#fhId_Password",
+     "label": "RMS认证密码",
+     "type": "input",
+     "prop": "Password",
+     "options": []
+    },
+    {
+     "id": "ConnectionRequestUsername",
+     "selector": "#fhId_ConnectionRequestUsername",
+     "label": "反向认证用户名",
+     "type": "input",
+     "prop": "ConnectionRequestUsername",
+     "options": []
+    },
+    {
+     "id": "ConnectionRequestPassword",
+     "selector": "#fhId_ConnectionRequestPassword",
+     "label": "反向认证密码",
+     "type": "input",
+     "prop": "ConnectionRequestPassword",
+     "options": []
+    },
+    {
+     "id": "Tr069Enable",
+     "selector": "#fhId_Tr069Enable",
+     "label": "中间件状态",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "不启用中间件",
+       "value": "1"
+      },
+      {
+       "label": "启用中间件(含TR069)",
+       "value": "0"
+      },
+      {
+       "label": "启用中间件(不含TR069)",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "MiddlewareURL",
+     "selector": "#fhId_MiddlewareURL",
+     "label": "中间件服务器地址",
+     "type": "input",
+     "prop": "MiddlewareURL",
+     "options": []
+    },
+    {
+     "id": "MiddlewarePort",
+     "selector": "#fhId_MiddlewarePort",
+     "label": "中间件服务器端口",
+     "type": "input",
+     "prop": "MiddlewarePort",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "lanSpeedLimit",
+   "file": "lanSpeedLimit.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/qos/lanSpeedLimit",
+   "elements": [
+    {
+     "id": "SpeedLimitMode_UP_select",
+     "selector": "#fhId_SpeedLimitMode_UP_select",
+     "label": "限速模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "",
+       "value": "-1"
+      },
+      {
+       "label": "关闭",
+       "value": "0"
+      },
+      {
+       "label": "接口限速",
+       "value": "1"
+      },
+      {
+       "label": "VLAN限速",
+       "value": "2"
+      },
+      {
+       "label": "IP地址段限速",
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "id": "onApplyUP",
+     "selector": "#fhId_onApplyUP",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SpeedLimitMode_DOWN_select",
+     "selector": "#fhId_SpeedLimitMode_DOWN_select",
+     "label": "限速模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "",
+       "value": "-1"
+      },
+      {
+       "label": "关闭",
+       "value": "0"
+      },
+      {
+       "label": "接口限速",
+       "value": "1"
+      },
+      {
+       "label": "VLAN限速",
+       "value": "2"
+      },
+      {
+       "label": "IP地址段限速",
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "id": "onApplyDOWN",
+     "selector": "#fhId_onApplyDOWN",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "lan_ispdns",
+   "file": "lan_ispdns.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/routeSetting/lan_ispdns",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "开启DNS透传",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "lanmulserv",
+   "file": "lanmulserv.js",
+   "title": "LAN口多业务",
+   "hint": "注意：",
+   "route": "/application/lanmulserv/lanmulserv",
+   "elements": [
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "ledcontrol",
+   "file": "ledcontrol.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/ledcontrol",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "开启",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "logSetting",
+   "file": "logSetting.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/logManagement/logSetting",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "日志开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Level",
+     "selector": "#fhId_Level",
+     "label": "日志等级",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "Emergency",
+       "value": "0"
+      },
+      {
+       "label": "Alert",
+       "value": "1"
+      },
+      {
+       "label": "Critical",
+       "value": "2"
+      },
+      {
+       "label": "Error",
+       "value": "3"
+      },
+      {
+       "label": "Warning",
+       "value": "4"
+      },
+      {
+       "label": "Notice",
+       "value": "5"
+      },
+      {
+       "label": "Informational",
+       "value": "6"
+      },
+      {
+       "label": "Debugging",
+       "value": "7"
+      }
+     ]
+    },
+    {
+     "id": "logviewlevel",
+     "selector": "#fhId_logviewlevel",
+     "label": "显示等级",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "Emergency",
+       "value": "0"
+      },
+      {
+       "label": "Alert",
+       "value": "1"
+      },
+      {
+       "label": "Critical",
+       "value": "2"
+      },
+      {
+       "label": "Error",
+       "value": "3"
+      },
+      {
+       "label": "Warning",
+       "value": "4"
+      },
+      {
+       "label": "Notice",
+       "value": "5"
+      },
+      {
+       "label": "Informational",
+       "value": "6"
+      },
+      {
+       "label": "Debugging",
+       "value": "7"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "logView",
+   "file": "logView.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/logManagement/logView",
+   "elements": [
+    {
+     "id": "showLog",
+     "selector": "#fhId_showLog",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "查看日志"
+    },
+    {
+     "id": "clearLog",
+     "selector": "#fhId_clearLog",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "清除日志"
+    }
+   ]
+  },
+  {
+   "component": "macFilter",
+   "file": "macFilter.js",
+   "title": null,
+   "hint": null,
+   "route": "/security/macFilter/macFilter",
+   "elements": [
+    {
+     "id": "MACFEnable",
+     "selector": "#fhId_MACFEnable",
+     "label": "启用MAC过滤",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MACFMode",
+     "selector": "#fhId_MACFMode",
+     "label": "MAC过滤类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "黑名单",
+       "value": "black"
+      },
+      {
+       "label": "白名单",
+       "value": "white"
+      }
+     ]
+    },
+    {
+     "id": "onApplyEnable",
+     "selector": "#fhId_onApplyEnable",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MAC",
+     "selector": "#fhId_MAC",
+     "label": "macLable",
+     "type": "input",
+     "prop": "MAC",
+     "options": []
+    },
+    {
+     "id": "DestMAC",
+     "selector": "#fhId_DestMAC",
+     "label": "目的MAC地址",
+     "type": "input",
+     "prop": "DestMAC",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "mainInquiry",
+   "file": "mainInquiry.js",
+   "title": null,
+   "hint": null,
+   "route": "/status/maintainstatus/mainInquiry",
+   "elements": [
+    {
+     "id": "refresh",
+     "selector": "#fhId_refresh",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "刷新子网关信息"
+    }
+   ]
+  },
+  {
+   "component": "mainnetworksettings",
+   "file": "mainnetworksettings.js",
+   "title": null,
+   "hint": null,
+   "route": null,
+   "elements": [
+    {
+     "id": "selectWan",
+     "selector": "#fhId_selectWan",
+     "label": "主宽带",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.val"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "manualInform",
+   "file": "manualInform.js",
+   "title": null,
+   "hint": null,
+   "route": "/diagnosis/networkDiag/manualInform",
+   "elements": [
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "Inform手动上报"
+    }
+   ]
+  },
+  {
+   "component": "mediaShare",
+   "file": "mediaShare.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/homeStorage/mediaShare",
+   "elements": [
+    {
+     "id": "DMSEnable",
+     "selector": "#fhId_DMSEnable",
+     "label": "开启媒体共享服务",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "usbSel",
+     "selector": "#fhId_usbSel",
+     "label": "设备",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "UShareDir",
+     "selector": "#fhId_UShareDir",
+     "label": "文件保存路径",
+     "type": "input",
+     "prop": "UShareDir",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "multiapsettings",
+   "file": "multiapsettings.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/multiapsettings",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "Mesh使能开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "multicast",
+   "file": "multicast.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/igmp/multicast",
+   "elements": [
+    {
+     "id": "SnoopingEnable",
+     "selector": "#fhId_SnoopingEnable",
+     "label": "启用 IGMPSnooping",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "ProxyEnable",
+     "selector": "#fhId_ProxyEnable",
+     "label": "启用 IGMPProxy",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "IGMPVersion",
+     "selector": "#fhId_IGMPVersion",
+     "label": "IGMPVersion",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "2",
+       "value": "2"
+      },
+      {
+       "label": "3",
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "id": "MldSnoopingEnable",
+     "selector": "#fhId_MldSnoopingEnable",
+     "label": "启用 MLDSnooping",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MldProxyEnable",
+     "selector": "#fhId_MldProxyEnable",
+     "label": "启用 MLDProxy",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MLDVersion",
+     "selector": "#fhId_MLDVersion",
+     "label": "MLDVersion",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "1",
+       "value": "1"
+      },
+      {
+       "label": "2",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "selWan",
+     "selector": "#fhId_selWan",
+     "label": "网络连接",
+     "type": "select",
+     "prop": "selWan",
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.index"
+      }
+     ]
+    },
+    {
+     "id": "MulticastVlan",
+     "selector": "#fhId_MulticastVlan",
+     "label": "组播VLAN",
+     "type": "input",
+     "prop": "MulticastVlan",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": null,
+      "max": 4095
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "networkConn",
+   "file": "networkConn.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/broadband/networkConn",
+   "elements": [
+    {
+     "id": "selectWan",
+     "selector": "#fhId_selectWan",
+     "label": "连接名称",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "iporppp",
+     "selector": "#fhId_iporppp",
+     "label": "封装类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IPoE",
+       "value": "1"
+      },
+      {
+       "label": "PPPoE",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "connectMode",
+     "selector": "#fhId_connectMode",
+     "label": "连接模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "路由",
+       "value": "route"
+      },
+      {
+       "label": "桥接",
+       "value": "bridge"
+      }
+     ]
+    },
+    {
+     "id": "ServiceList",
+     "selector": "#fhId_ServiceList",
+     "label": "业务类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "上网",
+       "value": "INTERNET"
+      },
+      {
+       "label": "管理",
+       "value": "TR069"
+      },
+      {
+       "label": "语音",
+       "value": "VOIP"
+      },
+      {
+       "label": "上网+语音",
+       "value": "VOIP,INTERNET"
+      },
+      {
+       "label": "上网+管理",
+       "value": "TR069,INTERNET"
+      },
+      {
+       "label": "语音+管理",
+       "value": "TR069,VOIP"
+      },
+      {
+       "label": "上网+语音+管理",
+       "value": "TR069,VOIP,INTERNET"
+      },
+      {
+       "label": "其它",
+       "value": "OTHER"
+      },
+      {
+       "label": "IPTV",
+       "value": "IPTV"
+      },
+      {
+       "label": "OTT",
+       "value": "OTT"
+      },
+      {
+       "label": "上网",
+       "value": "INTERNET"
+      },
+      {
+       "label": "其它",
+       "value": "OTHER"
+      },
+      {
+       "label": "IPTV",
+       "value": "IPTV"
+      },
+      {
+       "label": "OTT",
+       "value": "OTT"
+      },
+      {
+       "label": "OTTX",
+       "value": "OTTX"
+      }
+     ]
+    },
+    {
+     "id": "IPMode",
+     "selector": "#fhId_IPMode",
+     "label": "IP模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IPv4",
+       "value": "1"
+      },
+      {
+       "label": "IPv6",
+       "value": "2"
+      },
+      {
+       "label": "IPv4&IPv6",
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "id": "DHCPEnable",
+     "selector": "#fhId_DHCPEnable",
+     "label": "DHCP Server",
+     "type": "checkbox",
+     "prop": "DHCPEnable",
+     "options": []
+    },
+    {
+     "id": "Username",
+     "selector": "#fhId_Username",
+     "label": "用户名",
+     "type": "input",
+     "prop": "Username",
+     "options": []
+    },
+    {
+     "id": "Password",
+     "selector": "#fhId_Password",
+     "label": "密码",
+     "type": "input",
+     "prop": "Password",
+     "options": []
+    },
+    {
+     "id": "ConnectionTrigger",
+     "selector": "#fhId_ConnectionTrigger",
+     "label": "拨号方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "自动拨号",
+       "value": "AlwaysOn"
+      },
+      {
+       "label": "按需拨号",
+       "value": "OnDemand"
+      },
+      {
+       "label": "手动拨号",
+       "value": "Manual"
+      }
+     ]
+    },
+    {
+     "id": "IdleDisconnectTime",
+     "selector": "#fhId_IdleDisconnectTime",
+     "label": "空闲时间",
+     "type": "input",
+     "prop": "IdleDisconnectTime",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 65535
+     }
+    },
+    {
+     "id": "AutoConnectionConn",
+     "selector": "#fhId_AutoConnectionConn",
+     "label": "启用手动拨号",
+     "type": "radio",
+     "prop": "AutoConnection",
+     "options": []
+    },
+    {
+     "id": "MTU",
+     "selector": "#fhId_MTU",
+     "label": "MTU",
+     "type": "input",
+     "prop": "MTU",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 2000
+     }
+    },
+    {
+     "id": "option60Enable",
+     "selector": "#fhId_option60Enable",
+     "label": "DHCPOPTION60 使能",
+     "type": "checkbox",
+     "prop": "option60Enable",
+     "options": []
+    },
+    {
+     "id": "option60Account",
+     "selector": "#fhId_option60Account",
+     "label": "账号",
+     "type": "input",
+     "prop": "option60Account",
+     "options": []
+    },
+    {
+     "id": "option60Password",
+     "selector": "#fhId_option60Password",
+     "label": "密码",
+     "type": "input",
+     "prop": "option60Password",
+     "options": []
+    },
+    {
+     "id": "option125Enable",
+     "selector": "#fhId_option125Enable",
+     "label": "DHCPOPTION125 使能",
+     "type": "checkbox",
+     "prop": "option125Enable",
+     "options": []
+    },
+    {
+     "id": "option125Value",
+     "selector": "#fhId_option125Value",
+     "label": "OPTION125",
+     "type": "input",
+     "prop": "option125Value",
+     "options": []
+    },
+    {
+     "id": "option16Enable",
+     "selector": "#fhId_option16Enable",
+     "label": "DHCPOPTION16 使能",
+     "type": "checkbox",
+     "prop": "option16Enable",
+     "options": []
+    },
+    {
+     "id": "option16Account",
+     "selector": "#fhId_option16Account",
+     "label": "账号",
+     "type": "input",
+     "prop": "option16Account",
+     "options": []
+    },
+    {
+     "id": "option16Password",
+     "selector": "#fhId_option16Password",
+     "label": "密码",
+     "type": "input",
+     "prop": "option16Password",
+     "options": []
+    },
+    {
+     "id": "MulticastVlan",
+     "selector": "#fhId_MulticastVlan",
+     "label": "组播VLAN",
+     "type": "input",
+     "prop": "MulticastVlan",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": null,
+      "max": 4095
+     }
+    },
+    {
+     "id": "NATEnabled",
+     "selector": "#fhId_NATEnabled",
+     "label": "使能NAT",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "NPTv6Enable",
+     "selector": "#fhId_NPTv6Enable",
+     "label": "NPTv6",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "VLANMode",
+     "selector": "#fhId_VLANMode",
+     "label": "启用VLAN",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "VLANIDMark",
+     "selector": "#fhId_VLANIDMark",
+     "label": "VLAN ID",
+     "type": "input",
+     "prop": "VLANIDMark",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 4095
+     }
+    },
+    {
+     "id": "MainBroadbandVlanStatus",
+     "selector": "#fhId_MainBroadbandVlanStatus",
+     "label": "主宽带",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "否",
+       "value": "0"
+      },
+      {
+       "label": "是",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "使能WAN",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "p8021Mark",
+     "selector": "#fhId_p8021Mark",
+     "label": "802.1P",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "0",
+       "value": "0"
+      },
+      {
+       "label": "1",
+       "value": "1"
+      },
+      {
+       "label": "2",
+       "value": "2"
+      },
+      {
+       "label": "3",
+       "value": "3"
+      },
+      {
+       "label": "4",
+       "value": "4"
+      },
+      {
+       "label": "5",
+       "value": "5"
+      },
+      {
+       "label": "6",
+       "value": "6"
+      },
+      {
+       "label": "7",
+       "value": "7"
+      }
+     ]
+    },
+    {
+     "id": "AddressingType",
+     "selector": "#fhId_AddressingType",
+     "label": "地址获取方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "DHCP",
+       "value": "DHCP"
+      },
+      {
+       "label": "Static",
+       "value": "Static"
+      },
+      {
+       "label": "PPPoE",
+       "value": "PPPoE"
+      }
+     ]
+    },
+    {
+     "id": "ExternalIPAddress",
+     "selector": "#fhId_ExternalIPAddress",
+     "label": "IP地址",
+     "type": "input",
+     "prop": "ExternalIPAddress",
+     "options": []
+    },
+    {
+     "id": "SubnetMask",
+     "selector": "#fhId_SubnetMask",
+     "label": "网络掩码",
+     "type": "input",
+     "prop": "SubnetMask",
+     "options": []
+    },
+    {
+     "id": "DefaultGateway",
+     "selector": "#fhId_DefaultGateway",
+     "label": "默认网关",
+     "type": "input",
+     "prop": "DefaultGateway",
+     "options": []
+    },
+    {
+     "id": "Pri_DNS",
+     "selector": "#fhId_Pri_DNS",
+     "label": "首选DNS",
+     "type": "input",
+     "prop": "Pri_DNS",
+     "options": []
+    },
+    {
+     "id": "Sec_DNS",
+     "selector": "#fhId_Sec_DNS",
+     "label": "备选DNS",
+     "type": "input",
+     "prop": "Sec_DNS",
+     "options": []
+    },
+    {
+     "id": "IPv6PrefixDelegationEnabled",
+     "selector": "#fhId_IPv6PrefixDelegationEnabled",
+     "label": "获取前缀",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "IPv6PrefixOrigin",
+     "selector": "#fhId_IPv6PrefixOrigin",
+     "label": "获取前缀方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "PrefixDelegation",
+       "value": "PrefixDelegation"
+      },
+      {
+       "label": "Static",
+       "value": "Static"
+      },
+      {
+       "label": "PPPoE",
+       "value": "PPPoE"
+      },
+      {
+       "label": "None",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "IPv6Prefix",
+     "selector": "#fhId_IPv6Prefix",
+     "label": "IPv6地址前缀",
+     "type": "input",
+     "prop": "IPv6Prefix",
+     "options": []
+    },
+    {
+     "id": "IPv6IPAddressOrigin",
+     "selector": "#fhId_IPv6IPAddressOrigin",
+     "label": "获取地址方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AutoConfigured",
+       "value": "AutoConfigured"
+      },
+      {
+       "label": "DHCPv6",
+       "value": "DHCPv6"
+      },
+      {
+       "label": "Static",
+       "value": "Static"
+      },
+      {
+       "label": "None",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "IPv6IPAddress",
+     "selector": "#fhId_IPv6IPAddress",
+     "label": "IPv6地址",
+     "type": "input",
+     "prop": "IPv6IPAddress",
+     "options": []
+    },
+    {
+     "id": "DefaultIPv6Gateway",
+     "selector": "#fhId_DefaultIPv6Gateway",
+     "label": "默认IPv6网关",
+     "type": "input",
+     "prop": "DefaultIPv6Gateway",
+     "options": []
+    },
+    {
+     "id": "IPv6Pri_DNS",
+     "selector": "#fhId_IPv6Pri_DNS",
+     "label": "首选IPv6 DNS",
+     "type": "input",
+     "prop": "IPv6Pri_DNS",
+     "options": []
+    },
+    {
+     "id": "IPv6Sec_DNS",
+     "selector": "#fhId_IPv6Sec_DNS",
+     "label": "备选IPv6 DNS",
+     "type": "input",
+     "prop": "IPv6Sec_DNS",
+     "options": []
+    },
+    {
+     "id": "Dslite_Enable",
+     "selector": "#fhId_Dslite_Enable",
+     "label": "启用DS-Lite",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "AftrMode",
+     "selector": "#fhId_AftrMode",
+     "label": "AFTR手动配置",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Aftr",
+     "selector": "#fhId_Aftr",
+     "label": "AFTR",
+     "type": "input",
+     "prop": "Aftr",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delWAN",
+     "selector": "#fhId_delWAN",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "networkConnUser",
+   "file": "networkConnUser.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/broadband/networkConn",
+   "elements": [
+    {
+     "id": "selectWan",
+     "selector": "#fhId_selectWan",
+     "label": "连接名称",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "ConnectionTrigger",
+     "selector": "#fhId_ConnectionTrigger",
+     "label": "拨号方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "自动拨号",
+       "value": "AlwaysOn"
+      },
+      {
+       "label": "按需拨号",
+       "value": "OnDemand"
+      },
+      {
+       "label": "手动拨号",
+       "value": "Manual"
+      }
+     ]
+    },
+    {
+     "id": "IdleDisconnectTime",
+     "selector": "#fhId_IdleDisconnectTime",
+     "label": "空闲时间",
+     "type": "input",
+     "prop": "IdleDisconnectTime",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 65535
+     }
+    },
+    {
+     "id": "Username",
+     "selector": "#fhId_Username",
+     "label": "用户名",
+     "type": "input",
+     "prop": "Username",
+     "options": []
+    },
+    {
+     "id": "Password",
+     "selector": "#fhId_Password",
+     "label": "密码",
+     "type": "input",
+     "prop": "Password",
+     "options": []
+    },
+    {
+     "id": "AutoConnectionConn",
+     "selector": "#fhId_AutoConnectionConn",
+     "label": "启用手动拨号",
+     "type": "radio",
+     "prop": "AutoConnection",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "ntp",
+   "file": "ntp.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/timeManage/ntp",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "自动同步网络时间",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "NTPServerType",
+     "selector": "#fhId_NTPServerType",
+     "label": "时间同步通道",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "上网通道",
+       "value": "0"
+      },
+      {
+       "label": "语音通道",
+       "value": "1"
+      },
+      {
+       "label": "管理通道",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "NTPInterval",
+     "selector": "#fhId_NTPInterval",
+     "label": "时间同步间隔",
+     "type": "input",
+     "prop": "NTPInterval",
+     "options": []
+    },
+    {
+     "id": "NTPServer1",
+     "selector": "#fhId_NTPServer1",
+     "label": "第一NTP时间服务器",
+     "type": "select",
+     "prop": "NTPServer1_input",
+     "options": [
+      {
+       "label": "name",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "NTPServer2",
+     "selector": "#fhId_NTPServer2",
+     "label": "第二NTP时间服务器",
+     "type": "select",
+     "prop": "NTPServer2_input",
+     "options": [
+      {
+       "label": "name",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "NTPServer3",
+     "selector": "#fhId_NTPServer3",
+     "label": "第三NTP时间服务器",
+     "type": "select",
+     "prop": "NTPServer3_input",
+     "options": [
+      {
+       "label": "name",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "NTPServer4",
+     "selector": "#fhId_NTPServer4",
+     "label": "第四NTP时间服务器",
+     "type": "select",
+     "prop": "NTPServer4_input",
+     "options": [
+      {
+       "label": "name",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "NTPServer5",
+     "selector": "#fhId_NTPServer5",
+     "label": "第五NTP时间服务器",
+     "type": "select",
+     "prop": "NTPServer5_input",
+     "options": [
+      {
+       "label": "name",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "oltreboot",
+   "file": "oltreboot.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/userManagement/oltreboot",
+   "elements": [
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "omcilogview",
+   "file": "omcilogview.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/logManagement/omcilogview",
+   "elements": [
+    {
+     "id": "showLog",
+     "selector": "#fhId_showLog",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "查看OMCI日志"
+    },
+    {
+     "id": "downloadLog",
+     "selector": "#fhId_downloadLog",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "下载OMCI日志"
+    }
+   ]
+  },
+  {
+   "component": "optical_router_uplinktype",
+   "file": "optical_router_uplinktype.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/subuplinktype/optical_router_uplinktype",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用无线组网",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "OpticalRouterUpLinkType",
+     "selector": "#fhId_OpticalRouterUpLinkType",
+     "label": "组网类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "光纤组网/网线组网/无线组网",
+       "value": "0"
+      },
+      {
+       "label": "光纤组网/网线组网",
+       "value": "1"
+      },
+      {
+       "label": "光纤组网",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "parentControl",
+   "file": "parentControl.js",
+   "title": null,
+   "hint": null,
+   "route": "/security/parentControl/parentControl",
+   "elements": [
+    {
+     "id": "MACAddress",
+     "selector": "#fhId_MACAddress",
+     "label": "家庭网络用户",
+     "type": "select",
+     "prop": "MACAddress",
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.MACAddress"
+      }
+     ]
+    },
+    {
+     "id": "TemplateInst",
+     "selector": "#fhId_TemplateInst",
+     "label": "绑定模板",
+     "type": "select",
+     "prop": "TemplateInst",
+     "options": [
+      {
+       "label": "不绑定模板",
+       "value": "0"
+      },
+      {
+       "label": "item.Name",
+       "value": "item.id"
+      }
+     ]
+    },
+    {
+     "id": "saveMac",
+     "selector": "#fhId_saveMac",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Name",
+     "selector": "#fhId_Name",
+     "label": "模板名称",
+     "type": "input",
+     "prop": "Name",
+     "options": []
+    },
+    {
+     "id": "DurationRight",
+     "selector": "#fhId_DurationRight",
+     "label": "启用时间过滤",
+     "type": "checkbox",
+     "prop": "DurationRight",
+     "options": []
+    },
+    {
+     "id": "DurationPolicy",
+     "selector": "#fhId_DurationPolicy",
+     "label": "时间过滤策略",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "黑名单",
+       "value": "0"
+      },
+      {
+       "label": "白名单",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "UrlFilterRight",
+     "selector": "#fhId_UrlFilterRight",
+     "label": "启用URL过滤",
+     "type": "checkbox",
+     "prop": "UrlFilterRight",
+     "options": []
+    },
+    {
+     "id": "UrlFilterPolicy",
+     "selector": "#fhId_UrlFilterPolicy",
+     "label": "URL过滤策略",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "黑名单",
+       "value": "0"
+      },
+      {
+       "label": "白名单",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "saveTemp",
+     "selector": "#fhId_saveTemp",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "saveDur",
+     "selector": "#fhId_saveDur",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "UrlAddress",
+     "selector": "#fhId_UrlAddress",
+     "label": "URL地址",
+     "type": "input",
+     "prop": "UrlAddress",
+     "options": []
+    },
+    {
+     "id": "saveUrl",
+     "selector": "#fhId_saveUrl",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "addMacData",
+     "selector": "#fhId_addMacData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "新增"
+    },
+    {
+     "id": "editMacData",
+     "selector": "#fhId_editMacData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "编辑"
+    },
+    {
+     "id": "delMacDate",
+     "selector": "#fhId_delMacDate",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    },
+    {
+     "id": "cancelMac",
+     "selector": "#fhId_cancelMac",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "取消"
+    },
+    {
+     "id": "addTempData",
+     "selector": "#fhId_addTempData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "新增"
+    },
+    {
+     "id": "editTempData",
+     "selector": "#fhId_editTempData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "编辑"
+    },
+    {
+     "id": "delTempData",
+     "selector": "#fhId_delTempData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    },
+    {
+     "id": "cancelTemp",
+     "selector": "#fhId_cancelTemp",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "取消"
+    },
+    {
+     "id": "addDurData",
+     "selector": "#fhId_addDurData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "新增"
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "编辑"
+    },
+    {
+     "id": "cancelDur",
+     "selector": "#fhId_cancelDur",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "取消"
+    },
+    {
+     "id": "addUrlData",
+     "selector": "#fhId_addUrlData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "新增"
+    },
+    {
+     "id": "editUrlData",
+     "selector": "#fhId_editUrlData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "编辑"
+    },
+    {
+     "id": "delUrlData",
+     "selector": "#fhId_delUrlData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "取消"
+    }
+   ]
+  },
+  {
+   "component": "ping",
+   "file": "ping.js",
+   "title": null,
+   "hint": null,
+   "route": "/diagnosis/networkDiag/ping",
+   "elements": [
+    {
+     "id": "selectWan",
+     "selector": "#fhId_selectWan",
+     "label": "网络连接",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.index"
+      }
+     ]
+    },
+    {
+     "id": "ip_version",
+     "selector": "#fhId_ip_version",
+     "label": "IP版本",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IPv4",
+       "value": "4"
+      },
+      {
+       "label": "IPv6",
+       "value": "6"
+      }
+     ]
+    },
+    {
+     "id": "IPaddress",
+     "selector": "#fhId_IPaddress",
+     "label": "目的地址",
+     "type": "input",
+     "prop": "IPaddress",
+     "options": []
+    },
+    {
+     "id": "Count",
+     "selector": "#fhId_Count",
+     "label": "重复次数",
+     "type": "input",
+     "prop": "Count",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 10
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "ponSubInfo",
+   "file": "ponSubInfo.js",
+   "title": null,
+   "hint": null,
+   "route": "/status/userInfo/ponSubInfo",
+   "elements": [
+    {
+     "id": "removeFile",
+     "selector": "#fhId_removeFile",
+     "label": "选择文件",
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onUpload",
+     "selector": "#fhId_onUpload",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "rebootAll",
+     "selector": "#fhId_rebootAll",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "批量重启"
+    },
+    {
+     "id": "upgradeAll",
+     "selector": "#fhId_upgradeAll",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "批量升级"
+    },
+    {
+     "id": "setPonEnable",
+     "selector": "#fhId_setPonEnable",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "去授权"
+    },
+    {
+     "id": "gotoSubPage",
+     "selector": "#fhId_gotoSubPage",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "管理"
+    }
+   ]
+  },
+  {
+   "component": "ponsub_iptv",
+   "file": "ponsub_iptv.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/broadband/ponsub_iptv",
+   "elements": [
+    {
+     "id": "subponIdx",
+     "selector": "#fhId_subponIdx",
+     "label": "子网关SN",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.PONSN",
+       "value": "item.PONSN"
+      }
+     ]
+    },
+    {
+     "id": "IPTVEnable",
+     "selector": "#fhId_IPTVEnable",
+     "label": "启用IPTV",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "refreshButton",
+     "selector": "#fhId_refreshButton",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "刷新"
+    }
+   ]
+  },
+  {
+   "component": "portmirror",
+   "file": "portmirror.js",
+   "title": "端口镜像",
+   "hint": "在本页面，您可以开启/关闭端口镜像。",
+   "route": "/management/deviceManagement/portmirror",
+   "elements": [
+    {
+     "id": "enable",
+     "selector": "#fhId_enable",
+     "label": "使能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "direction",
+     "selector": "#fhId_direction",
+     "label": "方向",
+     "type": "select",
+     "prop": "direction",
+     "options": [
+      {
+       "label": "InDirection",
+       "value": "1"
+      },
+      {
+       "label": "OutDirection",
+       "value": "2"
+      },
+      {
+       "label": "BothDirection",
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "id": "dst_port",
+     "selector": "#fhId_dst_port",
+     "label": "抓包端口",
+     "type": "select",
+     "prop": "dst_port",
+     "options": [
+      {
+       "label": "item.showName",
+       "value": "item.lanPort"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "powersaving",
+   "file": "powersaving.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/powersaving",
+   "elements": [
+    {
+     "id": "Lan1Enable",
+     "selector": "#fhId_Lan1Enable",
+     "label": "开启LAN1口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Lan2Enable",
+     "selector": "#fhId_Lan2Enable",
+     "label": "开启LAN2口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Lan3Enable",
+     "selector": "#fhId_Lan3Enable",
+     "label": "开启LAN3口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Lan4Enable",
+     "selector": "#fhId_Lan4Enable",
+     "label": "开启LAN4口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Pots1Enable",
+     "selector": "#fhId_Pots1Enable",
+     "label": "开启语音1口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Pots2Enable",
+     "selector": "#fhId_Pots2Enable",
+     "label": "开启语音2口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "UsbEnable",
+     "selector": "#fhId_UsbEnable",
+     "label": "开启USB口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Usb1Enable",
+     "selector": "#fhId_Usb1Enable",
+     "label": "开启USB1口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Usb2Enable",
+     "selector": "#fhId_Usb2Enable",
+     "label": "开启USB2口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "DownPonEnable",
+     "selector": "#fhId_DownPonEnable",
+     "label": "开启下联PON口节能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "provincialManage",
+   "file": "provincialManage.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/provincialManage/provincialManage",
+   "elements": [
+    {
+     "id": "IP",
+     "selector": "#fhId_IP",
+     "label": "省级平台地址",
+     "type": "input",
+     "prop": "IP",
+     "options": []
+    },
+    {
+     "id": "Port",
+     "selector": "#fhId_Port",
+     "label": "省级平台端口",
+     "type": "input",
+     "prop": "Port",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 65535
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "pwdAuthentication",
+   "file": "pwdAuthentication.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/remoteManage/pwdAuthentication",
+   "elements": [
+    {
+     "id": "Password",
+     "selector": "#fhId_Password",
+     "label": "Password",
+     "type": "input",
+     "prop": "Password",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "qosBase",
+   "file": "qosBase.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/qos/qosBase",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "开启QoS",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Mode",
+     "selector": "#fhId_Mode",
+     "label": "QoS模板",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "INTERNET",
+       "value": "INTERNET"
+      },
+      {
+       "label": "TR069,INTERNET",
+       "value": "TR069,INTERNET"
+      },
+      {
+       "label": "TR069,VOIP,INTERNET",
+       "value": "TR069,VOIP,INTERNET"
+      },
+      {
+       "label": "TR069,IPTV,INTERNET",
+       "value": "TR069,IPTV,INTERNET"
+      },
+      {
+       "label": "TR069,VOIP,IPTV,INTERNET",
+       "value": "TR069,VOIP,IPTV,INTERNET"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "qosClassify",
+   "file": "qosClassify.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/qos/qosClassify",
+   "elements": [
+    {
+     "id": "Queue",
+     "selector": "#fhId_Queue",
+     "label": "队列",
+     "type": "select",
+     "prop": "ClassQueue",
+     "options": [
+      {
+       "label": "",
+       "value": ""
+      },
+      {
+       "label": "",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "DSCPMarkValue",
+     "selector": "#fhId_DSCPMarkValue",
+     "label": "DSCP标记",
+     "type": "input",
+     "prop": "DSCPMarkValue",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 63
+     }
+    },
+    {
+     "id": "Value8021P",
+     "selector": "#fhId_Value8021P",
+     "label": "8021P标记",
+     "type": "input",
+     "prop": "Value8021P",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 7
+     }
+    },
+    {
+     "id": "ClassRate",
+     "selector": "#fhId_ClassRate",
+     "label": "速率限制",
+     "type": "input",
+     "prop": "ClassRate",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 1000000
+     }
+    },
+    {
+     "id": "Type1",
+     "selector": "#fhId_Type1",
+     "label": "匹配条件1",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item",
+       "value": "name"
+      }
+     ]
+    },
+    {
+     "id": "min1",
+     "selector": "#fhId_min1",
+     "label": "最小值1",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "max1",
+     "selector": "#fhId_max1",
+     "label": "最大值1",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "ProtocolList1",
+     "selector": "#fhId_ProtocolList1",
+     "label": "协议1",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item",
+       "value": "name"
+      }
+     ]
+    },
+    {
+     "id": "Type2",
+     "selector": "#fhId_Type2",
+     "label": "匹配条件2",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item",
+       "value": "name"
+      }
+     ]
+    },
+    {
+     "id": "min2",
+     "selector": "#fhId_min2",
+     "label": "最小值2",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "max2",
+     "selector": "#fhId_max2",
+     "label": "最大值2",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "ProtocolList2",
+     "selector": "#fhId_ProtocolList2",
+     "label": "协议2",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item",
+       "value": "name"
+      }
+     ]
+    },
+    {
+     "id": "Type3",
+     "selector": "#fhId_Type3",
+     "label": "匹配条件3",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item",
+       "value": "name"
+      }
+     ]
+    },
+    {
+     "id": "min3",
+     "selector": "#fhId_min3",
+     "label": "最小值3",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "max3",
+     "selector": "#fhId_max3",
+     "label": "最大值3",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "ProtocolList3",
+     "selector": "#fhId_ProtocolList3",
+     "label": "协议3",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item",
+       "value": "name"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delClassifi",
+     "selector": "#fhId_delClassifi",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "qosQueue",
+   "file": "qosQueue.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/qos/qosQueue",
+   "elements": [
+    {
+     "id": "Bandwidth",
+     "selector": "#fhId_Bandwidth",
+     "label": "总带宽",
+     "type": "input",
+     "prop": "Bandwidth",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": null
+     }
+    },
+    {
+     "id": "Plan",
+     "selector": "#fhId_Plan",
+     "label": "QoS调度策略",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "PQ",
+       "value": "priority"
+      },
+      {
+       "label": "WRR",
+       "value": "weight"
+      }
+     ]
+    },
+    {
+     "id": "Enable8021P",
+     "selector": "#fhId_Enable8021P",
+     "label": "8021P标记使能",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "0:不启用8021P标记",
+       "value": "0"
+      },
+      {
+       "label": "1:保持原8021P标记",
+       "value": "1"
+      },
+      {
+       "label": "2:修改8021P标记",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "EnableDSCPMark",
+     "selector": "#fhId_EnableDSCPMark",
+     "label": "启用DSCP/TC标记",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "保存"
+    }
+   ]
+  },
+  {
+   "component": "qosServer",
+   "file": "qosServer.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/qos/qosServer",
+   "elements": [
+    {
+     "id": "AppNameSel",
+     "selector": "#fhId_AppNameSel",
+     "label": "业务名称",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "TR069",
+       "value": "TR069"
+      },
+      {
+       "label": "VOIP",
+       "value": "VOIP"
+      },
+      {
+       "label": "IPTV",
+       "value": "IPTV"
+      },
+      {
+       "label": "INTERNET",
+       "value": "INTERNET"
+      }
+     ]
+    },
+    {
+     "id": "ClassQueueSel",
+     "selector": "#fhId_ClassQueueSel",
+     "label": "分类队列",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "",
+       "value": "item"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delApp",
+     "selector": "#fhId_delApp",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "rebootDevice",
+   "file": "rebootDevice.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/rebootDevice",
+   "elements": [
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "重启"
+    }
+   ]
+  },
+  {
+   "component": "registerPush",
+   "file": "registerPush.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/applicationService/registerPush",
+   "elements": [
+    {
+     "id": "IP",
+     "selector": "#fhId_IP",
+     "label": "宽带账号注册状态",
+     "type": "input",
+     "prop": "Result",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "restoreDefault",
+   "file": "restoreDefault.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/restoreDefault",
+   "elements": [
+    {
+     "id": "onApplyRestore",
+     "selector": "#fhId_onApplyRestore",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "恢复默认配置"
+    },
+    {
+     "id": "onApplyFactory",
+     "selector": "#fhId_onApplyFactory",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "恢复出厂配置"
+    }
+   ]
+  },
+  {
+   "component": "restoreFactory",
+   "file": "restoreFactory.js",
+   "title": null,
+   "hint": null,
+   "route": null,
+   "elements": [
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "恢复出厂配置"
+    }
+   ]
+  },
+  {
+   "component": "samber",
+   "file": "samber.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/homeStorage/samber",
+   "elements": [
+    {
+     "id": "SambaEnable",
+     "selector": "#fhId_SambaEnable",
+     "label": "启用Samba",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApplyEnable",
+     "selector": "#fhId_onApplyEnable",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SambaUserName",
+     "selector": "#fhId_SambaUserName",
+     "label": "用户名",
+     "type": "input",
+     "prop": "SambaUserName",
+     "options": []
+    },
+    {
+     "id": "SambaPassword",
+     "selector": "#fhId_SambaPassword",
+     "label": "密码",
+     "type": "input",
+     "prop": "SambaPassword",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "speed_hosts_bandwidth",
+   "file": "speed_hosts_bandwidth.js",
+   "title": null,
+   "hint": null,
+   "route": null,
+   "elements": [
+    {
+     "id": "MACAddress",
+     "selector": "#fhId_MACAddress",
+     "label": "MAC地址",
+     "type": "input",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MaxUSBandwidth",
+     "selector": "#fhId_MaxUSBandwidth",
+     "label": "上行限速（Kbps）",
+     "type": "input",
+     "prop": "MaxUSBandwidth",
+     "options": []
+    },
+    {
+     "id": "MaxDSBandwidth",
+     "selector": "#fhId_MaxDSBandwidth",
+     "label": "下行限速（Kbps）",
+     "type": "input",
+     "prop": "MaxDSBandwidth",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "editBandwidth",
+     "selector": "#fhId_editBandwidth",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "编辑"
+    }
+   ]
+  },
+  {
+   "component": "telnet",
+   "file": "telnet.js",
+   "title": null,
+   "hint": null,
+   "route": null,
+   "elements": [
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "timedRestart",
+   "file": "timedRestart.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/timedRestart",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "开启定时重启",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Time",
+     "selector": "#fhId_Time",
+     "label": "重启时间",
+     "type": "unknown",
+     "prop": "Time",
+     "options": []
+    },
+    {
+     "id": "week",
+     "selector": "#fhId_week",
+     "label": "daytype ==",
+     "type": "input",
+     "prop": "Day",
+     "options": []
+    },
+    {
+     "id": "ForceActive",
+     "selector": "#fhId_ForceActive",
+     "label": "重启模式",
+     "type": "radio",
+     "prop": "ForceActive",
+     "options": []
+    },
+    {
+     "id": "ForceFlow",
+     "selector": "#fhId_ForceFlow",
+     "label": "WAN流量阈值",
+     "type": "input",
+     "prop": "ForceFlow",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": null
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "addData",
+     "selector": "#fhId_addData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "新增"
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "编辑"
+    },
+    {
+     "id": "onCancel",
+     "selector": "#fhId_onCancel",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "取消"
+    }
+   ]
+  },
+  {
+   "component": "timedrestartforfttrsub",
+   "file": "timedrestartforfttrsub.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/timedrestartforfttrsub",
+   "elements": [
+    {
+     "id": "SUBMACHtml",
+     "selector": "#fhId_SUBMACHtml",
+     "label": "绑定子网关",
+     "type": "unknown",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SUBMACSelectVal",
+     "selector": "#fhId_SUBMACSelectVal",
+     "label": "绑定子网关",
+     "type": "select",
+     "prop": "SUBMACSelectVal",
+     "options": [
+      {
+       "label": "item.MAC",
+       "value": "item.MAC"
+      }
+     ]
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "开启定时重启",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Time",
+     "selector": "#fhId_Time",
+     "label": "重启时间",
+     "type": "unknown",
+     "prop": "Time",
+     "options": []
+    },
+    {
+     "id": "week",
+     "selector": "#fhId_week",
+     "label": "daytype ==",
+     "type": "input",
+     "prop": "Day",
+     "options": []
+    },
+    {
+     "id": "ForceActive",
+     "selector": "#fhId_ForceActive",
+     "label": "重启模式",
+     "type": "radio",
+     "prop": "ForceActive",
+     "options": []
+    },
+    {
+     "id": "ForceFlow",
+     "selector": "#fhId_ForceFlow",
+     "label": "WAN流量阈值",
+     "type": "input",
+     "prop": "ForceFlow",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": null
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "refreshButton",
+     "selector": "#fhId_refreshButton",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "刷新"
+    },
+    {
+     "id": "addData",
+     "selector": "#fhId_addData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "新增"
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "编辑"
+    },
+    {
+     "id": "onCancel",
+     "selector": "#fhId_onCancel",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "取消"
+    }
+   ]
+  },
+  {
+   "component": "traceroute",
+   "file": "traceroute.js",
+   "title": null,
+   "hint": null,
+   "route": "/diagnosis/networkDiag/traceroute",
+   "elements": [
+    {
+     "id": "selectWan",
+     "selector": "#fhId_selectWan",
+     "label": "网络连接",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.index"
+      }
+     ]
+    },
+    {
+     "id": "ip_version",
+     "selector": "#fhId_ip_version",
+     "label": "IP版本",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IPv4",
+       "value": "4"
+      },
+      {
+       "label": "IPv6",
+       "value": "6"
+      }
+     ]
+    },
+    {
+     "id": "IPaddress",
+     "selector": "#fhId_IPaddress",
+     "label": "目的地址",
+     "type": "input",
+     "prop": "IPaddress",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "uplink_setting",
+   "file": "uplink_setting.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/broadband/uplink_setting",
+   "elements": [
+    {
+     "id": "SwitchAutoEnable",
+     "selector": "#fhId_SwitchAutoEnable",
+     "label": "启用上行方式自适应",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "WanInterface",
+     "selector": "#fhId_WanInterface",
+     "label": "上行方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "PON上行",
+       "value": "dev.pon.1"
+      },
+      {
+       "label": "LAN上行",
+       "value": ""
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "upnp",
+   "file": "upnp.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/upnp/upnp",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用UPnP",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "urlFilter",
+   "file": "urlFilter.js",
+   "title": null,
+   "hint": null,
+   "route": "/security/urlFilter/urlFilter",
+   "elements": [
+    {
+     "id": "URLFEnable",
+     "selector": "#fhId_URLFEnable",
+     "label": "启用URL过滤",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "URLFMode",
+     "selector": "#fhId_URLFMode",
+     "label": "URL过滤类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "黑名单",
+       "value": "black"
+      },
+      {
+       "label": "白名单",
+       "value": "white"
+      }
+     ]
+    },
+    {
+     "id": "onApplyEnable",
+     "selector": "#fhId_onApplyEnable",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "url",
+     "selector": "#fhId_url",
+     "label": "URL地址",
+     "type": "input",
+     "prop": "url",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "userManagement",
+   "file": "userManagement.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/userManagement/userManagement",
+   "elements": [
+    {
+     "id": "user",
+     "selector": "#fhId_user",
+     "label": "账户",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "userName",
+       "value": "user"
+      }
+     ]
+    },
+    {
+     "id": "upd0",
+     "selector": "#fhId_upd0",
+     "label": "初始密码",
+     "type": "input",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Org_pd",
+     "selector": "#fhId_Org_pd",
+     "label": "原密码",
+     "type": "input",
+     "prop": "Org_pd",
+     "options": []
+    },
+    {
+     "id": "New_pd",
+     "selector": "#fhId_New_pd",
+     "label": "新密码",
+     "type": "input",
+     "prop": "New_pd",
+     "options": []
+    },
+    {
+     "id": "confirm_pd",
+     "selector": "#fhId_confirm_pd",
+     "label": "确认密码",
+     "type": "input",
+     "prop": "confirm_pd",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "virtualHost",
+   "file": "virtualHost.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/nat/virtualHost",
+   "elements": [
+    {
+     "id": "Wan",
+     "selector": "#fhId_Wan",
+     "label": "网络连接",
+     "type": "select",
+     "prop": "Wan",
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "ExternalPort",
+     "selector": "#fhId_ExternalPort",
+     "label": "外部端口",
+     "type": "input",
+     "prop": "ExternalPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 65535
+     }
+    },
+    {
+     "id": "Protocol",
+     "selector": "#fhId_Protocol",
+     "label": "协议",
+     "type": "select",
+     "prop": "Protocol",
+     "options": [
+      {
+       "label": "TCP",
+       "value": "TCP"
+      },
+      {
+       "label": "UDP",
+       "value": "UDP"
+      }
+     ]
+    },
+    {
+     "id": "InternalClient",
+     "selector": "#fhId_InternalClient",
+     "label": "内部IP",
+     "type": "input",
+     "prop": "InternalClient",
+     "options": []
+    },
+    {
+     "id": "InternalPort",
+     "selector": "#fhId_InternalPort",
+     "label": "内部端口",
+     "type": "input",
+     "prop": "InternalPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 65535
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "vlanBind",
+   "file": "vlanBind.js",
+   "title": "VLAN绑定",
+   "hint": "说明：VLAN绑定允许设置基于VLAN绑定，根据业务需要进行VLAN绑定的添加和删除",
+   "route": "/network/bindSettings/vlanBind",
+   "elements": [
+    {
+     "id": "userVlan",
+     "selector": "#fhId_userVlan",
+     "label": "用户侧VLAN",
+     "type": "input",
+     "prop": "userVlan",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 4094
+     }
+    },
+    {
+     "id": "selectWan",
+     "selector": "#fhId_selectWan",
+     "label": "绑定WAN连接名称",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "voiceAdd",
+   "file": "voiceAdd.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/broadbandVoice/voiceAdd",
+   "elements": [
+    {
+     "id": "PolarityReversalMode",
+     "selector": "#fhId_PolarityReversalMode",
+     "label": "极性反转",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "TimeSyncMode",
+     "selector": "#fhId_TimeSyncMode",
+     "label": "时间同步",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "不同步时间",
+       "value": "0"
+      },
+      {
+       "label": "自动同步时间",
+       "value": "1"
+      },
+      {
+       "label": "强制同步时间",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "CallIDMsgType",
+     "selector": "#fhId_CallIDMsgType",
+     "label": "来显模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "FSK",
+       "value": "FSK"
+      },
+      {
+       "label": "DTMF",
+       "value": "DTMF"
+      }
+     ]
+    },
+    {
+     "id": "EnableSubsRegAfterReg",
+     "selector": "#fhId_EnableSubsRegAfterReg",
+     "label": "订阅开关",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "ThreeWayCallingEnable",
+     "selector": "#fhId_ThreeWayCallingEnable",
+     "label": "三方通话控制方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "终端本地",
+       "value": "1"
+      },
+      {
+       "label": "服务器",
+       "value": "0"
+      }
+     ]
+    },
+    {
+     "id": "conferenceuri",
+     "selector": "#fhId_conferenceuri",
+     "label": "三方通话URI",
+     "type": "input",
+     "prop": "conferenceuri",
+     "options": []
+    },
+    {
+     "id": "HotlineEnable",
+     "selector": "#fhId_HotlineEnable",
+     "label": "热线启用",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "HotlineTimer",
+     "selector": "#fhId_HotlineTimer",
+     "label": "热线延时",
+     "type": "input",
+     "prop": "HotlineTimer",
+     "options": []
+    },
+    {
+     "id": "HotlineNumber",
+     "selector": "#fhId_HotlineNumber",
+     "label": "热线号码",
+     "type": "input",
+     "prop": "HotlineNumber",
+     "options": []
+    },
+    {
+     "id": "CallWaitingEnable",
+     "selector": "#fhId_CallWaitingEnable",
+     "label": "呼叫等待",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "HeartbeatMode",
+     "selector": "#fhId_HeartbeatMode",
+     "label": "心跳开关",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "HeartbeatCycle",
+     "selector": "#fhId_HeartbeatCycle",
+     "label": "心跳周期",
+     "type": "input",
+     "prop": "HeartbeatCycle",
+     "options": []
+    },
+    {
+     "id": "HeartbeatCount",
+     "selector": "#fhId_HeartbeatCount",
+     "label": "心跳次数",
+     "type": "input",
+     "prop": "HeartbeatCount",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "voiceAdvanced",
+   "file": "voiceAdvanced.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/broadbandVoice/voiceAdvanced",
+   "elements": [
+    {
+     "id": "URIType",
+     "selector": "#fhId_URIType",
+     "label": "URI类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "SIP",
+       "value": "0"
+      },
+      {
+       "label": "TEL",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "DTMFMethod",
+     "selector": "#fhId_DTMFMethod",
+     "label": "二次拨号模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "RFC2833",
+       "value": "RFC2833"
+      },
+      {
+       "label": "InBand",
+       "value": "InBand"
+      },
+      {
+       "label": "SIPInfo",
+       "value": "SIPInfo"
+      }
+     ]
+    },
+    {
+     "id": "UserAgentPort",
+     "selector": "#fhId_UserAgentPort",
+     "label": "SIP本地端口号",
+     "type": "input",
+     "prop": "UserAgentPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "RegisterExpires",
+     "selector": "#fhId_RegisterExpires",
+     "label": "注册过期时间",
+     "type": "input",
+     "prop": "RegisterExpires",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 30,
+      "max": null
+     }
+    },
+    {
+     "id": "RegisterRetryInterval",
+     "selector": "#fhId_RegisterRetryInterval",
+     "label": "注册失败重注册时间",
+     "type": "input",
+     "prop": "RegisterRetryInterval",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 65535
+     }
+    },
+    {
+     "id": "LocalPortMin",
+     "selector": "#fhId_LocalPortMin",
+     "label": "本地RTP端口号最小值",
+     "type": "input",
+     "prop": "LocalPortMin",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1026,
+      "max": 65494
+     }
+    },
+    {
+     "id": "LocalPortMax",
+     "selector": "#fhId_LocalPortMax",
+     "label": "本地RTP端口号最大值",
+     "type": "input",
+     "prop": "LocalPortMax",
+     "options": []
+    },
+    {
+     "id": "sendReliableResponse",
+     "selector": "#fhId_sendReliableResponse",
+     "label": "启用PRACK",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "BootDeRegisterEnable",
+     "selector": "#fhId_BootDeRegisterEnable",
+     "label": "启用开机注销",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SIPDSCPMark",
+     "selector": "#fhId_SIPDSCPMark",
+     "label": "SIP DSCP Mark设置",
+     "type": "input",
+     "prop": "SIPDSCPMark",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 63
+     }
+    },
+    {
+     "id": "RTPDSCPMark",
+     "selector": "#fhId_RTPDSCPMark",
+     "label": "RTP DSCP Mark设置",
+     "type": "input",
+     "prop": "RTPDSCPMark",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 63
+     }
+    },
+    {
+     "id": "ReceiveGain",
+     "selector": "#fhId_ReceiveGain",
+     "label": "DSP接收增益",
+     "type": "input",
+     "prop": "ReceiveGain",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": null,
+      "max": 12
+     }
+    },
+    {
+     "id": "TransmitGain",
+     "selector": "#fhId_TransmitGain",
+     "label": "DSP发送增益",
+     "type": "input",
+     "prop": "TransmitGain",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": null,
+      "max": 12
+     }
+    },
+    {
+     "id": "FlashMin",
+     "selector": "#fhId_FlashMin",
+     "label": "拍叉最短时间",
+     "type": "input",
+     "prop": "FlashMin",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 50,
+      "max": 2500
+     }
+    },
+    {
+     "id": "FlashMax",
+     "selector": "#fhId_FlashMax",
+     "label": "拍叉最长时间",
+     "type": "input",
+     "prop": "FlashMax",
+     "options": []
+    },
+    {
+     "id": "EchoCancellationEnable",
+     "selector": "#fhId_EchoCancellationEnable",
+     "label": "回声抑制",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SilenceSuppression",
+     "selector": "#fhId_SilenceSuppression",
+     "label": "静音检测",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "voltage",
+     "selector": "#fhId_voltage",
+     "label": "振铃电压",
+     "type": "input",
+     "prop": "voltage",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 45,
+      "max": 65
+     }
+    },
+    {
+     "id": "HighFaxECEnable",
+     "selector": "#fhId_HighFaxECEnable",
+     "label": "高速传真EC开关",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "JBMinSize",
+     "selector": "#fhId_JBMinSize",
+     "label": "Jitterbuffer最小配置",
+     "type": "input",
+     "prop": "JBMinSize",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 200
+     }
+    },
+    {
+     "id": "JBMaxSize",
+     "selector": "#fhId_JBMaxSize",
+     "label": "Jitterbuffer最大配置",
+     "type": "input",
+     "prop": "JBMaxSize",
+     "options": []
+    },
+    {
+     "id": "JBFaxSize",
+     "selector": "#fhId_JBFaxSize",
+     "label": "传真时Jitterbuffer配置",
+     "type": "input",
+     "prop": "JBFaxSize",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 200
+     }
+    },
+    {
+     "id": "PolarityReversalMode",
+     "selector": "#fhId_PolarityReversalMode",
+     "label": "反极开关",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "关闭",
+       "value": "0"
+      },
+      {
+       "label": "打开",
+       "value": "1"
+      },
+      {
+       "label": "平台控制",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "GetCIDNumPriorFrom",
+     "selector": "#fhId_GetCIDNumPriorFrom",
+     "label": "来显方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "优先从PAI域中获取来显号码",
+       "value": "0"
+      },
+      {
+       "label": "优先从FROM域中获取来显号码",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "保存"
+    }
+   ]
+  },
+  {
+   "component": "voiceBase",
+   "file": "voiceBase.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/broadbandVoice/voiceBase",
+   "elements": [
+    {
+     "id": "ServerType",
+     "selector": "#fhId_ServerType",
+     "label": "协议",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IMS SIP",
+       "value": "0"
+      },
+      {
+       "label": "软交换",
+       "value": "1"
+      },
+      {
+       "label": "H.248",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "ProxyServer",
+     "selector": "#fhId_ProxyServer",
+     "label": "代理服务器",
+     "type": "input",
+     "prop": "ProxyServer",
+     "options": []
+    },
+    {
+     "id": "ProxyServerPort",
+     "selector": "#fhId_ProxyServerPort",
+     "label": "代理服务器端口",
+     "type": "input",
+     "prop": "ProxyServerPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "RegistrarServer",
+     "selector": "#fhId_RegistrarServer",
+     "label": "注册服务器",
+     "type": "input",
+     "prop": "RegistrarServer",
+     "options": []
+    },
+    {
+     "id": "RegistrarServerPort",
+     "selector": "#fhId_RegistrarServerPort",
+     "label": "注册服务器端口",
+     "type": "input",
+     "prop": "RegistrarServerPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "OutboundProxy",
+     "selector": "#fhId_OutboundProxy",
+     "label": "外发代理服务器",
+     "type": "input",
+     "prop": "OutboundProxy",
+     "options": []
+    },
+    {
+     "id": "OutboundProxyPort",
+     "selector": "#fhId_OutboundProxyPort",
+     "label": "外发代理服务器端口",
+     "type": "input",
+     "prop": "OutboundProxyPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "StandbyProxyServer",
+     "selector": "#fhId_StandbyProxyServer",
+     "label": "备用代理服务器",
+     "type": "input",
+     "prop": "StandbyProxyServer",
+     "options": []
+    },
+    {
+     "id": "StandbyProxyServerPort",
+     "selector": "#fhId_StandbyProxyServerPort",
+     "label": "备用代理服务器端口",
+     "type": "input",
+     "prop": "StandbyProxyServerPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "StandbyRegistrarServer",
+     "selector": "#fhId_StandbyRegistrarServer",
+     "label": "备用注册服务器",
+     "type": "input",
+     "prop": "StandbyRegistrarServer",
+     "options": []
+    },
+    {
+     "id": "StandbyRegistrarServerPort",
+     "selector": "#fhId_StandbyRegistrarServerPort",
+     "label": "备用注册服务器端口",
+     "type": "input",
+     "prop": "StandbyRegistrarServerPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "StandbyOutboundProxy",
+     "selector": "#fhId_StandbyOutboundProxy",
+     "label": "备用外发代理服务器",
+     "type": "input",
+     "prop": "StandbyOutboundProxy",
+     "options": []
+    },
+    {
+     "id": "StandbyOutboundProxyPort",
+     "selector": "#fhId_StandbyOutboundProxyPort",
+     "label": "备用外发代理服务器端口",
+     "type": "input",
+     "prop": "StandbyOutboundProxyPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "Enable1",
+     "selector": "#fhId_Enable1",
+     "label": "线路1使能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "URI2",
+     "selector": "#fhId_URI2",
+     "label": "线路1电话号码",
+     "type": "input",
+     "prop": "URI1",
+     "options": []
+    },
+    {
+     "id": "AuthUserName1",
+     "selector": "#fhId_AuthUserName1",
+     "label": "线路1用户名",
+     "type": "input",
+     "prop": "AuthUserName1",
+     "options": []
+    },
+    {
+     "id": "AuthPassword1",
+     "selector": "#fhId_AuthPassword1",
+     "label": "线路1密码",
+     "type": "input",
+     "prop": "AuthPassword1",
+     "options": []
+    },
+    {
+     "id": "Enable2",
+     "selector": "#fhId_Enable2",
+     "label": "线路2使能",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "AuthUserName2",
+     "selector": "#fhId_AuthUserName2",
+     "label": "线路2用户名",
+     "type": "input",
+     "prop": "AuthUserName2",
+     "options": []
+    },
+    {
+     "id": "AuthPassword2",
+     "selector": "#fhId_AuthPassword2",
+     "label": "线路2密码",
+     "type": "input",
+     "prop": "AuthPassword2",
+     "options": []
+    },
+    {
+     "id": "MediaGatewayPort",
+     "selector": "#fhId_MediaGatewayPort",
+     "label": "本地端口",
+     "type": "input",
+     "prop": "MediaGatewayPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "MediaGatewayControler",
+     "selector": "#fhId_MediaGatewayControler",
+     "label": "MGC1地址",
+     "type": "input",
+     "prop": "MediaGatewayControler",
+     "options": []
+    },
+    {
+     "id": "MediaGatewayControlerPort",
+     "selector": "#fhId_MediaGatewayControlerPort",
+     "label": "MGC1端口",
+     "type": "input",
+     "prop": "MediaGatewayControlerPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "StandbyMediaGatewayControler",
+     "selector": "#fhId_StandbyMediaGatewayControler",
+     "label": "MGC2地址",
+     "type": "input",
+     "prop": "StandbyMediaGatewayControler",
+     "options": []
+    },
+    {
+     "id": "StandbyMediaGatewayControlerPort",
+     "selector": "#fhId_StandbyMediaGatewayControlerPort",
+     "label": "MGC2端口",
+     "type": "input",
+     "prop": "StandbyMediaGatewayControlerPort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1025,
+      "max": 65535
+     }
+    },
+    {
+     "id": "DeviceIDType",
+     "selector": "#fhId_DeviceIDType",
+     "label": "终端标识类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "IP地址",
+       "value": "0"
+      },
+      {
+       "label": "域名",
+       "value": "1"
+      },
+      {
+       "label": "设备名",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "DeviceID",
+     "selector": "#fhId_DeviceID",
+     "label": "终端标识",
+     "type": "input",
+     "prop": "DeviceID",
+     "options": []
+    },
+    {
+     "id": "MessageEncodingType",
+     "selector": "#fhId_MessageEncodingType",
+     "label": "H.248协议编码类型",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "ABNF",
+       "value": "ABNF"
+      },
+      {
+       "label": "ASN.1",
+       "value": "ASN.1"
+      }
+     ]
+    },
+    {
+     "id": "PhysicalTermIDConfigMethod",
+     "selector": "#fhId_PhysicalTermIDConfigMethod",
+     "label": "物理终结点配置方法",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "通配",
+       "value": "0"
+      },
+      {
+       "label": "逐个配置",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "PhysicalTermIDPrefix",
+     "selector": "#fhId_PhysicalTermIDPrefix",
+     "label": "终端物理终结点标识前缀",
+     "type": "input",
+     "prop": "PhysicalTermIDPrefix",
+     "options": []
+    },
+    {
+     "id": "PhysicalTermIDStart",
+     "selector": "#fhId_PhysicalTermIDStart",
+     "label": "终端物理终结点起始值",
+     "type": "input",
+     "prop": "PhysicalTermIDStart",
+     "options": []
+    },
+    {
+     "id": "PhysicalTermIDAddLen",
+     "selector": "#fhId_PhysicalTermIDAddLen",
+     "label": "物理终结点标识前缀后面添加位数",
+     "type": "input",
+     "prop": "PhysicalTermIDAddLen",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": null
+     }
+    },
+    {
+     "id": "RTPPrefix",
+     "selector": "#fhId_RTPPrefix",
+     "label": "RTP终结点标识前缀",
+     "type": "input",
+     "prop": "RTPPrefix",
+     "options": []
+    },
+    {
+     "id": "EphemeralTermIDStart",
+     "selector": "#fhId_EphemeralTermIDStart",
+     "label": "RTP终结点标识名起始值",
+     "type": "input",
+     "prop": "EphemeralTermIDStart",
+     "options": []
+    },
+    {
+     "id": "EphemeralTermIDAddLen",
+     "selector": "#fhId_EphemeralTermIDAddLen",
+     "label": "RTP终结点标识前缀后添加位数",
+     "type": "input",
+     "prop": "EphemeralTermIDAddLen",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": null
+     }
+    },
+    {
+     "id": "PhysicalTermID1",
+     "selector": "#fhId_PhysicalTermID1",
+     "label": "线路1线路名",
+     "type": "input",
+     "prop": "LinePhysicalTermID1",
+     "options": []
+    },
+    {
+     "id": "PhysicalTermID2",
+     "selector": "#fhId_PhysicalTermID2",
+     "label": "线路2线路名",
+     "type": "input",
+     "prop": "LinePhysicalTermID2",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "voiceDial",
+   "file": "voiceDial.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/broadbandVoice/voiceDial",
+   "elements": [
+    {
+     "id": "DigitMapEnable",
+     "selector": "#fhId_DigitMapEnable",
+     "label": "数图",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "DigitMap",
+     "selector": "#fhId_DigitMap",
+     "label": "拨号计划规则",
+     "type": "input",
+     "prop": "DigitMap",
+     "options": []
+    },
+    {
+     "id": "DigitMapType",
+     "selector": "#fhId_DigitMapType",
+     "label": "匹配方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "最小匹配",
+       "value": "2"
+      },
+      {
+       "label": "最大匹配",
+       "value": "0"
+      }
+     ]
+    },
+    {
+     "id": "TWaitTime",
+     "selector": "#fhId_TWaitTime",
+     "label": "“T”超时等待时间",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "短定时器",
+       "value": "0"
+      },
+      {
+       "label": "长定时器",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "DotWaitTime",
+     "selector": "#fhId_DotWaitTime",
+     "label": "“.”超时等待时间",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "不等待",
+       "value": "0"
+      },
+      {
+       "label": "短定时器",
+       "value": "1"
+      },
+      {
+       "label": "长定时器",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "LocalRuleType",
+     "selector": "#fhId_LocalRuleType",
+     "label": "立即拨号时送出末尾#",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "否",
+       "value": "0"
+      },
+      {
+       "label": "是",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "StartDigitTimer",
+     "selector": "#fhId_StartDigitTimer",
+     "label": "摘机不拨号时间",
+     "type": "input",
+     "prop": "StartDigitTimer",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 254
+     }
+    },
+    {
+     "id": "InterDigitTimerLong",
+     "selector": "#fhId_InterDigitTimerLong",
+     "label": "长定时器",
+     "type": "input",
+     "prop": "InterDigitTimerLong",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 100
+     }
+    },
+    {
+     "id": "InterDigitTimerShort",
+     "selector": "#fhId_InterDigitTimerShort",
+     "label": "短定时器",
+     "type": "input",
+     "prop": "InterDigitTimerShort",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 100
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "voiceFax",
+   "file": "voiceFax.js",
+   "title": null,
+   "hint": null,
+   "route": "/application/broadbandVoice/voiceFax",
+   "elements": [
+    {
+     "id": "faxMode",
+     "selector": "#fhId_faxMode",
+     "label": "传真模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "T.38",
+       "value": "T38"
+      },
+      {
+       "label": "T.30",
+       "value": "T30"
+      }
+     ]
+    },
+    {
+     "id": "ControlType",
+     "selector": "#fhId_ControlType",
+     "label": "T.30传真协商模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "全控",
+       "value": "all"
+      },
+      {
+       "label": "自协商",
+       "value": "other"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "vxlanSettings",
+   "file": "vxlanSettings.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/broadband/vxlanSettings",
+   "elements": [
+    {
+     "id": "selectVXLAN",
+     "selector": "#fhId_selectVXLAN",
+     "label": "VxLAN配置实例",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "WANInterface",
+     "selector": "#fhId_WANInterface",
+     "label": "绑定WAN连接名称",
+     "type": "select",
+     "prop": "WANInterface",
+     "options": [
+      {
+       "label": "item.Name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "WorkMode",
+     "selector": "#fhId_WorkMode",
+     "label": "工作模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "三层模式",
+       "value": "2"
+      },
+      {
+       "label": "二层模式",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用VxLAN",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "TunnelKey",
+     "selector": "#fhId_TunnelKey",
+     "label": "vni",
+     "type": "input",
+     "prop": "TunnelKey",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 16777215
+     }
+    },
+    {
+     "id": "TunnelRemoteIp",
+     "selector": "#fhId_TunnelRemoteIp",
+     "label": "隧道对端地址",
+     "type": "input",
+     "prop": "TunnelRemoteIp",
+     "options": []
+    },
+    {
+     "id": "MaxMTUSize",
+     "selector": "#fhId_MaxMTUSize",
+     "label": "MTU",
+     "type": "input",
+     "prop": "MaxMTUSize",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 2000
+     }
+    },
+    {
+     "id": "NATEnabled",
+     "selector": "#fhId_NATEnabled",
+     "label": "使能NAT",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "VLANEnable",
+     "selector": "#fhId_VLANEnable",
+     "label": "启用VxLAN虚接口VLAN",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "VLAN",
+     "selector": "#fhId_VLAN",
+     "label": "VLAN ID",
+     "type": "input",
+     "prop": "VLAN",
+     "options": []
+    },
+    {
+     "id": "AddressingType",
+     "selector": "#fhId_AddressingType",
+     "label": "地址获取方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "DHCP",
+       "value": "DHCP"
+      },
+      {
+       "label": "Static",
+       "value": "Static"
+      }
+     ]
+    },
+    {
+     "id": "IPAddress",
+     "selector": "#fhId_IPAddress",
+     "label": "IP地址",
+     "type": "input",
+     "prop": "IPAddress",
+     "options": []
+    },
+    {
+     "id": "SubnetMask",
+     "selector": "#fhId_SubnetMask",
+     "label": "网络掩码",
+     "type": "input",
+     "prop": "SubnetMask",
+     "options": []
+    },
+    {
+     "id": "DefaultGateway",
+     "selector": "#fhId_DefaultGateway",
+     "label": "默认网关",
+     "type": "input",
+     "prop": "DefaultGateway",
+     "options": []
+    },
+    {
+     "id": "DNSServers_Master",
+     "selector": "#fhId_DNSServers_Master",
+     "label": "首选DNS",
+     "type": "input",
+     "prop": "DNSServers_Master",
+     "options": []
+    },
+    {
+     "id": "DNSServers_Slave",
+     "selector": "#fhId_DNSServers_Slave",
+     "label": "备选DNS",
+     "type": "input",
+     "prop": "DNSServers_Slave",
+     "options": []
+    },
+    {
+     "id": "saveData",
+     "selector": "#fhId_saveData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "deleteData",
+     "selector": "#fhId_deleteData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "wifiAdvanced",
+   "file": "wifiAdvanced.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiAdvanced",
+   "elements": [
+    {
+     "id": "OperatingStandards",
+     "selector": "#fhId_OperatingStandards",
+     "label": "无线模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "802.11bgn,ax,be Mixed",
+       "value": "b,g,n,ax,be"
+      },
+      {
+       "label": "802.11bgn,ax Mixed",
+       "value": "b,g,n,ax"
+      },
+      {
+       "label": "802.11bgn Mixed",
+       "value": "b,g,n"
+      },
+      {
+       "label": "802.11bg Mixed",
+       "value": "b,g"
+      },
+      {
+       "label": "802.11n",
+       "value": "n"
+      },
+      {
+       "label": "802.11g",
+       "value": "g"
+      },
+      {
+       "label": "802.11b",
+       "value": "b"
+      }
+     ]
+    },
+    {
+     "id": "Channel",
+     "selector": "#fhId_Channel",
+     "label": "(主)信道",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "MaxBitRate",
+     "selector": "#fhId_MaxBitRate",
+     "label": "802.11速率",
+     "type": "input",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "GuardInterval",
+     "selector": "#fhId_GuardInterval",
+     "label": "802.11保护间隔",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "0.8us",
+       "value": "800nsec"
+      },
+      {
+       "label": "1.6us",
+       "value": "1600nsec"
+      },
+      {
+       "label": "3.2us",
+       "value": "3200nsec"
+      },
+      {
+       "label": "Auto",
+       "value": "Auto"
+      },
+      {
+       "label": "0.4us",
+       "value": "400nsec"
+      },
+      {
+       "label": "0.8us",
+       "value": "800nsec"
+      },
+      {
+       "label": "短",
+       "value": "800nsec"
+      },
+      {
+       "label": "长",
+       "value": "1600nsec"
+      }
+     ]
+    },
+    {
+     "id": "TransmitPower",
+     "selector": "#fhId_TransmitPower",
+     "label": "发射功率",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "20%",
+       "value": "20"
+      },
+      {
+       "label": "40%",
+       "value": "40"
+      },
+      {
+       "label": "60%",
+       "value": "60"
+      },
+      {
+       "label": "80%",
+       "value": "80"
+      },
+      {
+       "label": "100%",
+       "value": "100"
+      }
+     ]
+    },
+    {
+     "id": "OperatingChannelBandwidth",
+     "selector": "#fhId_OperatingChannelBandwidth",
+     "label": "信道宽度管理",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "20MHz",
+       "value": "20MHz"
+      },
+      {
+       "label": "40MHz",
+       "value": "40MHz"
+      },
+      {
+       "label": "20MHz/40MHz",
+       "value": "Auto"
+      }
+     ]
+    },
+    {
+     "id": "ExtensionChannel",
+     "selector": "#fhId_ExtensionChannel",
+     "label": "旁频宽",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "Upper",
+       "value": "AboveControlChannel"
+      },
+      {
+       "label": "Lower",
+       "value": "BelowControlChannel"
+      }
+     ]
+    },
+    {
+     "id": "LowRssiLimitEnable",
+     "selector": "#fhId_LowRssiLimitEnable",
+     "label": "阈值开关",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "LowRssiThreshold",
+     "selector": "#fhId_LowRssiThreshold",
+     "label": "阈值",
+     "type": "input",
+     "prop": "LowRssiThreshold",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": null,
+      "max": 0
+     }
+    },
+    {
+     "id": "BeaconPeriod",
+     "selector": "#fhId_BeaconPeriod",
+     "label": "Beacon信标帧发送间隔",
+     "type": "input",
+     "prop": "BeaconPeriod",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 20,
+      "max": 3500
+     }
+    },
+    {
+     "id": "DTIMPeriod",
+     "selector": "#fhId_DTIMPeriod",
+     "label": "DTIM间隔",
+     "type": "input",
+     "prop": "DTIMPeriod",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 255
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiAdvanced_5g",
+   "file": "wifiAdvanced_5g.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiAdvanced_5g",
+   "elements": [
+    {
+     "id": "OperatingStandards",
+     "selector": "#fhId_OperatingStandards",
+     "label": "无线模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "802.11na,ac,ax,be Mixed",
+       "value": "a,n,ac,ax,be"
+      },
+      {
+       "label": "802.11na,ac,ax Mixed",
+       "value": "a,n,ac,ax"
+      },
+      {
+       "label": "802.11ac",
+       "value": "a,n,ac"
+      },
+      {
+       "label": "802.11na",
+       "value": "a,n"
+      },
+      {
+       "label": "802.11a",
+       "value": "a"
+      },
+      {
+       "label": "802.11n",
+       "value": "n"
+      }
+     ]
+    },
+    {
+     "id": "Channel",
+     "selector": "#fhId_Channel",
+     "label": "(主)信道",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "MaxBitRate",
+     "selector": "#fhId_MaxBitRate",
+     "label": "802.11速率",
+     "type": "input",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "GuardInterval",
+     "selector": "#fhId_GuardInterval",
+     "label": "802.11保护间隔",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "0.8us",
+       "value": "800nsec"
+      },
+      {
+       "label": "1.6us",
+       "value": "1600nsec"
+      },
+      {
+       "label": "3.2us",
+       "value": "3200nsec"
+      },
+      {
+       "label": "Auto",
+       "value": "Auto"
+      },
+      {
+       "label": "0.4us",
+       "value": "400nsec"
+      },
+      {
+       "label": "0.8us",
+       "value": "800nsec"
+      },
+      {
+       "label": "短",
+       "value": "800nsec"
+      },
+      {
+       "label": "长",
+       "value": "1600nsec"
+      }
+     ]
+    },
+    {
+     "id": "TransmitPower",
+     "selector": "#fhId_TransmitPower",
+     "label": "发射功率",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "20%",
+       "value": "20"
+      },
+      {
+       "label": "40%",
+       "value": "40"
+      },
+      {
+       "label": "60%",
+       "value": "60"
+      },
+      {
+       "label": "80%",
+       "value": "80"
+      },
+      {
+       "label": "100%",
+       "value": "100"
+      }
+     ]
+    },
+    {
+     "id": "OperatingChannelBandwidth",
+     "selector": "#fhId_OperatingChannelBandwidth",
+     "label": "信道宽度管理",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "20MHz",
+       "value": "20MHz"
+      },
+      {
+       "label": "40MHz",
+       "value": "40MHz"
+      },
+      {
+       "label": "20MHz/40MHz",
+       "value": "Auto"
+      },
+      {
+       "label": "20MHz/40MHz/80MHz",
+       "value": "20/40/80MHz"
+      },
+      {
+       "label": "80MHz",
+       "value": "80MHz"
+      },
+      {
+       "label": "20MHz/40MHz/80MHz/160MHz",
+       "value": "20/40/80/160MHz"
+      },
+      {
+       "label": "160MHz",
+       "value": "160MHz"
+      }
+     ]
+    },
+    {
+     "id": "ExtensionChannel",
+     "selector": "#fhId_ExtensionChannel",
+     "label": "旁频宽",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "Upper",
+       "value": "AboveControlChannel"
+      },
+      {
+       "label": "Lower",
+       "value": "BelowControlChannel"
+      }
+     ]
+    },
+    {
+     "id": "LowRssiLimitEnable",
+     "selector": "#fhId_LowRssiLimitEnable",
+     "label": "阈值开关",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "LowRssiThreshold",
+     "selector": "#fhId_LowRssiThreshold",
+     "label": "阈值",
+     "type": "input",
+     "prop": "LowRssiThreshold",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": null,
+      "max": 0
+     }
+    },
+    {
+     "id": "BeaconPeriod",
+     "selector": "#fhId_BeaconPeriod",
+     "label": "Beacon信标帧发送间隔",
+     "type": "input",
+     "prop": "BeaconPeriod",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 20,
+      "max": 3500
+     }
+    },
+    {
+     "id": "DTIMPeriod",
+     "selector": "#fhId_DTIMPeriod",
+     "label": "DTIM间隔",
+     "type": "input",
+     "prop": "DTIMPeriod",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 255
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiBasic",
+   "file": "wifiBasic.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiBasic",
+   "elements": [
+    {
+     "id": "ssidSel",
+     "selector": "#fhId_ssidSel",
+     "label": "SSID索引",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "onApplySameSSID",
+     "selector": "#fhId_onApplySameSSID",
+     "label": "双频合一",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SsidCfgSyncEnable",
+     "selector": "#fhId_SsidCfgSyncEnable",
+     "label": "同步配置到5G",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID",
+     "selector": "#fhId_SSID",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID",
+     "options": []
+    },
+    {
+     "id": "SSIDAdvertisementEnabled",
+     "selector": "#fhId_SSIDAdvertisementEnabled",
+     "label": "SSID隐藏",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "ModeEnabled",
+     "selector": "#fhId_ModeEnabled",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK",
+       "value": "WPA-Personal"
+      },
+      {
+       "label": "SHARED",
+       "value": "WEP"
+      },
+      {
+       "label": "BOTH",
+       "value": "BOTH"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode",
+     "selector": "#fhId_EncryptionMode",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP",
+       "value": "TKIP"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "WEP",
+       "value": "WEPEncryption"
+      },
+      {
+       "label": "None",
+       "value": "NONE"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey",
+     "selector": "#fhId_PreSharedKey",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey",
+     "options": []
+    },
+    {
+     "id": "WEPEncryptionLevel",
+     "selector": "#fhId_WEPEncryptionLevel",
+     "label": "加密长度",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "64位",
+       "value": "64"
+      },
+      {
+       "label": "128位",
+       "value": "128"
+      }
+     ]
+    },
+    {
+     "id": "WEPKeyIndex",
+     "selector": "#fhId_WEPKeyIndex",
+     "label": "当前网络密钥索引号",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "1",
+       "value": "1"
+      },
+      {
+       "label": "2",
+       "value": "2"
+      },
+      {
+       "label": "3",
+       "value": "3"
+      },
+      {
+       "label": "4",
+       "value": "4"
+      }
+     ]
+    },
+    {
+     "id": "WEPKey1",
+     "selector": "#fhId_WEPKey1",
+     "label": "网络密钥 1",
+     "type": "input",
+     "prop": "WEPKey1",
+     "options": []
+    },
+    {
+     "id": "WEPKey2",
+     "selector": "#fhId_WEPKey2",
+     "label": "网络密钥 2",
+     "type": "input",
+     "prop": "WEPKey2",
+     "options": []
+    },
+    {
+     "id": "WEPKey3",
+     "selector": "#fhId_WEPKey3",
+     "label": "网络密钥 3",
+     "type": "input",
+     "prop": "WEPKey3",
+     "options": []
+    },
+    {
+     "id": "WEPKey4",
+     "selector": "#fhId_WEPKey4",
+     "label": "网络密钥 4",
+     "type": "input",
+     "prop": "WEPKey4",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiBasic_5g",
+   "file": "wifiBasic_5g.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiBasic_5g",
+   "elements": [
+    {
+     "id": "ssidSel",
+     "selector": "#fhId_ssidSel",
+     "label": "SSID索引",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "item.name",
+       "value": "item.value"
+      }
+     ]
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID",
+     "selector": "#fhId_SSID",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID",
+     "options": []
+    },
+    {
+     "id": "SSIDAdvertisementEnabled",
+     "selector": "#fhId_SSIDAdvertisementEnabled",
+     "label": "SSID隐藏",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "ModeEnabled",
+     "selector": "#fhId_ModeEnabled",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK",
+       "value": "WPA-Personal"
+      },
+      {
+       "label": "SHARED",
+       "value": "WEP"
+      },
+      {
+       "label": "BOTH",
+       "value": "BOTH"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode",
+     "selector": "#fhId_EncryptionMode",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP",
+       "value": "TKIP"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "WEP",
+       "value": "WEPEncryption"
+      },
+      {
+       "label": "None",
+       "value": "NONE"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey",
+     "selector": "#fhId_PreSharedKey",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey",
+     "options": []
+    },
+    {
+     "id": "WEPEncryptionLevel",
+     "selector": "#fhId_WEPEncryptionLevel",
+     "label": "加密长度",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "64位",
+       "value": "64"
+      },
+      {
+       "label": "128位",
+       "value": "128"
+      }
+     ]
+    },
+    {
+     "id": "WEPKeyIndex",
+     "selector": "#fhId_WEPKeyIndex",
+     "label": "当前网络密钥索引号",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "1",
+       "value": "1"
+      },
+      {
+       "label": "2",
+       "value": "2"
+      },
+      {
+       "label": "3",
+       "value": "3"
+      },
+      {
+       "label": "4",
+       "value": "4"
+      }
+     ]
+    },
+    {
+     "id": "WEPKey1",
+     "selector": "#fhId_WEPKey1",
+     "label": "网络密钥 1",
+     "type": "input",
+     "prop": "WEPKey1",
+     "options": []
+    },
+    {
+     "id": "WEPKey2",
+     "selector": "#fhId_WEPKey2",
+     "label": "网络密钥 2",
+     "type": "input",
+     "prop": "WEPKey2",
+     "options": []
+    },
+    {
+     "id": "WEPKey3",
+     "selector": "#fhId_WEPKey3",
+     "label": "网络密钥 3",
+     "type": "input",
+     "prop": "WEPKey3",
+     "options": []
+    },
+    {
+     "id": "WEPKey4",
+     "selector": "#fhId_WEPKey4",
+     "label": "网络密钥 4",
+     "type": "input",
+     "prop": "WEPKey4",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiEnable",
+   "file": "wifiEnable.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiEnable",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "SSID总开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiMACAddressControl",
+   "file": "wifiMACAddressControl.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiMACAddressControl",
+   "elements": [
+    {
+     "id": "onApplyMacControl",
+     "selector": "#fhId_onApplyMacControl",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "MAC",
+     "selector": "#fhId_MAC",
+     "label": "MAC地址",
+     "type": "input",
+     "prop": "MAC",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "delData",
+     "selector": "#fhId_delData",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": [],
+     "text": "删除"
+    }
+   ]
+  },
+  {
+   "component": "wifiMainSubRoam",
+   "file": "wifiMainSubRoam.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiMainSubRoam",
+   "elements": [
+    {
+     "id": "Threshold2",
+     "selector": "#fhId_Threshold2",
+     "label": "2.4G频段切换阈值",
+     "type": "input",
+     "prop": "Threshold2",
+     "options": []
+    },
+    {
+     "id": "Threshold5",
+     "selector": "#fhId_Threshold5",
+     "label": "5G频段切换阈值",
+     "type": "input",
+     "prop": "Threshold5",
+     "options": []
+    },
+    {
+     "id": "Gap5",
+     "selector": "#fhId_Gap5",
+     "label": "信号强度差值",
+     "type": "input",
+     "prop": "Gap5",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 10
+     }
+    },
+    {
+     "id": "rssi_24g",
+     "selector": "#fhId_rssi_24g",
+     "label": "2.4G 弱信号RSSI阈值",
+     "type": "input",
+     "prop": "rssi_24g",
+     "options": []
+    },
+    {
+     "id": "rssi_5g",
+     "selector": "#fhId_rssi_5g",
+     "label": "5G 弱信号RSSI阈值",
+     "type": "input",
+     "prop": "rssi_5g",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiRadioEnable",
+   "file": "wifiRadioEnable.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiRadioEnable",
+   "elements": [
+    {
+     "id": "Enable2g",
+     "selector": "#fhId_Enable2g",
+     "label": "2.4G SSID频段开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Enable5g",
+     "selector": "#fhId_Enable5g",
+     "label": "5G SSID频段开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiRoam",
+   "file": "wifiRoam.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiRoam",
+   "elements": [
+    {
+     "id": "Switch",
+     "selector": "#fhId_Switch",
+     "label": "switchTip",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "LowRLFBAND",
+     "selector": "#fhId_LowRLFBAND",
+     "label": "lowTip",
+     "type": "input",
+     "prop": "LowRLFBAND",
+     "options": []
+    },
+    {
+     "id": "LowRHFBAND",
+     "selector": "#fhId_LowRHFBAND",
+     "label": "5GHz无线接口频段",
+     "type": "input",
+     "prop": "LowRHFBAND",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": null,
+      "max": 0
+     }
+    },
+    {
+     "id": "PacketLoss",
+     "selector": "#fhId_PacketLoss",
+     "label": "丢包比率",
+     "type": "input",
+     "prop": "PacketLoss",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 100
+     }
+    },
+    {
+     "id": "RetryRatio",
+     "selector": "#fhId_RetryRatio",
+     "label": "重传比率",
+     "type": "input",
+     "prop": "RetryRatio",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": 100
+     }
+    },
+    {
+     "id": "LowRSSIPeriod",
+     "selector": "#fhId_LowRSSIPeriod",
+     "label": "触发弱信号上报时延",
+     "type": "input",
+     "prop": "LowRSSIPeriod",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": null
+     }
+    },
+    {
+     "id": "DetectPeriod",
+     "selector": "#fhId_DetectPeriod",
+     "label": "同步网络质量接口上报时间",
+     "type": "input",
+     "prop": "DetectPeriod",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": null
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifibak",
+   "file": "wifibak.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifibak",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "2.4G 备用WiFi开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID",
+     "selector": "#fhId_SSID",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID",
+     "options": []
+    },
+    {
+     "id": "ModeEnabled",
+     "selector": "#fhId_ModeEnabled",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK",
+       "value": "WPA-Personal"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode",
+     "selector": "#fhId_EncryptionMode",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP",
+       "value": "TKIP"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey",
+     "selector": "#fhId_PreSharedKey",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey",
+     "options": []
+    },
+    {
+     "id": "Enable5g",
+     "selector": "#fhId_Enable5g",
+     "label": "5G 备用WiFi开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID5g",
+     "selector": "#fhId_SSID5g",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID5g",
+     "options": []
+    },
+    {
+     "id": "ModeEnabled5g",
+     "selector": "#fhId_ModeEnabled5g",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK",
+       "value": "WPA-Personal"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode5g",
+     "selector": "#fhId_EncryptionMode5g",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP",
+       "value": "TKIP"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey5g",
+     "selector": "#fhId_PreSharedKey5g",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey5g",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wificonfig",
+   "file": "wificonfig.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wificonfig",
+   "elements": [
+    {
+     "id": "onApplySameSSID",
+     "selector": "#fhId_onApplySameSSID",
+     "label": "双频合一",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "启用",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID",
+     "selector": "#fhId_SSID",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID",
+     "options": []
+    },
+    {
+     "id": "SSIDAdvertisementEnabled",
+     "selector": "#fhId_SSIDAdvertisementEnabled",
+     "label": "SSID隐身",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "ModeEnabled",
+     "selector": "#fhId_ModeEnabled",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK",
+       "value": "WPA-Personal"
+      },
+      {
+       "label": "SHARED",
+       "value": "WEP"
+      },
+      {
+       "label": "BOTH",
+       "value": "BOTH"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode",
+     "selector": "#fhId_EncryptionMode",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP",
+       "value": "TKIP"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "WEP",
+       "value": "WEPEncryption"
+      },
+      {
+       "label": "None",
+       "value": "NONE"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey",
+     "selector": "#fhId_PreSharedKey",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey",
+     "options": []
+    },
+    {
+     "id": "WEPEncryptionLevel",
+     "selector": "#fhId_WEPEncryptionLevel",
+     "label": "加密长度",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "64位",
+       "value": "64"
+      },
+      {
+       "label": "128位",
+       "value": "128"
+      }
+     ]
+    },
+    {
+     "id": "WEPKeyIndex",
+     "selector": "#fhId_WEPKeyIndex",
+     "label": "当前网络密钥索引号",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "1",
+       "value": "1"
+      },
+      {
+       "label": "2",
+       "value": "2"
+      },
+      {
+       "label": "3",
+       "value": "3"
+      },
+      {
+       "label": "4",
+       "value": "4"
+      }
+     ]
+    },
+    {
+     "id": "WEPKey1",
+     "selector": "#fhId_WEPKey1",
+     "label": "网络密钥 1",
+     "type": "input",
+     "prop": "WEPKey1",
+     "options": []
+    },
+    {
+     "id": "WEPKey2",
+     "selector": "#fhId_WEPKey2",
+     "label": "网络密钥 2",
+     "type": "input",
+     "prop": "WEPKey2",
+     "options": []
+    },
+    {
+     "id": "WEPKey3",
+     "selector": "#fhId_WEPKey3",
+     "label": "网络密钥 3",
+     "type": "input",
+     "prop": "WEPKey3",
+     "options": []
+    },
+    {
+     "id": "WEPKey4",
+     "selector": "#fhId_WEPKey4",
+     "label": "网络密钥 4",
+     "type": "input",
+     "prop": "WEPKey4",
+     "options": []
+    },
+    {
+     "id": "Enable5G",
+     "selector": "#fhId_Enable5G",
+     "label": "启用",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID5G",
+     "selector": "#fhId_SSID5G",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID5G",
+     "options": []
+    },
+    {
+     "id": "SSIDAdvertisementEnabled5G",
+     "selector": "#fhId_SSIDAdvertisementEnabled5G",
+     "label": "SSID隐身",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "ModeEnabled5G",
+     "selector": "#fhId_ModeEnabled5G",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK",
+       "value": "WPA-Personal"
+      },
+      {
+       "label": "SHARED",
+       "value": "WEP"
+      },
+      {
+       "label": "BOTH",
+       "value": "BOTH"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode5G",
+     "selector": "#fhId_EncryptionMode5G",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP",
+       "value": "TKIP"
+      },
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "WEP",
+       "value": "WEPEncryption"
+      },
+      {
+       "label": "None",
+       "value": "NONE"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey5G",
+     "selector": "#fhId_PreSharedKey5G",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey5G",
+     "options": []
+    },
+    {
+     "id": "WEPEncryptionLevel5G",
+     "selector": "#fhId_WEPEncryptionLevel5G",
+     "label": "加密长度",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "64位",
+       "value": "64"
+      },
+      {
+       "label": "128位",
+       "value": "128"
+      }
+     ]
+    },
+    {
+     "id": "WEPKeyIndex5G",
+     "selector": "#fhId_WEPKeyIndex5G",
+     "label": "当前网络密钥索引号",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "1",
+       "value": "1"
+      },
+      {
+       "label": "2",
+       "value": "2"
+      },
+      {
+       "label": "3",
+       "value": "3"
+      },
+      {
+       "label": "4",
+       "value": "4"
+      }
+     ]
+    },
+    {
+     "id": "WEPKey15G",
+     "selector": "#fhId_WEPKey15G",
+     "label": "网络密钥 1",
+     "type": "input",
+     "prop": "WEPKey15G",
+     "options": []
+    },
+    {
+     "id": "WEPKey25G",
+     "selector": "#fhId_WEPKey25G",
+     "label": "网络密钥 2",
+     "type": "input",
+     "prop": "WEPKey25G",
+     "options": []
+    },
+    {
+     "id": "WEPKey35G",
+     "selector": "#fhId_WEPKey35G",
+     "label": "网络密钥 3",
+     "type": "input",
+     "prop": "WEPKey35G",
+     "options": []
+    },
+    {
+     "id": "WEPKey45G",
+     "selector": "#fhId_WEPKey45G",
+     "label": "网络密钥 4",
+     "type": "input",
+     "prop": "WEPKey45G",
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiguest",
+   "file": "wifiguest.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifiguest",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "2.4G访客WiFi开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID",
+     "selector": "#fhId_SSID",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID",
+     "options": []
+    },
+    {
+     "id": "SSIDAdvertisementEnabled",
+     "selector": "#fhId_SSIDAdvertisementEnabled",
+     "label": "SSID隐藏",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "ModeEnabled",
+     "selector": "#fhId_ModeEnabled",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK",
+       "value": "WPA-Personal"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode",
+     "selector": "#fhId_EncryptionMode",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP",
+       "value": "TKIP"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey",
+     "selector": "#fhId_PreSharedKey",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey",
+     "options": []
+    },
+    {
+     "id": "Duration",
+     "selector": "#fhId_Duration",
+     "label": "持续时间",
+     "type": "select",
+     "prop": "Duration",
+     "options": [
+      {
+       "label": "永久",
+       "value": "0"
+      },
+      {
+       "label": "分钟",
+       "value": "1"
+      },
+      {
+       "label": "小时",
+       "value": "60"
+      },
+      {
+       "label": "天",
+       "value": "1440"
+      }
+     ]
+    },
+    {
+     "id": "Enable5g",
+     "selector": "#fhId_Enable5g",
+     "label": "5G访客WiFi开关",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID5g",
+     "selector": "#fhId_SSID5g",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID5g",
+     "options": []
+    },
+    {
+     "id": "SSIDAdvertisementEnabled5g",
+     "selector": "#fhId_SSIDAdvertisementEnabled5g",
+     "label": "SSID隐藏",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "ModeEnabled5g",
+     "selector": "#fhId_ModeEnabled5g",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK",
+       "value": "WPA-Personal"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode5g",
+     "selector": "#fhId_EncryptionMode5g",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP+AES",
+       "value": "TKIPandAES"
+      },
+      {
+       "label": "TKIP",
+       "value": "TKIP"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey5g",
+     "selector": "#fhId_PreSharedKey5g",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey5g",
+     "options": []
+    },
+    {
+     "id": "Duration5g",
+     "selector": "#fhId_Duration5g",
+     "label": "持续时间",
+     "type": "select",
+     "prop": "Duration5g",
+     "options": [
+      {
+       "label": "永久",
+       "value": "0"
+      },
+      {
+       "label": "分钟",
+       "value": "1"
+      },
+      {
+       "label": "小时",
+       "value": "60"
+      },
+      {
+       "label": "天",
+       "value": "1440"
+      }
+     ]
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifiios",
+   "file": "wifiios.js",
+   "title": "IOS兼容",
+   "hint": null,
+   "route": null,
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "IOS兼容",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wifimlo",
+   "file": "wifimlo.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wifimlo",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "MLO使能",
+     "type": "switch",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "SSID",
+     "selector": "#fhId_SSID",
+     "label": "SSID",
+     "type": "input",
+     "prop": "SSID",
+     "options": []
+    },
+    {
+     "id": "ModeEnabled",
+     "selector": "#fhId_ModeEnabled",
+     "label": "网络认证方式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "WPA3-SAE",
+       "value": "WPA3-Personal"
+      },
+      {
+       "label": "WPA2-PSK/WPA3-SAE",
+       "value": "WPA3-Personal-Transition"
+      },
+      {
+       "label": "WPA2-PSK",
+       "value": "WPA2-Personal"
+      },
+      {
+       "label": "WPA-PSK/WPA2-PSK",
+       "value": "WPA-WPA2-Personal"
+      },
+      {
+       "label": "OpenSystem",
+       "value": "None"
+      }
+     ]
+    },
+    {
+     "id": "EncryptionMode",
+     "selector": "#fhId_EncryptionMode",
+     "label": "加密模式",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "AES",
+       "value": "AES"
+      },
+      {
+       "label": "TKIP/AES",
+       "value": "TKIPandAES"
+      }
+     ]
+    },
+    {
+     "id": "PreSharedKey",
+     "selector": "#fhId_PreSharedKey",
+     "label": "WPA 预共享密钥",
+     "type": "input",
+     "prop": "PreSharedKey",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wlanShare",
+   "file": "wlanShare.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wlanShare",
+   "elements": [
+    {
+     "id": "selSSID",
+     "selector": "#fhId_selSSID",
+     "label": "共享SSID",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "2",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "id": "EnableUserId",
+     "selector": "#fhId_EnableUserId",
+     "label": "启用共享标识",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "UserId",
+     "selector": "#fhId_UserId",
+     "label": "用户标识信息",
+     "type": "input",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "PortIsolation",
+     "selector": "#fhId_PortIsolation",
+     "label": "端口隔离",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "STAIsolation",
+     "selector": "#fhId_STAIsolation",
+     "label": "STA隔离",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "wpsSettings",
+   "file": "wpsSettings.js",
+   "title": null,
+   "hint": null,
+   "route": "/network/wifiSettings/wpsSettings",
+   "elements": [
+    {
+     "id": "FrequencyBand",
+     "selector": "#fhId_FrequencyBand",
+     "label": "频宽",
+     "type": "select",
+     "prop": null,
+     "options": [
+      {
+       "label": "2.4G",
+       "value": "2.4G"
+      },
+      {
+       "label": "5G",
+       "value": "5G"
+      }
+     ]
+    },
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "使能",
+     "type": "switch",
+     "prop": "Enable",
+     "options": []
+    },
+    {
+     "id": "PushButton",
+     "selector": "#fhId_PushButton",
+     "label": "连接方式",
+     "type": "radio",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "pincode",
+     "selector": "#fhId_pincode",
+     "label": "PIN码",
+     "type": "input",
+     "prop": "pinCode",
+     "options": []
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  },
+  {
+   "component": "xcmccautoreset",
+   "file": "xcmccautoreset.js",
+   "title": null,
+   "hint": null,
+   "route": "/management/deviceManagement/xcmccautoreset",
+   "elements": [
+    {
+     "id": "Enable",
+     "selector": "#fhId_Enable",
+     "label": "开启定时重启",
+     "type": "checkbox",
+     "prop": null,
+     "options": []
+    },
+    {
+     "id": "RestType",
+     "selector": "#fhId_RestType",
+     "label": "间隔时间",
+     "type": "input",
+     "prop": "RestType",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 1,
+      "max": 99
+     }
+    },
+    {
+     "id": "TrafficThreshold",
+     "selector": "#fhId_TrafficThreshold",
+     "label": "WAN流量阈值",
+     "type": "input",
+     "prop": "TrafficThreshold",
+     "options": [],
+     "validation": {
+      "type": "number",
+      "min": 0,
+      "max": null
+     }
+    },
+    {
+     "id": "onApply",
+     "selector": "#fhId_onApply",
+     "label": null,
+     "type": "button",
+     "prop": null,
+     "options": []
+    }
+   ]
+  }
+ ]
+}

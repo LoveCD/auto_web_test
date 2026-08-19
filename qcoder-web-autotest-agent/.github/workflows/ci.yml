@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  python-tests:
+    name: Python (mock) + NL generator
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install chromium --with-deps
+
+      - name: NL case generation (offline, uses index cache)
+        run: |
+          python -m generator.generate_case --operator cm --query "测试wan连接页面vlan绑定功能"
+          python -m generator.generate_case --operator cm --query "测试wifi基础设置功能支持320MHZ频段设置"
+
+      - name: Run INTL mock smoke
+        run: python runner/run_suite.py --operator intl --env mock --suite smoke
+
+      - name: Run CM mock smoke
+        run: python runner/run_suite.py --operator cm --env mock --suite mock_smoke
+
+  node-e2e-bootstrap:
+    name: Node e2e_bootstrap (demo + DOCX report)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: e2e_bootstrap
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npx playwright install chromium --with-deps
+
+      - name: Generate case skeleton from 3-field spec
+        run: npm run test:generate -- --input ./TEST_CASE_SPEC.md --name ci-smoke
+
+      - name: Run tests (demo + generated skeletons)
+        run: npm test
+
+      - name: Verify DOCX self-test report produced
+        run: |
+          ls self-test-reports/*.docx
+          ls playwright-report/index.html

@@ -1,0 +1,62 @@
+{
+  "login": {
+    "url": "/login.html",
+    "selectors": {
+      "username": "#user_name",
+      "password": "#loginpp",
+      "submit": "#login_btn",
+      "reset": "#reset_btn",
+      "error_hint": "#login_error_hint",
+      "alt_username": "#user_name_ap",
+      "alt_password": "#loginpp_ap",
+      "alt_submit": "#login_btn_ap"
+    },
+    "expected_text": {
+      "success_redirect_path": "/main.html",
+      "error_text": "用户名或密码输入错误"
+    }
+  },
+  "main": {
+    "url": "/main.html",
+    "selectors": {
+      "app_container": "#app",
+      "main_content": "#el_main",
+      "gateway_model_label": "text=型号：",
+      "logout_btn": "text=退出",
+      "logout_confirm_btn": "text=确定"
+    },
+    "expected_text": {
+      "welcome": "欢迎您",
+      "model": "HG3142F2"
+    }
+  },
+  "menu": {
+    "selectors": {
+      "L1_container": "#MenuArea_L1",
+      "L2_container": "#MenuArea_L2",
+      "item_prefix": "#fhId_{title}_L{level}"
+    },
+    "L1_map": {
+      "status": "状态",
+      "network": "网络",
+      "security": "安全",
+      "application": "应用",
+      "management": "管理",
+      "diagnosis": "诊断",
+      "help": "帮助"
+    }
+  },
+  "page": {
+    "container_prefix": "#fhId_{component}",
+    "common_elements": {
+      "apply_button": "#fhId_onApply",
+      "enable_switch": "#fhId_Enable",
+      "ssid_input": "#fhId_SSID",
+      "password_input": "#fhId_PreSharedKey"
+    }
+  },
+  "screenshot": {
+    "capture_full_page": false,
+    "default_viewport": {"width": 1440, "height": 900}
+  }
+}

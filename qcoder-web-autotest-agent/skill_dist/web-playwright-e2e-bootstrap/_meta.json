@@ -1,0 +1,9 @@
+{
+  "slug": "web-playwright-e2e-bootstrap",
+  "version": "1.0.0",
+  "name": "Web Playwright E2E Bootstrap",
+  "description": "Playwright E2E 快速引导：三字段极简输入（测试类型/测试网址/测试内容）生成用例骨架，HTML/DOCX 自测报告（截图嵌入用例备注），可选串口节点回读。已集成于 qcoder-web-autotest-agent 工程的 e2e_bootstrap/",
+  "category": "testing",
+  "compatibility": "WorkBuddy skill (SKILL.md) + QCoder SkillHub (zip)",
+  "keywords": ["playwright", "e2e", "bootstrap", "docx-report", "test-generation", "self-test"]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "qcoder-web-autotest-e2e",
+  "version": "0.3.0",
+  "private": true,
+  "description": "qcoder-web-autotest-agent 内置 Playwright E2E 基线（用例骨架生成 + HTML/DOCX 自测报告，模板来自 web-playwright-e2e-bootstrap 技能）",
+  "scripts": {
+    "test": "playwright test",
+    "test:demo": "playwright test tests/demo.spec.js",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "test:generate": "node ./scripts/generate-case-from-spec.js",
+    "serial:node-readback": "powershell -ExecutionPolicy Bypass -File ./scripts/serial-node-readback.ps1 -EnvFile ./.env"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "dotenv": "^16.4.5",
+    "jszip": "^3.10.1"
+  }
+}

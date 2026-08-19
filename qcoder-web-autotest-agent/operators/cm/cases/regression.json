@@ -1,0 +1,118 @@
+{
+  "suite_id": "CM-REAL-REGRESSION",
+  "operator": "cm",
+  "env": "real",
+  "cases": [
+    {
+      "id": "TC-CM-LOGIN-NEG-001",
+      "module": "Login",
+      "priority": "P1",
+      "auto_login": false,
+      "title": "错误密码登录失败提示",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.fill", "params": {"selector": "login.username", "value": "${QCT_CM_ADMIN_USER}"}},
+        {"action": "real.fill", "params": {"selector": "login.password", "value": "wrongpass"}},
+        {"action": "real.click", "params": {"selector": "login.submit"}},
+        {"action": "real.wait", "params": {"ms": 1500}},
+        {"action": "real.screenshot", "params": {"name": "login_wrong_password"}},
+        {"action": "real.assert_login_error"}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGIN-ROLE-001",
+      "module": "Login",
+      "priority": "P1",
+      "title": "普通用户 user 可登录",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.login", "params": {"role": "user"}},
+        {"action": "real.screenshot", "params": {"name": "login_user_role"}},
+        {"action": "real.assert_page", "params": {"component": "deviceInfo"},
+          "expect": {"url_contains": "main.html"}}
+      ]
+    },
+    {
+      "id": "TC-CM-NAV-001",
+      "module": "Navigation",
+      "priority": "P1",
+      "title": "通过菜单点击进入网络-WiFi 设置",
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.click_menu", "params": {"level": 1, "title": "network"}},
+        {"action": "real.click_menu", "params": {"level": 2, "title": "wifiSettings"}},
+        {"action": "real.click_menu", "params": {"level": 3, "title": "wifiBasicSettings"}},
+        {"action": "real.screenshot", "params": {"name": "nav_menu_wifi"}},
+        {"action": "real.assert_page", "params": {"component": "wifiBasic"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-NETWORK-WIFI-001",
+      "module": "Network",
+      "priority": "P1",
+      "title": "2.4G 无线基本配置页渲染并支持频段切换",
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wifiBasic"}},
+        {"action": "real.screenshot", "params": {"name": "wifi_2g"}},
+        {"action": "real.assert_page", "params": {"component": "wifiBasic"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-SECURITY-URL-001",
+      "module": "Security",
+      "priority": "P1",
+      "title": "广域网访问设置页渲染",
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/security/urlFilter/urlFilter"}},
+        {"action": "real.screenshot", "params": {"name": "security_urlFilter"}},
+        {"action": "real.assert_page", "params": {"component": "urlFilter"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-APPLICATION-DMZ-001",
+      "module": "Application",
+      "priority": "P1",
+      "title": "应用-DMZ 页渲染",
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/application/nat/dmz"}},
+        {"action": "real.screenshot", "params": {"name": "app_dmz"}},
+        {"action": "real.assert_page", "params": {"component": "dmz"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-MANAGEMENT-RESTORE-001",
+      "module": "Management",
+      "priority": "P1",
+      "title": "恢复出厂页存在但不执行",
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/restoreDefault"}},
+        {"action": "real.screenshot", "params": {"name": "mgmt_restoreDefault"}},
+        {"action": "real.assert_page", "params": {"component": "restoreDefault"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-CONSISTENCY-001",
+      "module": "Consistency",
+      "priority": "P1",
+      "title": "状态页与设置页 SSID 信息一致（截图留痕）",
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/status/userInfo/wifiInfo"}},
+        {"action": "real.screenshot", "params": {"name": "consistency_status_wifi"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wifiBasic"}},
+        {"action": "real.screenshot", "params": {"name": "consistency_setting_wifi"}},
+        {"action": "real.assert_page", "params": {"component": "wifiBasic"},
+          "expect": {"visible": "page.container"}}
+      ]
+    }
+  ]
+}

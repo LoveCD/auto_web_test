@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home Gateway - Wi-Fi</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">FiberHome <span>Home Gateway</span></div>
+  <div class="user-area">
+    <span id="login_user">admin</span>
+    <a href="#" id="logout_link" onclick="doLogout()">Logout</a>
+  </div>
+</div>
+<div class="layout">
+  <div class="menu">
+    <div class="menu-title">Status</div>
+    <a class="menu-item" id="menu_status" href="/status.html">Device Info</a>
+    <div class="menu-title">Network</div>
+    <a class="menu-item active" id="menu_wifi" href="/wifi.html">Wi-Fi</a>
+    <a class="menu-item" id="menu_wan" href="/wan.html">WAN</a>
+    <a class="menu-item" id="menu_lan" href="/lan.html">LAN</a>
+    <div class="menu-title">Maintenance</div>
+    <a class="menu-item" id="menu_system" href="/system.html">System</a>
+    <a class="menu-item" id="menu_upgrade" href="/upgrade.html">Firmware Upgrade</a>
+  </div>
+  <div class="content">
+    <div class="card">
+      <h2>Wi-Fi Basic Settings (2.4G)</h2>
+      <div class="form-row">
+        <label>Enable Wi-Fi</label>
+        <input type="checkbox" id="wifi_enabled" />
+        <span class="hint">Master wireless switch</span>
+      </div>
+      <div class="form-row">
+        <label for="ssid">SSID</label>
+        <input type="text" id="ssid" />
+        <span class="form-error" id="ssid_error"></span>
+      </div>
+      <div class="form-row">
+        <label for="security_mode">Security Mode</label>
+        <select id="security_mode">
+          <option value="WPA2-PSK">WPA2-PSK</option>
+          <option value="WPA3-Personal">WPA3-Personal</option>
+          <option value="WPA2/WPA3">WPA2/WPA3</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="wifi_password">Wi-Fi Password</label>
+        <input type="password" id="wifi_password" maxlength="63" />
+        <span class="hint">8-63 characters</span>
+        <span class="form-error" id="pwd_error"></span>
+      </div>
+      <div class="form-row">
+        <label></label>
+        <button class="btn btn-primary" id="save_wifi" onclick="saveWifi()">Apply</button>
+        <button class="btn btn-default" id="reset_wifi" onclick="loadWifi()" style="margin-left:10px;">Reset</button>
+      </div>
+      <div class="toast" id="wifi_msg"></div>
+    </div>
+  </div>
+</div>
+<script>
+function doLogout() {
+  fetch("/api/logout", { method: "POST" }).then(function () {
+    window.location.href = "/login.html";
+  });
+}
+function loadWifi() {
+  fetch("/api/wifi").then(function (r) { return r.json(); }).then(function (w) {
+    document.getElementById("wifi_enabled").checked = !!w.enabled;
+    document.getElementById("ssid").value = w.ssid || "";
+    document.getElementById("security_mode").value = w.security || "WPA2-PSK";
+    document.getElementById("wifi_password").value = "";
+  });
+}
+function showMsg(ok, text) {
+  var el = document.getElementById("wifi_msg");
+  el.className = "toast " + (ok ? "success" : "error");
+  el.style.display = "block";
+  el.textContent = text;
+}
+function saveWifi() {
+  document.getElementById("ssid_error").textContent = "";
+  document.getElementById("pwd_error").textContent = "";
+  var payload = {
+    enabled: document.getElementById("wifi_enabled").checked,
+    ssid: document.getElementById("ssid").value.trim(),
+    password: document.getElementById("wifi_password").value,
+    security: document.getElementById("security_mode").value
+  };
+  fetch("/api/wifi", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  }).then(function (resp) {
+    return resp.json().then(function (data) {
+      if (resp.ok) {
+        showMsg(true, "Wi-Fi settings applied successfully. New SSID: " + data.ssid);
+      } else if (data.error && data.error.indexOf("ssid") !== -1) {
+        document.getElementById("ssid_error").textContent = "SSID must be 1-32 characters";
+        showMsg(false, data.error);
+      } else if (data.error && data.error.indexOf("password") !== -1) {
+        document.getElementById("pwd_error").textContent = "Password must be 8-63 characters";
+        showMsg(false, data.error);
+      } else {
+        showMsg(false, data.error || "Apply failed");
+      }
+    });
+  }).catch(function () { showMsg(false, "Network error"); });
+}
+loadWifi();
+</script>
+</body>
+</html>

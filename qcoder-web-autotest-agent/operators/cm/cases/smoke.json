@@ -1,0 +1,138 @@
+{
+  "suite_id": "CM-REAL-SMOKE",
+  "operator": "cm",
+  "env": "real",
+  "cases": [
+    {
+      "id": "TC-CM-LOGIN-001",
+      "module": "Login",
+      "priority": "P0",
+      "title": "管理员账号登录成功",
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.login", "params": {"role": "admin"},
+          "expect": {"url_contains": "main.html", "visible": "main.app_container", "text_contains": "main.gateway_model_label"}},
+        {"action": "real.screenshot", "params": {"name": "01_login_success_main"}}
+      ]
+    },
+    {
+      "id": "TC-CM-STATUS-001",
+      "module": "Status",
+      "priority": "P0",
+      "title": "状态-设备信息页渲染",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/status/deviceInfo/deviceInfo"}},
+        {"action": "real.screenshot", "params": {"name": "02_status_deviceInfo"}},
+        {"action": "real.assert_page", "params": {"component": "deviceInfo"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-STATUS-002",
+      "module": "Status",
+      "priority": "P0",
+      "title": "状态-网络侧信息页渲染",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/status/networkInfo/ipconInfo"}},
+        {"action": "real.screenshot", "params": {"name": "03_status_ipconInfo"}},
+        {"action": "real.assert_page", "params": {"component": "ipconInfo"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-NETWORK-001",
+      "module": "Network",
+      "priority": "P0",
+      "title": "网络-2.4G Wi-Fi 基本设置页渲染",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/network/wifiSettings/wifiBasic"}},
+        {"action": "real.screenshot", "params": {"name": "04_network_wifiBasic"}},
+        {"action": "real.assert_page", "params": {"component": "wifiBasic"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-NETWORK-002",
+      "module": "Network",
+      "priority": "P0",
+      "title": "网络-宽带连接页渲染",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.screenshot", "params": {"name": "05_network_networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-NETWORK-003",
+      "module": "Network",
+      "priority": "P0",
+      "title": "网络-LAN IPv4 设置页渲染",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/network/lanSettings/ipv4Settings"}},
+        {"action": "real.screenshot", "params": {"name": "06_network_ipv4Settings"}},
+        {"action": "real.assert_page", "params": {"component": "ipv4Settings"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-SECURITY-001",
+      "module": "Security",
+      "priority": "P0",
+      "title": "安全-防火墙页渲染",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/security/firewall/firewall"}},
+        {"action": "real.screenshot", "params": {"name": "07_security_firewall"}},
+        {"action": "real.assert_page", "params": {"component": "firewall"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-MANAGEMENT-001",
+      "module": "Management",
+      "priority": "P0",
+      "title": "管理-用户管理页渲染",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/management/userManagement/userManagement"}},
+        {"action": "real.screenshot", "params": {"name": "08_management_userManagement"}},
+        {"action": "real.assert_page", "params": {"component": "userManagement"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-MANAGEMENT-002",
+      "module": "Management",
+      "priority": "P0",
+      "title": "管理-固件升级页渲染（只读）",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/firmwareUp"}},
+        {"action": "real.screenshot", "params": {"name": "09_management_firmwareUp"}},
+        {"action": "real.assert_page", "params": {"component": "firmwareUp"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-MANAGEMENT-003",
+      "module": "Management",
+      "priority": "P0",
+      "title": "管理-重启设备页渲染（只读，不执行）",
+      "steps": [
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/rebootDevice"}},
+        {"action": "real.screenshot", "params": {"name": "10_management_rebootDevice"}},
+        {"action": "real.assert_page", "params": {"component": "rebootDevice"},
+          "expect": {"visible": "page.container"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LOGOUT-001",
+      "module": "Login",
+      "priority": "P0",
+      "title": "退出登录后跳转登录页",
+      "steps": [
+        {"action": "real.logout"},
+        {"action": "real.assert_url_contains", "params": {"substring": "login.html"}},
+        {"action": "real.screenshot", "params": {"name": "11_logout_back_to_login"}}
+      ]
+    }
+  ]
+}

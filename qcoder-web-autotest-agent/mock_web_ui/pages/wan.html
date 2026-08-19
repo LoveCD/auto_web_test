@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home Gateway - WAN</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">FiberHome <span>Home Gateway</span></div>
+  <div class="user-area">
+    <span id="login_user">admin</span>
+    <a href="#" id="logout_link" onclick="doLogout()">Logout</a>
+  </div>
+</div>
+<div class="layout">
+  <div class="menu">
+    <div class="menu-title">Status</div>
+    <a class="menu-item" id="menu_status" href="/status.html">Device Info</a>
+    <div class="menu-title">Network</div>
+    <a class="menu-item" id="menu_wifi" href="/wifi.html">Wi-Fi</a>
+    <a class="menu-item active" id="menu_wan" href="/wan.html">WAN</a>
+    <a class="menu-item" id="menu_lan" href="/lan.html">LAN</a>
+    <div class="menu-title">Maintenance</div>
+    <a class="menu-item" id="menu_system" href="/system.html">System</a>
+    <a class="menu-item" id="menu_upgrade" href="/upgrade.html">Firmware Upgrade</a>
+  </div>
+  <div class="content">
+    <div class="card">
+      <h2>WAN Status</h2>
+      <table class="info">
+        <tr><th>Connection Type</th><td id="wan_type">-</td></tr>
+        <tr><th>Connection Status</th><td id="wan_status">-</td></tr>
+        <tr><th>IP Address</th><td id="wan_ip">-</td></tr>
+        <tr><th>Subnet Mask</th><td id="wan_mask">-</td></tr>
+        <tr><th>Gateway</th><td id="wan_gateway">-</td></tr>
+        <tr><th>Primary DNS</th><td id="wan_dns">-</td></tr>
+        <tr><th>MAC Address</th><td id="wan_mac">-</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+function doLogout() {
+  fetch("/api/logout", { method: "POST" }).then(function () {
+    window.location.href = "/login.html";
+  });
+}
+fetch("/api/wan").then(function (r) { return r.json(); }).then(function (w) {
+  document.getElementById("wan_type").textContent = w.type;
+  document.getElementById("wan_status").textContent = w.status;
+  document.getElementById("wan_ip").textContent = w.ip;
+  document.getElementById("wan_mask").textContent = w.mask || "255.255.255.0";
+  document.getElementById("wan_gateway").textContent = w.gateway;
+  document.getElementById("wan_dns").textContent = w.dns;
+  document.getElementById("wan_mac").textContent = w.mac;
+});
+</script>
+</body>
+</html>

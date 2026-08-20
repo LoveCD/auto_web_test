@@ -1,0 +1,75 @@
+{
+  "suite_id": "CM-MOCK-LAN-INFO",
+  "operator": "cm",
+  "env": "mock",
+  "title": "设备状态页 LAN 侧地址 mock 范本套件（动态主机表加载 / 行数据 / 刷新）",
+  "note": "对齐真机 lanInfo 页：LAN 侧动态 IP 地址分配表（只读，5s 轮询）；mock 侧提供手动刷新按钮。执行前建议 POST /api/reset。",
+  "cases": [
+    {
+      "id": "TC-CM-MOCK-LAN-001",
+      "title": "状态页可达且 LAN 主机表加载（主机数提示）",
+      "module": "LAN",
+      "priority": "P0",
+      "tags": ["lan", "query", "smoke"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.lan_hosts"},
+        {"action": "page.expect",
+         "expect": {"visible": ["lan_hosts_table", "lan_refresh_btn"],
+                    "text_contains": {"lan_msg": "loaded"}},
+         "note": "主机表与刷新按钮可见，加载消息提示主机数"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-LAN-002",
+      "title": "动态 IP 表行数据：WiFi 主机（IP/MAC/主机名/类型）",
+      "module": "LAN",
+      "priority": "P1",
+      "tags": ["lan", "query", "hosts"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.lan_hosts"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"lan_hosts_table": "192.168.1.100"}}},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"lan_hosts_table": "phone-01"}},
+         "note": "WiFi 主机 phone-01 已分配 192.168.1.100"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"lan_hosts_table": "AA:BB:CC:DD:EE:01"}}}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-LAN-003",
+      "title": "以太网接口行数据：有线主机（IP/MAC/主机名/类型）",
+      "module": "LAN",
+      "priority": "P1",
+      "tags": ["lan", "query", "hosts"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.lan_hosts"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"lan_hosts_table": "192.168.1.101"}}},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"lan_hosts_table": "pc-01"}},
+         "note": "有线主机 pc-01 已分配 192.168.1.101（Ethernet/LAN2）"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"lan_hosts_table": "AA:BB:CC:DD:EE:02"}}}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-LAN-004",
+      "title": "刷新按钮：点击后主机表重新加载",
+      "module": "LAN",
+      "priority": "P2",
+      "tags": ["lan", "refresh"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.lan_hosts"},
+        {"action": "page.lan_refresh"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"lan_msg": "loaded 2 hosts"}},
+         "note": "刷新后提示重新加载 2 台主机（对齐真机 5s 自动轮询语义）"}
+      ]
+    }
+  ]
+}

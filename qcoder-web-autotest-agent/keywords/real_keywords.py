@@ -251,7 +251,24 @@ class RealWebSession:
 
     def fill(self, selector_key, value):
         sel = self._to_selector(selector_key)
-        self.page.fill(sel, value)
+        loc = self.page.locator(sel).first
+        loc.scroll_into_view_if_needed(timeout=self.profile["timeouts"]["element"])
+        # el-input 的 id 通常挂在组件根 div 上，实际可 fill 的是内部 input
+        tag = loc.evaluate("el => el.tagName.toLowerCase()")
+        if tag != "input":
+            inner = loc.locator("input").first
+            if inner.count() > 0:
+                loc = inner
+        loc.fill(str(value))
+
+    def reload(self):
+        """强制刷新当前页面（用于真机共享 session 中恢复干净表单状态）。"""
+        self.page.reload(wait_until="networkidle", timeout=self.profile["timeouts"]["goto"])
+        self.page.wait_for_timeout(self.profile["timeouts"].get("page_load_extra", 2500))
+
+    def evaluate(self, script="", arg=None):
+        """执行一段页面 JS（如清除 localStorage/sessionStorage，绕过组件 keep-alive/草稿缓存）。"""
+        return self.page.evaluate(script, arg)
 
     def wait(self, ms=1000):
         self.page.wait_for_timeout(int(ms))
@@ -485,8 +502,138 @@ class RealWebSession:
             self.page.wait_for_timeout(500)
         raise AssertionError(f"input {sel} value={inner.input_value()}, expected {value}")
 
+    def assert_input_value_not(self, selector, value):
+        """断言 el-input 当前值不等于指定值（修改未保存后应恢复原始值，非修改值）。"""
+        sel = self._to_selector(selector)
+        loc = self.page.locator(sel).first
+        loc.wait_for(state="visible", timeout=self.profile["timeouts"]["element"])
+        inner = loc.locator("input").first if loc.evaluate("el => el.tagName.toLowerCase()") != "input" else loc
+        if inner.input_value() == str(value):
+            raise AssertionError(f"input {sel} value={inner.input_value()}, should NOT be {value}")
+        return True
+
     def click_button(self, text):
         """按按钮文本点击（兼容无 id 的保存/应用按钮，如 wificonfig 的"保存"）。"""
         self.page.get_by_role("button", name=text).first.click()
         self.page.wait_for_timeout(500)
         return True
+
+    # ------------------------------------------------------------------ 确认框（fh_confirm = Element UI MessageBox，DOM 弹窗）
+    # 真机 fh_confirm() 基于 Element UI $confirm（dangerouslyUseHTMLString: true），
+    # 渲染为 body 下的 .el-message-box DOM，不走原生 confirm -> Playwright dialog 事件不触发。
+    # 危险操作（删除/重启/恢厂）确认框验证必须用 DOM 断言 + 文本按钮点击。
+    CONFIRM_BOX = ".el-message-box"
+    CONFIRM_MSG = ".el-message-box__message, .el-message-box__content"
+
+    def _confirm_box(self):
+        return self.page.locator(self.CONFIRM_BOX).first
+
+    def assert_confirm_visible(self, message_keyword=None):
+        """断言 fh_confirm 确认框可见；message_keyword 非空时校验消息文本包含关键字。"""
+        box = self._confirm_box()
+        box.wait_for(state="visible", timeout=self.profile["timeouts"]["element"])
+        if message_keyword:
+            for _ in range(6):
+                try:
+                    text = box.inner_text()
+                except Exception:
+                    text = ""
+                if message_keyword in text:
+                    return True
+                self.page.wait_for_timeout(500)
+            raise AssertionError(f"confirm box text {text!r} does not contain {message_keyword!r}")
+        return True
+
+    def assert_confirm_hidden(self):
+        """断言 fh_confirm 确认框已消失（取消/确定后弹窗关闭）。"""
+        self._confirm_box().wait_for(state="hidden", timeout=self.profile["timeouts"]["element"])
+        return True
+
+    def click_confirm(self, accept=True):
+        """点击确认框按钮：accept=True 点"确定"（执行操作），accept=False 点"取消"（零风险）。"""
+        label = "确定" if accept else "取消"
+        self.page.get_by_role("button", name=label).first.click()
+        self.page.wait_for_timeout(500)
+        return True
+
+    # ------------------------------------------------------------------ XSS 安全断言
+    def assert_no_dialog(self, wait_ms=2000):
+        """等待 wait_ms 毫秒，断言期间无新增原生 JS 弹窗（alert/confirm）。
+
+        XSS payload（如 <script>alert(1)</script>）若被执行会触发原生 alert，
+        会被 start() 中的 dialog 监听捕获并自动关闭。
+        """
+        before = len(self.dialogs)
+        self.page.wait_for_timeout(wait_ms)
+        if len(self.dialogs) > before:
+            raise AssertionError(f"XSS dialog detected: {self.dialogs[before:]}")
+        return True
+
+    def assert_no_dialog_containing(self, keyword):
+        """断言已捕获的所有 dialog 消息均不含指定关键字。
+
+        XSS 场景：注入 payload 后断言没有任何弹窗消息携带 payload 片段
+        （即 payload 未被拼接/渲染进任何提示）。
+        """
+        hits = [d for d in self.dialogs if keyword in d.get("message", "")]
+        if hits:
+            raise AssertionError(f"dialog contains payload {keyword!r}: {hits}")
+        return True
+
+    def assert_response_header(self, header, value_contains=None, path="/"):
+        """重新请求页面并断言响应头存在（或包含指定值）。
+
+        安全测试：检查 X-Frame-Options / Content-Security-Policy 等安全头。
+        若设备缺失安全头，断言失败即反映真实安全差距。
+        """
+        url = self.base_url + ("/" + path.lstrip("/") if path else "/")
+        resp = self.page.goto(url, timeout=self.profile["timeouts"]["goto"])
+        headers = {k.lower(): v for k, v in (resp.headers or {}).items()}
+        key = header.lower()
+        if key not in headers:
+            raise AssertionError(f"response header '{header}' missing on {url}")
+        if value_contains and value_contains.lower() not in headers[key].lower():
+            raise AssertionError(
+                f"header {header}={headers[key]!r} does not contain {value_contains!r}")
+        return True
+
+    def assert_text_escaped(self, selector, payload):
+        """断言元素以纯文本形式显示 payload（未被 HTML 解析执行）。
+
+        用于区分 Vue {{ }} / v-text（转义，安全）与 v-html（渲染执行，危险）。
+        """
+        sel = self._to_selector(selector)
+        el = self.page.locator(sel).first
+        el.wait_for(state="visible", timeout=self.profile["timeouts"]["element"])
+        text = el.inner_text()
+        if text.strip() != str(payload).strip():
+            raise AssertionError(f"element text {text!r} != payload {payload!r} (可能被 HTML 解析)")
+        return True
+
+    def assert_no_element(self, selector):
+        """断言元素不存在（未渲染 / v-if 移除）。
+
+        XSS 场景：注入 <img src=x onerror=...> 后断言该 img 未出现在 DOM 中。
+        """
+        sel = self._to_selector(selector)
+        for _ in range(6):
+            if self.page.locator(sel).count() == 0:
+                return True
+            self.page.wait_for_timeout(500)
+        raise AssertionError(f"element {sel} still exists (XSS 注入疑似执行)")
+
+    # ------------------------------------------------------------------ 表格断言（el-table，LAN 地址表等）
+    def assert_table_rows(self, selector, min_rows=1):
+        """断言 el-table 行数 >= min_rows（等待异步数据加载）。
+
+        el-table 渲染为 .el-table__row 行；空数据时无行。
+        """
+        sel = self._to_selector(selector)
+        loc = self.page.locator(sel)
+        loc.first.wait_for(state="visible", timeout=self.profile["timeouts"]["element"])
+        for _ in range(8):
+            count = loc.locator(".el-table__row").count()
+            if count >= min_rows:
+                return True
+            self.page.wait_for_timeout(500)
+        raise AssertionError(f"table {sel} rows={count}, expected >= {min_rows}")

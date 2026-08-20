@@ -70,6 +70,18 @@ table.info th { width: 220px; color: #7a8699; font-weight: 500; background: #faf
 .btn-default { background: #eef1f6; color: #333; border: 1px solid #d5dbe6; }
 .btn-danger { background: #d93026; color: #fff; }
 .btn-danger:hover { background: #c4281e; }
+.btn-warn { background: #d99126; color: #fff; }
+.btn-warn:hover { background: #c07f1e; }
+
+/* ---------- 工具栏 / 消息（WAN/LAN 管理） ---------- */
+.wan-toolbar { margin: 10px 0 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wan-toolbar label { color: #7a8699; font-size: 13px; }
+.wan-toolbar select, .wan-toolbar input { padding: 7px 10px; border: 1px solid #d5dbe6; border-radius: 4px; font-size: 14px; }
+.wan-actions { margin: 14px 0 6px; display: flex; align-items: center; gap: 10px; }
+.msg { color: #1d8a4e; font-size: 13px; margin-left: 10px; }
+.msg.err { color: #d93026; }
+table.info input, table.info select { padding: 7px 10px; border: 1px solid #d5dbe6; border-radius: 4px; font-size: 14px; min-width: 260px; }
+table.info thead th { background: #fafbfd; color: #7a8699; font-weight: 600; font-size: 12px; }
 
 /* ---------- Toast ---------- */
 .toast {

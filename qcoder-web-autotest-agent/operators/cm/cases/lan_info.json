@@ -1,0 +1,78 @@
+{
+  "suite_id": "CM-REAL-LAN-INFO",
+  "operator": "cm",
+  "env": "real",
+  "title": "设备状态页 LAN 侧地址范本套件（真机只读：动态IP分配表 + 以太网接口状态表）",
+  "cases": [
+    {
+      "id": "TC-CM-LAN-001",
+      "title": "LAN 信息页可达且两张表容器可见",
+      "module": "LAN",
+      "priority": "P0",
+      "tags": ["lan", "query", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/status/userInfo/lanInfo"}},
+        {"action": "real.assert_page", "params": {"component": "lanInfo"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_hostData"},
+         "note": "动态IP地址分配信息表（el-table，5s 自动轮询刷新）"},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_lanData"},
+         "note": "以太网接口状态表"},
+        {"action": "real.screenshot", "params": {"name": "lan_001_tables"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LAN-002",
+      "title": "动态IP地址分配信息表加载主机行数据",
+      "module": "LAN",
+      "priority": "P0",
+      "tags": ["lan", "query", "table"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/status/userInfo/lanInfo"}},
+        {"action": "real.assert_page", "params": {"component": "lanInfo"}},
+        {"action": "real.assert_table_rows",
+         "params": {"selector": "#fhId_hostData", "min_rows": 1},
+         "note": "至少 1 行已分配主机（家庭网关有终端在线时）"},
+        {"action": "real.screenshot", "params": {"name": "lan_002_host_rows"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LAN-003",
+      "title": "以太网接口状态表加载行数据",
+      "module": "LAN",
+      "priority": "P1",
+      "tags": ["lan", "query", "table"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/status/userInfo/lanInfo"}},
+        {"action": "real.assert_page", "params": {"component": "lanInfo"}},
+        {"action": "real.assert_table_rows",
+         "params": {"selector": "#fhId_lanData", "min_rows": 1},
+         "note": "至少 1 行以太网接口状态（LAN1-LAN4 中必有端口）"},
+        {"action": "real.screenshot", "params": {"name": "lan_003_lan_rows"}}
+      ]
+    },
+    {
+      "id": "TC-CM-LAN-004",
+      "title": "页面 5s 自动轮询刷新（数据持续存在）",
+      "module": "LAN",
+      "priority": "P2",
+      "tags": ["lan", "refresh"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/status/userInfo/lanInfo"}},
+        {"action": "real.assert_page", "params": {"component": "lanInfo"}},
+        {"action": "real.assert_table_rows",
+         "params": {"selector": "#fhId_hostData", "min_rows": 1}},
+        {"action": "real.wait", "params": {"ms": 6000},
+         "note": "等待一个轮询周期（lanInfo.js setInterval getData 5000ms）"},
+        {"action": "real.assert_table_rows",
+         "params": {"selector": "#fhId_hostData", "min_rows": 1},
+         "note": "轮询后数据仍存在"},
+        {"action": "real.screenshot", "params": {"name": "lan_004_poll_ok"}}
+      ]
+    }
+  ]
+}

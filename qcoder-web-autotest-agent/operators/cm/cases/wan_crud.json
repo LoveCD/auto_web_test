@@ -1,0 +1,155 @@
+{
+  "suite_id": "CM-REAL-WAN-CRUD",
+  "operator": "cm",
+  "env": "real",
+  "title": "WAN 连接页范本套件（真机零风险：查询回显 / 表单不保存 / 确认框取消 / 边界校验拦截）",
+  "cases": [
+    {
+      "id": "TC-CM-WAN-001",
+      "title": "WAN 连接页可达且连接下拉可见（查询入口）",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": ["wan", "query", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_selectWan"},
+         "note": "WAN 连接下拉框（管理员视角 networkConn 页）"},
+        {"action": "real.screenshot", "params": {"name": "wan_001_page"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WAN-002",
+      "title": "选中连接后表单回显（用户名/MTU/VLAN 非空）",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": ["wan", "query", "form"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"}},
+        {"action": "real.wait", "params": {"ms": 800}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_MTU"},
+         "note": "当前连接回显：MTU 输入框可见"},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_VLANIDMark"}},
+        {"action": "real.screenshot", "params": {"name": "wan_002_form_echo"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WAN-003",
+      "title": "新增 WAN 连接入口可达（下拉含新增WAN连接选项，不提交）",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "create", "entry"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"}},
+        {"action": "real.assert_option_present",
+         "params": {"selector": "#fhId_selectWan", "option_text": "新增WAN连接"},
+         "note": "新增入口 = 下拉最后一项『新增WAN连接』（value=0），仅验证可达不提交"},
+        {"action": "real.screenshot", "params": {"name": "wan_003_new_entry"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WAN-004",
+      "title": "修改表单不保存：改 MTU 后重进页面恢复设备原值",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "update", "noop"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"}},
+        {"action": "real.wait", "params": {"ms": 800}},
+        {"action": "real.evaluate",
+         "params": {"script": "() => { const el = document.querySelector('#fhId_MTU input') || document.querySelector('#fhId_MTU'); return el ? 'MTU_before=' + el.value : 'MTU_before=null'; }"},
+         "note": "读取修改前 MTU 原始值（设备默认 1492=移动 PPPoE 标准，写入报告 detail 供核对）"},
+        {"action": "real.fill", "params": {"selector": "#fhId_MTU", "value": "1508"},
+         "note": "修改 MTU=1508（与设备默认值 1492 必不同；不点保存，仅验证表单可编辑）"},
+        {"action": "real.assert_input_value", "params": {"selector": "#fhId_MTU", "value": "1508"}},
+        {"action": "real.evaluate",
+         "params": {"script": "() => { sessionStorage.clear(); localStorage.clear(); }"},
+         "note": "清前端存储：防组件草稿缓存（keep-alive/本地存储）恢复表单修改值"},
+        {"action": "real.navigate", "params": {"path": "/main.html"},
+         "note": "整页导航：keep-alive 组件缓存随文档重载清空，组件全新 mounted 从设备拉数据（F5 会触发浏览器表单恢复、SPA 切走被 keep-alive 缓存，均不可靠）"},
+        {"action": "real.wait", "params": {"ms": 1200}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.wait", "params": {"ms": 800}},
+        {"action": "real.assert_input_value_not", "params": {"selector": "#fhId_MTU", "value": "1508"},
+         "note": "未保存 => 重进页面后 MTU 恢复设备原值（≠1508），设备数据未被修改（零风险验证）"},
+        {"action": "real.screenshot", "params": {"name": "wan_004_edit_noop"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WAN-005",
+      "title": "删除连接：确认框弹出并取消（零风险）",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": ["wan", "delete", "confirm", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"}},
+        {"action": "real.wait", "params": {"ms": 800}},
+        {"action": "real.click", "params": {"selector": "#fhId_delWAN"}},
+        {"action": "real.assert_confirm_visible",
+         "params": {"message_keyword": "您真的要删除该条连接么？"},
+         "note": "fh_confirm = Element UI $confirm（DOM 弹窗，非原生 confirm）"},
+        {"action": "real.click_confirm", "params": {"accept": false}},
+        {"action": "real.assert_confirm_hidden"},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_selectWan"},
+         "note": "取消后页面正常，连接未被删除"},
+        {"action": "real.screenshot", "params": {"name": "wan_005_delete_cancel"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WAN-006",
+      "title": "边界：用户名 64 字符被校验拦截（不提交）",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "boundary", "validation"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"}},
+        {"action": "real.wait", "params": {"ms": 800}},
+        {"action": "real.select_option",
+         "params": {"selector": "#fhId_selectWan", "option_text": "INTERNET"},
+         "note": "确保选中 PPPoE 的 INTERNET 连接（含 Username 字段）"},
+        {"action": "real.wait", "params": {"ms": 500}},
+        {"action": "real.fill",
+         "params": {"selector": "#fhId_Username", "value": "u1234567890123456789012345678901234567890123456789012345678901234"},
+         "note": "64 字符用户名，超出真机 networkConn checkData 的 1-63 限制"},
+        {"action": "real.click", "params": {"selector": "#fhId_onApply"},
+         "note": "点保存触发表单校验，校验失败不提交（零风险）"},
+        {"action": "real.wait", "params": {"ms": 600}},
+        {"action": "real.assert_element", "params": {"selector": ".el-form-item__error"},
+         "note": "Element UI 校验错误提示出现（用户名 1-63）"},
+        {"action": "real.screenshot", "params": {"name": "wan_006_username_64"}}
+      ]
+    },
+    {
+      "id": "TC-CM-WAN-007",
+      "title": "边界：MTU 2001 被校验拦截（不提交）",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "boundary", "validation"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"}},
+        {"action": "real.wait", "params": {"ms": 800}},
+        {"action": "real.fill", "params": {"selector": "#fhId_MTU", "value": "2001"},
+         "note": "MTU 超出真机 0-2000 限制"},
+        {"action": "real.click", "params": {"selector": "#fhId_onApply"}},
+        {"action": "real.wait", "params": {"ms": 600}},
+        {"action": "real.assert_element", "params": {"selector": ".el-form-item__error"},
+         "note": "Element UI 校验错误提示出现（MTU 0-2000）"},
+        {"action": "real.screenshot", "params": {"name": "wan_007_mtu_2001"}}
+      ]
+    }
+  ]
+}

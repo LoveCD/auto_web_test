@@ -50,6 +50,34 @@ STATE = {
         "size_mb": 42.6,
         "description": "Wi-Fi password rule & security fixes",
     },
+    # WAN 连接列表（对齐真机 networkConn 页：可增删改查，INTERNET/TR069 多连接）
+    "wan_connections": [
+        {
+            "id": 1,
+            "name": "INTERNET_R_VID_10",
+            "type": "PPPoE",
+            "service": "INTERNET",
+            "username": "cm@test",
+            "password": "Test123456",
+            "connection_trigger": "AlwaysOn",
+            "idle_timeout": 0,
+            "mtu": 1500,
+            "vlan_id": 10,
+            "status": "connected",
+        }
+    ],
+    "wan_next_id": 2,
+    # LAN 侧动态地址表（对齐真机 lanInfo 页：动态IP地址分配信息）
+    "lan_hosts": [
+        {"ip": "192.168.1.100", "ipv6": "", "mac": "AA:BB:CC:DD:EE:01",
+         "hostname": "phone-01", "device_type": "WiFi", "port": "SSID1",
+         "lease": 3600, "active": 1, "rssi": "-45dBm", "rate": "1200Mbps"},
+        {"ip": "192.168.1.101", "ipv6": "", "mac": "AA:BB:CC:DD:EE:02",
+         "hostname": "pc-01", "device_type": "Ethernet", "port": "LAN2",
+         "lease": 7200, "active": 1, "rssi": "", "rate": "1000Mbps"},
+    ],
+    "last_restore_at": None,
+    "last_factory_at": None,
     "last_reboot_at": None,
     "last_upgrade_at": None,
 }
@@ -106,5 +134,22 @@ def reset():
                              "dhcp_pool_end": "192.168.1.200"})
         STATE["upgrade"].update({"current_version": "INTL_BASELINE_1.0.0",
                                  "latest_version": "INTL_BASELINE_1.0.1", "available": True})
+        STATE["wan_connections"] = [
+            {"id": 1, "name": "INTERNET_R_VID_10", "type": "PPPoE",
+             "service": "INTERNET", "username": "cm@test", "password": "Test123456",
+             "connection_trigger": "AlwaysOn", "idle_timeout": 0,
+             "mtu": 1500, "vlan_id": 10, "status": "connected"}
+        ]
+        STATE["wan_next_id"] = 2
+        STATE["lan_hosts"] = [
+            {"ip": "192.168.1.100", "ipv6": "", "mac": "AA:BB:CC:DD:EE:01",
+             "hostname": "phone-01", "device_type": "WiFi", "port": "SSID1",
+             "lease": 3600, "active": 1, "rssi": "-45dBm", "rate": "1200Mbps"},
+            {"ip": "192.168.1.101", "ipv6": "", "mac": "AA:BB:CC:DD:EE:02",
+             "hostname": "pc-01", "device_type": "Ethernet", "port": "LAN2",
+             "lease": 7200, "active": 1, "rssi": "", "rate": "1000Mbps"},
+        ]
+        STATE["last_restore_at"] = None
+        STATE["last_factory_at"] = None
         STATE["last_reboot_at"] = None
         STATE["last_upgrade_at"] = None

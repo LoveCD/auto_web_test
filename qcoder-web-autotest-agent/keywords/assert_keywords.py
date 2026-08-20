@@ -6,6 +6,7 @@
   title_contains  str           页面标题包含子串
   text            {key: str}    元素文本 == 期望（strip 后精确匹配）
   text_contains   {key: str}    元素文本包含子串
+  text_not_contains {key: str}  元素文本不包含子串（负向断言，如删除后列表不再含某行）
   input_value     {key: str}    输入框值 == 期望
   visible         [key...]      元素可见
   hidden          [key...]      元素不可见
@@ -102,6 +103,13 @@ def assert_expect(session, expect: dict) -> list:
                 actual = _element_text(session, key)
                 return sub in actual, f"got {actual!r}"
             failures.append(_first_failure(f"text_contains {key}", _check))
+
+    if "text_not_contains" in expect:
+        for key, sub in expect["text_not_contains"].items():
+            def _check(key=key, sub=sub):
+                actual = _element_text(session, key)
+                return sub not in actual, f"got {actual!r}"
+            failures.append(_first_failure(f"text_not_contains {key}", _check))
 
     if "input_value" in expect:
         for key, expected in expect["input_value"].items():

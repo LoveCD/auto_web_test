@@ -20,6 +20,7 @@ import argparse
 import datetime
 import json
 import os
+import socket
 import subprocess
 import sys
 import time
@@ -154,6 +155,12 @@ class StepRunner:
                 m(params.get("level", 1), params.get("title", ""))
             elif method == "wait_url":
                 m(params.get("contains", ""))
+            elif method == "assert_url_contains":
+                # 兼容用例中常用的 contains / substring 两种参数名
+                sub = params.get("substring") or params.get("contains", "")
+                m(sub)
+            elif method == "reload":
+                m()
             elif method == "screenshot":
                 path = m(params.get("name", "shot"))
                 print(f"  screenshot -> {path}")
@@ -260,10 +267,21 @@ def run_suite(operator, env, suite, headed=False, browser="chromium", override_u
 
     mock_proc = None
     if env == "mock":
-        cmd = [sys.executable, os.path.join(ROOT, "mock_web_ui", "server.py")]
-        mock_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        time.sleep(2)
-        print(f"[mock server started pid={mock_proc.pid}]")
+        # 端口已监听则复用（避免多次 runner 并发/串行 spawn 导致双绑定与状态不一致）
+        ecfg = profile["env"].get("mock", {})
+        _url = ecfg.get("base_url", "http://127.0.0.1:8090")
+        _host, _port = _url.split("://")[-1].split(":")
+        _port = int(_port.rstrip("/"))
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as _s:
+            _s.settimeout(0.5)
+            _already = _s.connect_ex((_host, _port)) == 0
+        if not _already:
+            cmd = [sys.executable, os.path.join(ROOT, "mock_web_ui", "server.py")]
+            mock_proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            time.sleep(2)
+            print(f"[mock server started pid={mock_proc.pid}]")
+        else:
+            print(f"[mock server already running on {_host}:{_port}, reused]")
 
     start = time.time()
     results = []

@@ -1,0 +1,119 @@
+{
+  "suite_id": "CM-MOCK-DEVICE-MGMT",
+  "operator": "cm",
+  "env": "mock",
+  "title": "设备管理控制页 mock 范本套件（重启/恢复默认/恢复出厂：确认框取消零风险 + 确认真执行 + 恢厂会话失效）",
+  "note": "对齐真机 deviceManagement 页（rebootDevice / restoreDefault 双容器，fh_confirm 确认框）。mock 侧 confirm 为原生对话框，accept=False 取消零风险；accept=True 真正执行。执行前建议 POST /api/reset。",
+  "cases": [
+    {
+      "id": "TC-CM-MOCK-DEV-001",
+      "title": "系统页可达且设备信息非空（版本/型号）",
+      "module": "Device",
+      "priority": "P0",
+      "tags": ["device", "query", "smoke"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto", "params": {"page": "system"}},
+        {"action": "page.expect",
+         "expect": {"visible": ["reboot_btn", "restore_btn", "factory_btn"],
+                    "non_empty": ["sys_model", "sys_sw_version"]},
+         "note": "重启/恢复默认/恢复出厂三按钮均可见"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-DEV-002",
+      "title": "重启：确认框取消后无执行（零风险路径，对齐真机）",
+      "module": "Device",
+      "priority": "P1",
+      "tags": ["device", "reboot", "cancel"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto", "params": {"page": "system"}},
+        {"action": "page.reboot", "params": {"accept": false}},
+        {"action": "page.expect",
+         "expect": {"text": {"reboot_msg": ""}},
+         "note": "取消确认 => 无重启消息，页面未提交重启请求"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-DEV-003",
+      "title": "重启：确认后执行（mock 真正重启）",
+      "module": "Device",
+      "priority": "P1",
+      "tags": ["device", "reboot", "confirm"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto", "params": {"page": "system"}},
+        {"action": "page.reboot"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"reboot_msg": "rebooting"}},
+         "note": "重启请求被接受，提示网关正在重启"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-DEV-004",
+      "title": "恢复默认：确认框取消后无执行（零风险路径）",
+      "module": "Device",
+      "priority": "P1",
+      "tags": ["device", "restore", "cancel"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto", "params": {"page": "system"}},
+        {"action": "page.restore_default", "params": {"accept": false}},
+        {"action": "page.expect",
+         "expect": {"text": {"restore_msg": ""}},
+         "note": "取消确认 => restore_msg 无内容"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-DEV-005",
+      "title": "恢复默认：确认后执行且会话保持",
+      "module": "Device",
+      "priority": "P1",
+      "tags": ["device", "restore", "confirm"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto", "params": {"page": "system"}},
+        {"action": "page.restore_default", "params": {"accept": true}},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"restore_msg": "Default configuration restored."}}},
+        {"action": "page.goto", "params": {"page": "status"},
+         "expect": {"url_contains": "/status.html"},
+         "note": "恢复默认不清会话，仍可访问业务页（对齐真机 restoreDefault 语义）"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-DEV-006",
+      "title": "恢复出厂：确认框取消后会话保持（零风险路径）",
+      "module": "Device",
+      "priority": "P1",
+      "tags": ["device", "factory", "cancel"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto", "params": {"page": "system"}},
+        {"action": "page.factory_reset", "params": {"accept": false}},
+        {"action": "page.expect",
+         "expect": {"text": {"restore_msg": ""}, "visible": ["sys_model"]},
+         "note": "取消恢复出厂 => 无执行且页面正常"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-DEV-007",
+      "title": "恢复出厂：确认后会话失效并跳回登录页",
+      "module": "Device",
+      "priority": "P0",
+      "tags": ["device", "factory", "confirm", "session"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.goto", "params": {"page": "system"}},
+        {"action": "page.factory_reset", "params": {"accept": true}},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"restore_msg": "Please log in again"}},
+         "note": "恢厂成功提示，1.2s 后前端跳登录页"},
+        {"action": "page.goto", "params": {"page": "status"},
+         "expect": {"url_contains": "/login.html"},
+         "note": "会话已失效：未授权访问被 302 重定向到登录页（对齐真机恢厂后强制重登）"}
+      ]
+    }
+  ]
+}

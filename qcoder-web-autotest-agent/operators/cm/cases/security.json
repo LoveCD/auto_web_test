@@ -1,0 +1,109 @@
+{
+  "suite_id": "CM-REAL-SECURITY",
+  "operator": "cm",
+  "env": "real",
+  "title": "安全测试范本套件（真机：XSS 三型自动化断言 + 安全头检查）",
+  "cases": [
+    {
+      "id": "TC-CM-SEC-001",
+      "title": "XSS-反射型：登录页用户名注入 payload 未被执行",
+      "module": "Security",
+      "priority": "P1",
+      "tags": ["security", "xss", "reflected"],
+      "auto_login": false,
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"},
+         "note": "禁用框架自动登录，直接以 payload 提交登录表单"},
+        {"action": "real.fill",
+         "params": {"selector": "login.username", "value": "<img src=x onerror=alert('xss1')>"},
+         "note": "反射型 XSS payload 注入用户名字段"},
+        {"action": "real.fill", "params": {"selector": "login.password", "value": "wrongpass123"}},
+        {"action": "real.click", "params": {"selector": "login.submit"}},
+        {"action": "real.wait", "params": {"ms": 1500},
+         "note": "等待可能的 XSS alert 触发窗口"},
+        {"action": "real.assert_no_dialog_containing",
+         "params": {"keyword": "xss1"},
+         "note": "无任何弹窗消息携带 payload => payload 未作为 HTML/JS 执行"},
+        {"action": "real.assert_login_error",
+         "note": "登录失败原生 alert 正常弹出（后端未回显 payload）"},
+        {"action": "real.screenshot", "params": {"name": "sec_001_xss_login"}}
+      ]
+    },
+    {
+      "id": "TC-CM-SEC-002",
+      "title": "XSS-存储型防线：WAN 用户名超长 payload 被长度校验拦截",
+      "module": "Security",
+      "priority": "P1",
+      "tags": ["security", "xss", "stored", "boundary"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"}},
+        {"action": "real.wait", "params": {"ms": 800}},
+        {"action": "real.select_option",
+         "params": {"selector": "#fhId_selectWan", "option_text": "INTERNET"},
+         "note": "确保选中 PPPoE 的 INTERNET 连接（含 Username 字段）"},
+        {"action": "real.wait", "params": {"ms": 500}},
+        {"action": "real.fill",
+         "params": {"selector": "#fhId_Username",
+                    "value": "<script>alert(1)</script>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"},
+         "note": "XSS payload 精确填充到 64 字符（script 段 25 + 39 个 x），突破 1-63 长度限制触发校验拦截，payload 不落库"},
+        {"action": "real.click", "params": {"selector": "#fhId_onApply"}},
+        {"action": "real.wait", "params": {"ms": 600}},
+        {"action": "real.assert_element", "params": {"selector": ".el-form-item__error"},
+         "note": "校验拦截 => 恶意输入无法入库（存储型 XSS 前置防线生效）"},
+        {"action": "real.screenshot", "params": {"name": "sec_002_xss_stored_blocked"}}
+      ]
+    },
+    {
+      "id": "TC-CM-SEC-003",
+      "title": "XSS 面分析：删除确认框消息为静态文本（无可控注入点）",
+      "module": "Security",
+      "priority": "P2",
+      "tags": ["security", "xss", "confirm"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/network/broadband/networkConn"}},
+        {"action": "real.assert_page", "params": {"component": "networkConn"}},
+        {"action": "real.wait", "params": {"ms": 800}},
+        {"action": "real.click", "params": {"selector": "#fhId_delWAN"}},
+        {"action": "real.assert_confirm_visible",
+         "params": {"message_keyword": "您真的要删除该条连接么？"},
+         "note": "确认框消息精确匹配静态文案 => fh_confirm 的 dangerouslyUseHTMLString 无可控输入（消息来自代码常量）"},
+        {"action": "real.click_confirm", "params": {"accept": false}},
+        {"action": "real.screenshot", "params": {"name": "sec_003_confirm_static"}}
+      ]
+    },
+    {
+      "id": "TC-CM-SEC-004",
+      "title": "安全头检查：登录页响应头含 X-Frame-Options（防点击劫持）",
+      "module": "Security",
+      "priority": "P2",
+      "tags": ["security", "headers"],
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.assert_response_header",
+         "params": {"header": "X-Frame-Options", "path": "/login.html"},
+         "note": "断言登录页响应头含 X-Frame-Options；若失败说明设备缺安全头（安全差距记录）"},
+        {"action": "real.screenshot", "params": {"name": "sec_004_headers"}}
+      ]
+    },
+    {
+      "id": "TC-CM-SEC-005",
+      "title": "弱口令尝试：错误密码触发登录失败提示（无绕过）",
+      "module": "Security",
+      "priority": "P2",
+      "tags": ["security", "auth", "bruteforce-hint"],
+      "auto_login": false,
+      "steps": [
+        {"action": "real.navigate", "params": {"path": "/login.html"}},
+        {"action": "real.fill", "params": {"selector": "login.username", "value": "admin"}},
+        {"action": "real.fill", "params": {"selector": "login.password", "value": "wrongpass"}},
+        {"action": "real.click", "params": {"selector": "login.submit"}},
+        {"action": "real.assert_login_error",
+         "note": "弱口令尝试被拒绝；暴力破解自动化由 AI 工具链离线生成字典 + 解读扫描输出（见范本文档）"},
+        {"action": "real.screenshot", "params": {"name": "sec_005_weak_pwd"}}
+      ]
+    }
+  ]
+}

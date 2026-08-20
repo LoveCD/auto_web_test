@@ -45,6 +45,13 @@
       <button class="btn btn-danger" id="reboot_btn" onclick="doReboot()">Reboot</button>
       <div class="toast" id="reboot_msg"></div>
     </div>
+    <div class="card">
+      <h2>Configuration Restore</h2>
+      <p style="color:#667; margin-bottom:14px;">Restore default configuration keeps the firmware; factory reset erases all settings and reboots the gateway.</p>
+      <button class="btn btn-warn" id="restore_btn" onclick="doRestore()">Restore Default</button>
+      <button class="btn btn-danger" id="factory_btn" onclick="doFactoryReset()">Factory Reset</button>
+      <div class="toast" id="restore_msg"></div>
+    </div>
   </div>
 </div>
 <script>
@@ -79,6 +86,35 @@ function doReboot() {
       el.style.display = "block";
       el.textContent = "Reboot request failed.";
       btn.disabled = false;
+    });
+}
+function doRestore() {
+  if (!confirm("Restore default configuration? All custom settings will be lost.")) return;
+  var el = document.getElementById("restore_msg");
+  fetch("/api/restore_default", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" })
+    .then(function () {
+      el.className = "toast success";
+      el.style.display = "block";
+      el.textContent = "Default configuration restored.";
+    }).catch(function () {
+      el.className = "toast error";
+      el.style.display = "block";
+      el.textContent = "Restore failed.";
+    });
+}
+function doFactoryReset() {
+  if (!confirm("Factory reset will erase ALL settings and reboot. Continue?")) return;
+  var el = document.getElementById("restore_msg");
+  fetch("/api/factory_reset", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" })
+    .then(function () {
+      el.className = "toast success";
+      el.style.display = "block";
+      el.textContent = "Factory reset done. Please log in again.";
+      setTimeout(function () { window.location.href = "/login.html"; }, 1200);
+    }).catch(function () {
+      el.className = "toast error";
+      el.style.display = "block";
+      el.textContent = "Factory reset failed.";
     });
 }
 </script>

@@ -16,6 +16,19 @@
   page.nav_to         通过左侧菜单跳转 {page}
   page.logout         登出
   page.goto           直接导航 {page}（用于未登录访问测试）
+  -- WAN 连接管理（mock 完整 CRUD；真机范本同结构只读/表单/确认框） --
+  page.wan_list       进入 WAN 页并等待列表加载
+  page.wan_select     下拉选择连接 {id}
+  page.wan_new        点击新增（清空表单）
+  page.wan_fill       按字段填表（name/type/service/username/password/trigger/idle/mtu/vlan）
+  page.wan_save       点击保存并等待结果
+  page.wan_delete     点击删除 {accept: true/false}（false=取消确认框，零风险）
+  -- LAN 侧地址（状态页动态主机表） --
+  page.lan_hosts      等待 LAN 主机表加载（配合 expect 断言）
+  page.lan_refresh    点击刷新 LAN 主机表
+  -- 设备管理 --
+  page.restore_default 恢复默认配置 {accept}
+  page.factory_reset   恢复出厂 {accept}
 """
 import urllib.request
 
@@ -175,7 +188,7 @@ class WebSession:
             self.system_page.wait_loaded(); self.set_page("system")
         elif action == "page.reboot":
             self.set_page("system")
-            self.system_page.reboot()
+            self.system_page.reboot(accept=bool(p.get("accept", True)))
         elif action == "page.wait_reboot_msg":
             self.system_page.wait_reboot_msg(); self.set_page("system")
         elif action == "page.goto_upgrade":
@@ -187,6 +200,41 @@ class WebSession:
             self.upgrade_page.upgrade(url=p.get("url", ""))
         elif action == "page.reload":
             self.page.reload(wait_until="networkidle")
+        # -------------------------------------------------- WAN 连接管理
+        elif action == "page.wan_list":
+            self.wan_page.goto_wan()
+            self.wan_page.wait_loaded()
+            self.set_page("wan")
+        elif action == "page.wan_select":
+            self.set_page("wan")
+            self.wan_page.select_connection(p.get("id"))
+        elif action == "page.wan_new":
+            self.set_page("wan")
+            self.wan_page.click_new_connection()
+        elif action == "page.wan_fill":
+            self.set_page("wan")
+            self.wan_page.fill_form(p)
+        elif action == "page.wan_save":
+            self.set_page("wan")
+            self.wan_page.click_save()
+        elif action == "page.wan_delete":
+            self.set_page("wan")
+            self.wan_page.click_delete(accept=bool(p.get("accept", False)))
+        # -------------------------------------------------- LAN 侧地址
+        elif action == "page.lan_hosts":
+            self.status_page.goto_status()
+            self.status_page.wait_lan_hosts_loaded()
+            self.set_page("status")
+        elif action == "page.lan_refresh":
+            self.set_page("status")
+            self.status_page.click_refresh_lan()
+        # -------------------------------------------------- 设备管理
+        elif action == "page.restore_default":
+            self.set_page("system")
+            self.system_page.restore_default(accept=bool(p.get("accept", True)))
+        elif action == "page.factory_reset":
+            self.set_page("system")
+            self.system_page.factory_reset(accept=bool(p.get("accept", True)))
         elif action == "page.nav_to":
             name = p.get("page")
             self.nav_bar.goto_page(name)

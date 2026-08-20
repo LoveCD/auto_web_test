@@ -55,12 +55,42 @@
         <tr><th>SSID</th><td id="wifi_ssid">-</td></tr>
       </table>
     </div>
+    <div class="card">
+      <h2>LAN Hosts (Dynamic IP Address Allocation)</h2>
+      <div class="wan-toolbar">
+        <button id="lan_refresh_btn" onclick="loadLanHosts()">Refresh</button>
+        <span id="lan_msg" class="msg"></span>
+      </div>
+      <table class="info">
+        <thead>
+          <tr><th>IP</th><th>IPv6</th><th>MAC</th><th>Hostname</th><th>Type</th>
+              <th>Port</th><th>Lease(s)</th><th>Active</th></tr>
+        </thead>
+        <tbody id="lan_hosts_table"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 <script>
 function doLogout() {
   fetch("/api/logout", { method: "POST" }).then(function () {
     window.location.href = "/login.html";
+  });
+}
+function loadLanHosts() {
+  fetch("/api/lan/hosts").then(function (r) { return r.json(); }).then(function (d) {
+    var tbody = document.getElementById("lan_hosts_table");
+    tbody.innerHTML = "";
+    (d.hosts || []).forEach(function (h) {
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + h.ip + "</td><td>" + (h.ipv6 || "") + "</td><td>" + h.mac +
+        "</td><td>" + h.hostname + "</td><td>" + h.device_type + "</td><td>" + h.port +
+        "</td><td>" + h.lease + "</td><td>" + h.active + "</td>";
+      tbody.appendChild(tr);
+    });
+    document.getElementById("lan_msg").textContent = "loaded " + (d.hosts || []).length + " hosts";
+  }).catch(function () {
+    document.getElementById("lan_msg").textContent = "load failed";
   });
 }
 function loadStatus() {
@@ -86,6 +116,7 @@ function loadStatus() {
   });
 }
 loadStatus();
+loadLanHosts();
 </script>
 </body>
 </html>

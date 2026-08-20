@@ -1,0 +1,119 @@
+{
+  "suite_id": "CM-REAL-DEVICE-MGMT",
+  "operator": "cm",
+  "env": "real",
+  "title": "设备管理控制页范本套件（真机零风险：重启/恢复默认/恢复出厂确认框弹出并取消）",
+  "cases": [
+    {
+      "id": "TC-CM-DEV-001",
+      "title": "重启页可达且重启按钮可见",
+      "module": "DeviceMgmt",
+      "priority": "P0",
+      "tags": ["device", "reboot", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/rebootDevice"}},
+        {"action": "real.assert_page", "params": {"component": "rebootDevice"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_onApply"},
+         "note": "重启按钮（文本『重启』）"},
+        {"action": "real.screenshot", "params": {"name": "dev_001_reboot_page"}}
+      ]
+    },
+    {
+      "id": "TC-CM-DEV-002",
+      "title": "点击重启弹确认框并取消（设备不重启）",
+      "module": "DeviceMgmt",
+      "priority": "P0",
+      "tags": ["device", "reboot", "confirm", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/rebootDevice"}},
+        {"action": "real.assert_page", "params": {"component": "rebootDevice"}},
+        {"action": "real.click", "params": {"selector": "#fhId_onApply"},
+         "note": "点击重启按钮"},
+        {"action": "real.assert_confirm_visible",
+         "params": {"message_keyword": "确定要重启设备吗？"},
+         "note": "fh_confirm 确认框弹出（Element UI $confirm，DOM 弹窗）"},
+        {"action": "real.screenshot", "params": {"name": "dev_002_reboot_confirm"}},
+        {"action": "real.click_confirm", "params": {"accept": false}},
+        {"action": "real.assert_confirm_hidden"},
+        {"action": "real.wait", "params": {"ms": 1000}},
+        {"action": "real.assert_url_contains", "params": {"contains": "rebootDevice"},
+         "note": "取消后仍在管理页（未触发重启跳转）"}
+      ]
+    },
+    {
+      "id": "TC-CM-DEV-003",
+      "title": "恢复默认配置页可达且按钮可见",
+      "module": "DeviceMgmt",
+      "priority": "P0",
+      "tags": ["device", "restore", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/restoreDefault"}},
+        {"action": "real.assert_page", "params": {"component": "restoreDefault"},
+         "expect": {"visible": "page.container"}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_onApplyRestore"},
+         "note": "恢复默认配置按钮"},
+        {"action": "real.screenshot", "params": {"name": "dev_003_restore_page"}}
+      ]
+    },
+    {
+      "id": "TC-CM-DEV-004",
+      "title": "点击恢复默认弹确认框并取消（配置不丢失）",
+      "module": "DeviceMgmt",
+      "priority": "P0",
+      "tags": ["device", "restore", "confirm"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/restoreDefault"}},
+        {"action": "real.assert_page", "params": {"component": "restoreDefault"}},
+        {"action": "real.click", "params": {"selector": "#fhId_onApplyRestore"}},
+        {"action": "real.assert_confirm_visible",
+         "params": {"message_keyword": "确定要恢复默认配置吗？"},
+         "note": "fh_confirm 确认框（含『用户参数丢失』警告文案）"},
+        {"action": "real.screenshot", "params": {"name": "dev_004_restore_confirm"}},
+        {"action": "real.click_confirm", "params": {"accept": false}},
+        {"action": "real.assert_confirm_hidden"}
+      ]
+    },
+    {
+      "id": "TC-CM-DEV-005",
+      "title": "恢复出厂按钮可见（管理员）并弹确认框取消",
+      "module": "DeviceMgmt",
+      "priority": "P1",
+      "tags": ["device", "factory", "confirm"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/restoreDefault"}},
+        {"action": "real.assert_page", "params": {"component": "restoreDefault"}},
+        {"action": "real.assert_element", "params": {"selector": "#fhId_onApplyFactory"},
+         "note": "恢复出厂配置按钮（restoreDefault.js 内 v-if：user==2 管理员才显示）"},
+        {"action": "real.click", "params": {"selector": "#fhId_onApplyFactory"}},
+        {"action": "real.assert_confirm_visible",
+         "params": {"message_keyword": "确定要恢复出厂配置吗？"}},
+        {"action": "real.screenshot", "params": {"name": "dev_005_factory_confirm"}},
+        {"action": "real.click_confirm", "params": {"accept": false}},
+        {"action": "real.assert_confirm_hidden"}
+      ]
+    },
+    {
+      "id": "TC-CM-DEV-006",
+      "title": "取消所有危险操作后会话保持（页面可继续访问）",
+      "module": "DeviceMgmt",
+      "priority": "P2",
+      "tags": ["device", "session", "smoke"],
+      "steps": [
+        {"action": "real.login", "params": {"role": "admin"}},
+        {"action": "real.navigate_spa", "params": {"route": "/management/deviceManagement/rebootDevice"}},
+        {"action": "real.click", "params": {"selector": "#fhId_onApply"}},
+        {"action": "real.click_confirm", "params": {"accept": false}},
+        {"action": "real.navigate_spa", "params": {"route": "/status/userInfo/lanInfo"}},
+        {"action": "real.assert_page", "params": {"component": "lanInfo"},
+         "note": "取消重启后跳转状态页仍正常，证明设备未重启、会话未失效"},
+        {"action": "real.screenshot", "params": {"name": "dev_006_session_ok"}}
+      ]
+    }
+  ]
+}

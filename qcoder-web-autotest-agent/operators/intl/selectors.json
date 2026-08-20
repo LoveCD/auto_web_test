@@ -2,7 +2,6 @@
   "profile": "intl_baseline",
   "selector_version": "INTL_BASELINE_1.0.0",
   "strategy": "Prefer stable IDs and role/text selectors over CSS classes and DOM hierarchy (E2E skill: stable selectors).",
-
   "pages": {
     "login": {
       "url": "/login.html",
@@ -31,7 +30,10 @@
         "wan_gateway": "#wan_gateway",
         "wan_dns": "#wan_dns",
         "wifi_status": "#wifi_status",
-        "wifi_ssid": "#wifi_ssid"
+        "wifi_ssid": "#wifi_ssid",
+        "lan_refresh_btn": "#lan_refresh_btn",
+        "lan_hosts_table": "#lan_hosts_table",
+        "lan_msg": "#lan_msg"
       }
     },
     "wifi": {
@@ -59,7 +61,22 @@
         "wan_mask": "#wan_mask",
         "wan_gateway": "#wan_gateway",
         "wan_dns": "#wan_dns",
-        "wan_mac": "#wan_mac"
+        "wan_mac": "#wan_mac",
+        "wan_select": "#wan_select",
+        "wan_new_btn": "#wan_new_btn",
+        "wan_save_btn": "#wan_save_btn",
+        "wan_del_btn": "#wan_del_btn",
+        "wan_name": "#wan_name",
+        "wan_type_select": "#wan_type_select",
+        "wan_service": "#wan_service",
+        "wan_username": "#wan_username",
+        "wan_password": "#wan_password",
+        "wan_trigger": "#wan_trigger",
+        "wan_idle": "#wan_idle",
+        "wan_mtu": "#wan_mtu",
+        "wan_vlan": "#wan_vlan",
+        "wan_conn_list": "#wan_conn_list",
+        "wan_msg": "#wan_msg"
       }
     },
     "lan": {
@@ -89,7 +106,10 @@
         "sys_memory": "#sys_memory",
         "sys_temperature": "#sys_temperature",
         "reboot_btn": "#reboot_btn",
-        "reboot_msg": "#reboot_msg"
+        "reboot_msg": "#reboot_msg",
+        "restore_btn": "#restore_btn",
+        "factory_btn": "#factory_btn",
+        "restore_msg": "#restore_msg"
       }
     },
     "upgrade": {

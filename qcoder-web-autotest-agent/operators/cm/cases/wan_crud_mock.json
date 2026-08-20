@@ -1,0 +1,175 @@
+{
+  "suite_id": "CM-MOCK-WAN-CRUD",
+  "operator": "cm",
+  "env": "mock",
+  "title": "WAN 连接页 mock 范本套件（完整增删改查：真建/真改/删确认+删取消/边界校验拦截）",
+  "note": "mock 为可重置仿真环境，可真正执行 CRUD。执行前建议 POST /api/reset 保证初始状态；用例 3 新增的 MOCK_WAN_NEW_1 由用例 7 删除，套件自清理。",
+  "cases": [
+    {
+      "id": "TC-CM-MOCK-WAN-001",
+      "title": "WAN 页可达且连接列表加载（初始连接回显）",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": ["wan", "query", "smoke"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.expect",
+         "expect": {"visible": ["wan_conn_list"], "text_contains": {"wan_conn_list": "INTERNET_R_VID_10"}}},
+        {"action": "page.expect",
+         "expect": {"non_empty": ["wan_status", "wan_ip", "wan_gateway"]},
+         "note": "WAN 状态区数据非空（状态/IP/网关）"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-002",
+      "title": "选中连接后表单回显（名称/类型/用户名/MTU/VLAN）",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": ["wan", "query", "form"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.wan_select", "params": {"id": 1}},
+        {"action": "page.expect",
+         "expect": {"input_value": {"wan_name": "INTERNET_R_VID_10", "wan_type_select": "PPPoE",
+                                    "wan_service": "INTERNET", "wan_username": "cm@test",
+                                    "wan_mtu": "1500", "wan_vlan": "10"}},
+         "note": "选中 id=1 连接后表单回显与后端数据一致"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-003",
+      "title": "新增 WAN 连接：填表保存后列表出现新连接（真建）",
+      "module": "WAN",
+      "priority": "P0",
+      "tags": ["wan", "create"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.wan_new"},
+        {"action": "page.wan_fill",
+         "params": {"name": "MOCK_WAN_NEW_1", "type": "PPPoE", "service": "INTERNET",
+                    "username": "new@test", "password": "Passw0rd!",
+                    "trigger": "AlwaysOn", "idle": 0, "mtu": 1492, "vlan": 20}},
+        {"action": "page.wan_save"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"wan_msg": "Created"}},
+         "note": "新增成功消息 Created"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"wan_conn_list": "MOCK_WAN_NEW_1"}},
+         "note": "列表已出现新连接（id=2）"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-004",
+      "title": "修改连接：改 MTU 保存后回显新值（真改）",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "update"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.wan_select", "params": {"id": 1}},
+        {"action": "page.wan_fill", "params": {"mtu": 1492}},
+        {"action": "page.wan_save"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"wan_msg": "Saved"}}},
+        {"action": "page.expect",
+         "expect": {"input_value": {"wan_mtu": "1492"}},
+         "note": "保存后表单回显新 MTU"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-005",
+      "title": "修改连接：MTU 改回 1500（状态自愈，便于套件重复执行）",
+      "module": "WAN",
+      "priority": "P2",
+      "tags": ["wan", "update", "cleanup"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.wan_select", "params": {"id": 1}},
+        {"action": "page.wan_fill", "params": {"mtu": 1500}},
+        {"action": "page.wan_save"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"wan_msg": "Saved"}, "input_value": {"wan_mtu": "1500"}}}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-006",
+      "title": "删除连接：确认框取消后连接保留（零风险路径，对齐真机）",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "delete", "cancel"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.wan_select", "params": {"id": 2}},
+        {"action": "page.wan_delete", "params": {"accept": false}},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"wan_conn_list": "MOCK_WAN_NEW_1"}},
+         "note": "取消删除 => 连接仍在列表中"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-007",
+      "title": "删除连接：确认后连接被删除（真删，套件自清理）",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "delete", "confirm"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.wan_select", "params": {"id": 2}},
+        {"action": "page.wan_delete", "params": {"accept": true}},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"wan_msg": "Deleted"}}},
+        {"action": "page.wan_list"},
+        {"action": "page.expect",
+         "expect": {"text_not_contains": {"wan_conn_list": "MOCK_WAN_NEW_1"}},
+         "note": "重新加载后列表不再包含已删除连接"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-008",
+      "title": "边界：用户名 64 字符被后端拒绝（错误提示）",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "boundary", "validation"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.wan_new"},
+        {"action": "page.wan_fill",
+         "params": {"name": "BOUNDARY_01", "username": "u1234567890123456789012345678901234567890123456789012345678901234",
+                    "password": "Passw0rd!"},
+         "note": "64 字符用户名，对齐真机 networkConn checkData 的 1-63 限制"},
+        {"action": "page.wan_save"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"wan_msg": "length must be 1-63"}},
+         "note": "后端 400 校验错误回显"}
+      ]
+    },
+    {
+      "id": "TC-CM-MOCK-WAN-009",
+      "title": "边界：MTU 2001 被后端拒绝（错误提示）",
+      "module": "WAN",
+      "priority": "P1",
+      "tags": ["wan", "boundary", "validation"],
+      "steps": [
+        {"action": "page.login"},
+        {"action": "page.wan_list"},
+        {"action": "page.wan_new"},
+        {"action": "page.wan_fill",
+         "params": {"name": "BOUNDARY_02", "username": "boundary@test", "password": "Passw0rd!",
+                    "mtu": 2001},
+         "note": "MTU 超出 0-2000 限制"},
+        {"action": "page.wan_save"},
+        {"action": "page.expect",
+         "expect": {"text_contains": {"wan_msg": "mtu must be 0-2000"}},
+         "note": "后端 400 校验错误回显"}
+      ]
+    }
+  ]
+}

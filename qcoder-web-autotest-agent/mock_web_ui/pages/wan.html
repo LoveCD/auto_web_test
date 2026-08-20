@@ -39,13 +39,157 @@
         <tr><th>MAC Address</th><td id="wan_mac">-</td></tr>
       </table>
     </div>
+    <div class="card">
+      <h2>WAN Connection Management</h2>
+      <div class="wan-toolbar">
+        <label for="wan_select">Connection:</label>
+        <select id="wan_select" onchange="onSelectConnection()">
+          <option value="">-- select --</option>
+        </select>
+        <button id="wan_new_btn" onclick="onNewConnection()">New Connection</button>
+      </div>
+      <table class="info">
+        <tr><th>Connection Name</th><td><input id="wan_name" /></td></tr>
+        <tr><th>Type</th><td>
+          <select id="wan_type_select">
+            <option>PPPoE</option><option>DHCP</option><option>Static</option>
+          </select>
+        </td></tr>
+        <tr><th>Service</th><td><input id="wan_service" /></td></tr>
+        <tr><th>Username</th><td><input id="wan_username" /></td></tr>
+        <tr><th>Password</th><td><input id="wan_password" type="password" /></td></tr>
+        <tr><th>Connection Trigger</th><td>
+          <select id="wan_trigger">
+            <option>AlwaysOn</option><option>OnDemand</option><option>Manual</option>
+          </select>
+        </td></tr>
+        <tr><th>Idle Timeout (s)</th><td><input id="wan_idle" /></td></tr>
+        <tr><th>MTU</th><td><input id="wan_mtu" /></td></tr>
+        <tr><th>VLAN ID</th><td><input id="wan_vlan" /></td></tr>
+      </table>
+      <div class="wan-actions">
+        <button id="wan_save_btn" onclick="onSaveConnection()">Save</button>
+        <button id="wan_del_btn" onclick="onDeleteConnection()">Delete</button>
+        <span id="wan_msg" class="msg"></span>
+      </div>
+      <h3>Connections</h3>
+      <table class="info">
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Type</th><th>Service</th><th>Username</th>
+              <th>Status</th><th>MTU</th><th>VLAN</th></tr>
+        </thead>
+        <tbody id="wan_conn_list"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 <script>
+var currentId = null;
+
 function doLogout() {
   fetch("/api/logout", { method: "POST" }).then(function () {
     window.location.href = "/login.html";
   });
+}
+function setMsg(text, isErr) {
+  var el = document.getElementById("wan_msg");
+  el.textContent = text;
+  el.className = "msg" + (isErr ? " err" : "");
+}
+function api(path, opts) {
+  opts = opts || {};
+  return fetch(path, opts).then(function (r) {
+    return r.json().then(function (j) {
+      if (!r.ok) { throw new Error(j.error || ("HTTP " + r.status)); }
+      return j;
+    });
+  });
+}
+function loadConnections() {
+  api("/api/wan/connections").then(function (d) {
+    var sel = document.getElementById("wan_select");
+    var tbody = document.getElementById("wan_conn_list");
+    var keep = sel.value;
+    sel.innerHTML = '<option value="">-- select --</option>';
+    tbody.innerHTML = "";
+    d.connections.forEach(function (c) {
+      var o = document.createElement("option");
+      o.value = String(c.id);
+      o.textContent = c.name;
+      sel.appendChild(o);
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + c.id + "</td><td>" + c.name + "</td><td>" + c.type +
+        "</td><td>" + c.service + "</td><td>" + c.username + "</td><td>" + c.status +
+        "</td><td>" + c.mtu + "</td><td>" + c.vlan_id + "</td>";
+      tbody.appendChild(tr);
+    });
+    if (keep) { sel.value = keep; onSelectConnection(); }
+  }).catch(function (e) { setMsg(String(e), true); });
+}
+function fillForm(c) {
+  document.getElementById("wan_name").value = c.name || "";
+  document.getElementById("wan_type_select").value = c.type || "PPPoE";
+  document.getElementById("wan_service").value = c.service || "";
+  document.getElementById("wan_username").value = c.username || "";
+  document.getElementById("wan_password").value = c.password === "******" ? "" : (c.password || "");
+  document.getElementById("wan_trigger").value = c.connection_trigger || "AlwaysOn";
+  document.getElementById("wan_idle").value = c.idle_timeout == null ? "0" : c.idle_timeout;
+  document.getElementById("wan_mtu").value = c.mtu == null ? "1500" : c.mtu;
+  document.getElementById("wan_vlan").value = c.vlan_id == null ? "" : c.vlan_id;
+}
+function clearForm() {
+  ["wan_name", "wan_username", "wan_password", "wan_idle", "wan_mtu", "wan_vlan"].forEach(function (id) {
+    document.getElementById(id).value = "";
+  });
+  document.getElementById("wan_type_select").value = "PPPoE";
+  document.getElementById("wan_service").value = "INTERNET";
+  document.getElementById("wan_trigger").value = "AlwaysOn";
+}
+function onSelectConnection() {
+  var id = document.getElementById("wan_select").value;
+  if (!id) { clearForm(); currentId = null; return; }
+  api("/api/wan/connections/" + id).then(function (c) {
+    currentId = c.id;
+    fillForm(c);
+  }).catch(function (e) { setMsg(String(e), true); });
+}
+function onNewConnection() {
+  currentId = null;
+  document.getElementById("wan_select").value = "";
+  clearForm();
+  setMsg("New connection: fill the form then Save", false);
+}
+function onSaveConnection() {
+  var body = {
+    name: document.getElementById("wan_name").value,
+    type: document.getElementById("wan_type_select").value,
+    service: document.getElementById("wan_service").value,
+    username: document.getElementById("wan_username").value,
+    password: document.getElementById("wan_password").value,
+    connection_trigger: document.getElementById("wan_trigger").value,
+    idle_timeout: parseInt(document.getElementById("wan_idle").value || "0", 10),
+    mtu: parseInt(document.getElementById("wan_mtu").value || "0", 10),
+    vlan_id: parseInt(document.getElementById("wan_vlan").value || "0", 10)
+  };
+  var url = "/api/wan/connections" + (currentId ? "/" + currentId : "");
+  var method = currentId ? "PUT" : "POST";
+  api(url, { method: method, headers: { "Content-Type": "application/json" },
+             body: JSON.stringify(body) })
+    .then(function () {
+      setMsg(method === "POST" ? "Created" : "Saved", false);
+      loadConnections();
+    }).catch(function (e) { setMsg(String(e), true); });
+}
+function onDeleteConnection() {
+  if (!currentId) { setMsg("No connection selected", true); return; }
+  if (!confirm("Delete connection " + currentId + "?")) { return; }
+  api("/api/wan/connections/" + currentId, { method: "DELETE" })
+    .then(function () {
+      currentId = null;
+      clearForm();
+      setMsg("Deleted", false);
+      loadConnections();
+    }).catch(function (e) { setMsg(String(e), true); });
 }
 fetch("/api/wan").then(function (r) { return r.json(); }).then(function (w) {
   document.getElementById("wan_type").textContent = w.type;
@@ -56,6 +200,7 @@ fetch("/api/wan").then(function (r) { return r.json(); }).then(function (w) {
   document.getElementById("wan_dns").textContent = w.dns;
   document.getElementById("wan_mac").textContent = w.mac;
 });
+loadConnections();
 </script>
 </body>
 </html>

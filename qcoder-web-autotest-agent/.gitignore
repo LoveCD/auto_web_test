@@ -22,6 +22,10 @@ reports/
 ~$*
 operators/*/cases/generated/
 
+# ---- 固化用例文档（交付物，例外入库）----
+!docs/case-docs/
+!docs/case-docs/*.docx
+
 # ---- IDE / OS ----
 .idea/
 .vscode/

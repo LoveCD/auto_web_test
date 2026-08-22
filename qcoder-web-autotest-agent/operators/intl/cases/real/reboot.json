@@ -1,0 +1,83 @@
+[
+  {
+    "id": "INTL-REBOOT-001",
+    "title": "重启页面可访问（Device Management > Reboot）",
+    "priority": "P0",
+    "tags": ["suite:smoke", "type:positive", "module:system"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_deviceManagement_L2", "l3": "fhId_rebootDevice_L3", "desc": "导航到重启页面"},
+      {"action": "real.assert_url_contains", "substring": "rebootDevice", "desc": "URL 含 rebootDevice"},
+      {"action": "real.assert_visible", "selector": "#fhId_Reboot", "desc": "Reboot 按钮可见"},
+      {"action": "real.screenshot", "name": "INTL-REBOOT-001_reboot", "desc": "截图重启页面"}
+    ]
+  },
+  {
+    "id": "INTL-REBOOT-002",
+    "title": "点击 Reboot 弹出确认对话框",
+    "priority": "P0",
+    "tags": ["suite:smoke", "type:positive", "module:system"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_deviceManagement_L2", "l3": "fhId_rebootDevice_L3", "desc": "导航到重启页面"},
+      {"action": "real.click", "selector": "#fhId_Reboot", "desc": "点击 Reboot 按钮"},
+      {"action": "real.assert_confirm_visible", "keyword": "reboot", "desc": "确认对话框出现且含 reboot 提示"},
+      {"action": "real.screenshot", "name": "INTL-REBOOT-002_confirm", "desc": "截图重启确认框"}
+    ]
+  },
+  {
+    "id": "INTL-REBOOT-003",
+    "title": "取消重启，设备不重启且确认框关闭",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:system", "专项:persist"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_deviceManagement_L2", "l3": "fhId_rebootDevice_L3", "desc": "导航到重启页面"},
+      {"action": "real.click", "selector": "#fhId_Reboot", "desc": "点击 Reboot 按钮"},
+      {"action": "real.assert_confirm_visible", "desc": "确认对话框出现"},
+      {"action": "real.click_confirm", "accept": false, "desc": "点击 Cancel 取消"},
+      {"action": "real.assert_confirm_hidden", "desc": "确认框关闭"},
+      {"action": "real.assert_url_contains", "substring": "rebootDevice", "desc": "仍停留在重启页面（未重启）"}
+    ]
+  },
+  {
+    "id": "INTL-REBOOT-004",
+    "title": "未登录直接访问重启页面，跳转登录页",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:negative", "module:system", "专项:auth"],
+    "precondition": "设备已上电，浏览器无登录会话",
+    "steps": [
+      {"action": "real.navigate", "path": "/main.html#/management/deviceManagement/rebootDevice", "desc": "未登录直接访问重启页"},
+      {"action": "real.assert_unauth_redirect", "desc": "未登录访问应跳转登录页或登录表单可见"}
+    ]
+  },
+  {
+    "id": "INTL-REBOOT-005",
+    "title": "重启页面其他管理功能入口可见（Restore/Upgrade/Config）",
+    "priority": "P2",
+    "tags": ["suite:regression", "type:positive", "module:system"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_deviceManagement_L2", "l3": "fhId_rebootDevice_L3", "desc": "导航到重启页面"},
+      {"action": "real.assert_visible", "selector": "#fhId_Reboot", "desc": "Reboot 按钮可见"},
+      {"action": "real.assert_visible", "selector": "#fhId_restoreDefault_L3", "desc": "Restore 入口可见"},
+      {"action": "real.assert_visible", "selector": "#fhId_firmwareUp_L3", "desc": "Local Upgrade 入口可见"}
+    ]
+  }
+]

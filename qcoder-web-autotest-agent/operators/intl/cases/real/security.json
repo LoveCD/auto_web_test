@@ -1,0 +1,42 @@
+[
+  {
+    "id": "INTL-SEC-001",
+    "title": "连续错误密码触发登录锁定状态机",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:negative", "module:login", "专项:security"],
+    "precondition": "设备已上电，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "Wrong1", "desc": "第1次错误密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
+      {"action": "real.assert_login_error", "desc": "第1次错误提示"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "Wrong2", "desc": "第2次错误密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
+      {"action": "real.assert_login_error", "desc": "第2次错误提示"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "Wrong3", "desc": "第3次错误密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待锁定提示更新"},
+      {"action": "real.assert_text_contains", "selector": "#login_error_hint", "text": "wrong 3 times", "desc": "触发锁定提示（3次错误锁定1分钟）"},
+      {"action": "real.screenshot", "name": "INTL-SEC-001_locked", "desc": "截图锁定提示"}
+    ]
+  },
+  {
+    "id": "INTL-SEC-002",
+    "title": "锁定期间即使正确密码也无法登录",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:negative", "module:login", "专项:security"],
+    "precondition": "设备刚触发过登录锁定（INTL-SEC-001 执行后）",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入正确用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入正确密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待锁定提示更新"},
+      {"action": "real.assert_text_contains", "selector": "#login_error_hint", "text": "wrong 3 times", "desc": "锁定期间仍提示锁定，无法登录"},
+      {"action": "real.assert_url_contains", "substring": "login.html", "desc": "仍停留在登录页"}
+    ]
+  }
+]

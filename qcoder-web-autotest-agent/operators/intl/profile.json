@@ -12,29 +12,28 @@
       }
     },
     "real": {
-      "base_url": "http://127.0.0.1:8090",
+      "base_url": "http://192.168.1.1",
       "login_path": "/login.html",
       "auth": {
-        "admin": {"username": "admin", "password": "admin123"},
+        "admin": {"username": "admin", "password": "${QCT_INTL_ADMIN_PASS}"},
         "user": {"username": "user", "password": "user123"}
       }
     }
   },
   "spa": {
-    "enabled": false,
-    "route_prefix": "",
-    "navigation": "direct_url",
-    "menu_id_prefix": "",
-    "page_container_prefix": ""
+    "enabled": true,
+    "route_prefix": "/main.html#/",
+    "navigation": "menu_click",
+    "menu_id_prefix": "fhId_",
+    "page_container_prefix": "fhId_"
   },
   "routes": {
     "login": "/login.html",
-    "status": "/status.html",
-    "wifi": "/wifi.html",
-    "wan": "/wan.html",
-    "lan": "/lan.html",
-    "system": "/system.html",
-    "upgrade": "/upgrade.html"
+    "home": "/main.html#/home",
+    "status": "/main.html#/status/deviceInfo/deviceInfo",
+    "wan": "/main.html#/network/broadBandSettings/internetSettings",
+    "system": "/main.html#/management/deviceManagement/rebootDevice",
+    "reboot": "/main.html#/management/deviceManagement/rebootDevice"
   },
   "browser": {
     "default": "chromium",

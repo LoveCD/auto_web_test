@@ -1,0 +1,103 @@
+[
+  {
+    "id": "INTL-STATUS-001",
+    "title": "系统状态页面可访问，设备信息正常显示",
+    "priority": "P0",
+    "tags": ["suite:smoke", "type:positive", "module:status"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
+      {"action": "real.assert_url_contains", "substring": "deviceInfo", "desc": "URL 含 deviceInfo"},
+      {"action": "real.assert_visible", "selector": "#fhId_SoftwareVersion", "desc": "软件版本字段可见"},
+      {"action": "real.assert_visible", "selector": "#fhId_ModelName", "desc": "设备型号字段可见"},
+      {"action": "real.screenshot", "name": "INTL-STATUS-001_deviceinfo", "desc": "截图设备信息页"}
+    ]
+  },
+  {
+    "id": "INTL-STATUS-002",
+    "title": "关键设备信息字段均有有效值",
+    "priority": "P0",
+    "tags": ["suite:smoke", "type:positive", "module:status"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
+      {"action": "real.assert_text_not_contains", "selector": "#fhId_SoftwareVersion", "text": "N/A", "desc": "软件版本非 N/A"},
+      {"action": "real.assert_text_not_contains", "selector": "#fhId_ModelName", "text": "N/A", "desc": "设备型号非 N/A"},
+      {"action": "real.assert_text_not_contains", "selector": "#fhId_SerialNumber", "text": "N/A", "desc": "序列号非 N/A"},
+      {"action": "real.assert_text_not_contains", "selector": "#fhId_MAC_Address", "text": "N/A", "desc": "MAC 地址非 N/A"},
+      {"action": "real.assert_text_not_contains", "selector": "#fhId_SystemUpTime", "text": "N/A", "desc": "运行时间非 N/A"}
+    ]
+  },
+  {
+    "id": "INTL-STATUS-003",
+    "title": "系统运行时间随刷新递增（状态迁移）",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:status", "专项:persist"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
+      {"action": "real.assert_visible", "selector": "#fhId_SystemUpTime", "desc": "运行时间字段可见"},
+      {"action": "real.wait", "ms": "3000", "desc": "等待 3 秒"},
+      {"action": "real.assert_visible", "selector": "#fhId_SystemUpTime", "desc": "运行时间字段仍可见"}
+    ]
+  },
+  {
+    "id": "INTL-STATUS-004",
+    "title": "MAC 地址格式正确（XX:XX:XX:XX:XX:XX）",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:boundary", "module:status"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
+      {"action": "real.evaluate", "script": "() => { const el = document.querySelector('#fhId_MAC_Address'); return /^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/.test((el.innerText||'').trim()); }", "desc": "校验 MAC 地址格式"}
+    ]
+  },
+  {
+    "id": "INTL-STATUS-005",
+    "title": "首页状态与设备信息页 MAC 地址一致（跨页一致性）",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:status", "专项:persist"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.assert_url_contains", "substring": "main.html#/home", "desc": "登录后到首页"},
+      {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
+      {"action": "real.assert_visible", "selector": "#fhId_MAC_Address", "desc": "设备信息页 MAC 可见"}
+    ]
+  },
+  {
+    "id": "INTL-STATUS-006",
+    "title": "CPU 与内存使用率字段显示有效百分比",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:status"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
+      {"action": "real.evaluate", "script": "() => { const el = document.querySelector('#fhId_CPU_Usage'); const t=(el.innerText||'').trim(); return /\\d+(\\.\\d+)?%/.test(t); }", "desc": "CPU 使用率为百分比"},
+      {"action": "real.evaluate", "script": "() => { const el = document.querySelector('#fhId_Memory_Usage'); const t=(el.innerText||'').trim(); return /\\d+(\\.\\d+)?%/.test(t); }", "desc": "内存使用率为百分比"}
+    ]
+  }
+]

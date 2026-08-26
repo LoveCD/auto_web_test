@@ -99,5 +99,27 @@
       {"action": "real.evaluate", "script": "() => { const el = document.querySelector('#fhId_CPU_Usage'); const t=(el.innerText||'').trim(); return /\\d+(\\.\\d+)?%/.test(t); }", "desc": "CPU 使用率为百分比"},
       {"action": "real.evaluate", "script": "() => { const el = document.querySelector('#fhId_Memory_Usage'); const t=(el.innerText||'').trim(); return /\\d+(\\.\\d+)?%/.test(t); }", "desc": "内存使用率为百分比"}
     ]
+  },
+  {
+    "id": "INTL-STATUS-007",
+    "title": "系统状态页面 XSS 注入安全测试（负向）",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:security", "module:status", "专项:xss"],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
+      {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
+      {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
+      {"action": "real.assert_visible", "selector": "#fhId_SoftwareVersion", "desc": "设备信息正常显示"},
+      {"action": "real.navigate", "path": "/main.html#/status/deviceInfo?xss=<script>alert(1)</script>", "desc": "URL 注入 script XSS payload"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待页面加载"},
+      {"action": "real.no_dialog", "desc": "验证未触发 alert（script 未执行，无弹窗）"},
+      {"action": "real.navigate", "path": "/main.html#/status/deviceInfo?xss=<img src=x onerror=alert(2)>", "desc": "URL 注入 img onerror XSS payload"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待页面加载"},
+      {"action": "real.no_dialog", "desc": "验证未触发 alert（onerror 未执行，无弹窗）"},
+      {"action": "real.screenshot", "name": "INTL-STATUS-007_xss", "desc": "截图 XSS 注入后页面"}
+    ]
   }
 ]

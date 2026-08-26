@@ -16,7 +16,7 @@
       "login_path": "/login.html",
       "auth": {
         "admin": {"username": "admin", "password": "${QCT_INTL_ADMIN_PASS}"},
-        "user": {"username": "user", "password": "user123"}
+        "user": {"username": "user", "password": "${QCT_INTL_USER_PASS}"}
       }
     }
   },

@@ -16,9 +16,17 @@ from datetime import datetime
 from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import sys
+sys.path.insert(0, ROOT)
+
+from core.config import load_dotenv, resolve_env_value  # noqa: E402
+
+load_dotenv()  # 从工程根 .env 注入 QCT_INTL_* 等凭据（.env 不入库）
+
 BASE_URL = os.environ.get("QCT_INTL_BASE_URL", "http://192.168.1.1")
 ADMIN_USER = os.environ.get("QCT_INTL_ADMIN_USER", "admin")
-ADMIN_PASS = os.environ.get("QCT_INTL_ADMIN_PASS", "${QCT_INTL_ADMIN_PASS}")
+ADMIN_PASS = os.environ.get("QCT_INTL_ADMIN_PASS", "")  # 无默认值：缺失即空串
+USER_PASS = os.environ.get("QCT_INTL_USER_PASS", "")    # 同上，真机登录前须在 .env 配置
 
 SEL = json.load(open(os.path.join(ROOT, "operators", "intl", "selectors_real.json"), encoding="utf-8"))
 
@@ -263,6 +271,128 @@ class IntlSession:
         # 兜底：未跳转则视为未授权保护失效（记录为失败，暴露安全弱项）
         return False
 
+    # ---------- 端口绑定（复选框） ----------
+    def _is_checked(self, selector):
+        sel = resolve_sel(selector) or selector
+        loc = self.page.locator(sel)
+        loc.wait_for(state="visible", timeout=8000)
+        return loc.first.evaluate("el => el.classList.contains('is-checked')")
+
+    def check(self, selector):
+        if not self._is_checked(selector):
+            self.click(selector)
+        return True
+
+    def uncheck(self, selector):
+        if self._is_checked(selector):
+            self.click(selector)
+        return True
+
+    def assert_checked(self, selector):
+        return self._is_checked(selector) is True
+
+    def assert_unchecked(self, selector):
+        return self._is_checked(selector) is False
+
+    # ---------- WAN 清理 ----------
+    def cleanup_wan(self):
+        """删除宽带设置页面中所有 WAN 连接，保证用例起始状态干净。
+        返回删除的 WAN 数量。若页面不在宽带设置页，先尝试导航过去。"""
+        page = self.page
+        # 确保在宽带设置页面
+        try:
+            if page.locator("#fhId_broadBandSettings_L2").count() == 0:
+                page.click("#fhId_network_L1", timeout=8000)
+                page.wait_for_timeout(1200)
+                page.click("#fhId_broadBandSettings_L2", timeout=8000)
+                page.wait_for_timeout(2500)
+        except Exception:
+            pass
+        deleted = 0
+        # 关闭任何残留的提示/警告框（如"最多4条路由"警告），避免其干扰后续删除确认框
+        try:
+            for _ in range(3):
+                box = page.locator(".el-message-box")
+                if box.count() and box.first.is_visible():
+                    btns = box.locator(".el-message-box__btns button").all()
+                    if btns:
+                        btns[-1].click()
+                        page.wait_for_timeout(1000)
+                    else:
+                        break
+                else:
+                    break
+        except Exception:
+            pass
+        # 若 Add 表单处于打开状态，先点击 Add 切换回列表视图，避免表单遮挡干扰删除
+        try:
+            if page.locator("#fhId_onApply").count() and page.locator("#fhId_onApply").is_visible():
+                page.click("#fhId_Add", timeout=5000)
+                page.wait_for_timeout(1200)
+        except Exception:
+            pass
+        # 反复扫描列表，直到没有 WAN 项为止
+        for _ in range(20):
+            items = page.locator("li[id^='fhId_Wan']").all()
+            if not items:
+                items = page.locator("li:has(.del_wan_icon)").all()
+            if not items:
+                break
+            # 取第一个 WAN 项
+            item = items[0]
+            try:
+                item.click()
+                page.wait_for_timeout(600)
+            except Exception:
+                pass
+            del_icon = item.locator(".del_wan_icon")
+            if del_icon.count() == 0:
+                # 尝试通过列表内删除按钮
+                del_icon = page.locator("li:has(.del_wan_icon) .del_wan_icon").first
+            try:
+                del_icon.click(timeout=5000)
+            except Exception:
+                break
+            # 确认删除：优先点 message-box 中的"确定/OK"按钮
+            try:
+                box = page.locator(".el-message-box")
+                if box.count() and box.first.is_visible():
+                    btns = box.locator(".el-message-box__btns button").all()
+                    target = None
+                    for b in btns:
+                        t = (b.inner_text() or "").strip().lower()
+                        if t in ("ok", "确定", "yes", "确认", "delete", "删除"):
+                            target = b
+                            break
+                    if target is None and btns:
+                        target = btns[-1]
+                    if target is not None:
+                        target.click()
+                    page.wait_for_timeout(2500)
+                else:
+                    page.wait_for_timeout(1500)
+            except Exception:
+                page.wait_for_timeout(1500)
+            deleted += 1
+        # 删除完成后重新导航刷新列表，确保 body 文本更新
+        try:
+            page.click("#fhId_network_L1", timeout=8000)
+            page.wait_for_timeout(1200)
+            page.click("#fhId_broadBandSettings_L2", timeout=8000)
+            page.wait_for_timeout(2500)
+        except Exception:
+            pass
+        # 轮询等待 body 不再包含任何 WAN 项文本，确保删除完全生效
+        try:
+            for _ in range(10):
+                body_txt = page.locator("body").inner_text()
+                if "VID_" not in body_txt and "INTERNET_R_" not in body_txt:
+                    break
+                page.wait_for_timeout(1000)
+        except Exception:
+            pass
+        return True
+
 
 ACTION_MAP = {
     "real.navigate": lambda s, a: s.navigate(a["path"]),
@@ -294,6 +424,11 @@ ACTION_MAP = {
     "real.no_dialog": lambda s, a: s.no_dialog(),
     "real.assert_unauthorized": lambda s, a: s.assert_unauthorized(),
     "real.assert_unauth_redirect": lambda s, a: s.assert_unauth_redirect(),
+    "real.check": lambda s, a: s.check(a["selector"]),
+    "real.uncheck": lambda s, a: s.uncheck(a["selector"]),
+    "real.assert_checked": lambda s, a: s.assert_checked(a["selector"]),
+    "real.assert_unchecked": lambda s, a: s.assert_unchecked(a["selector"]),
+    "real.cleanup_wan": lambda s, a: s.cleanup_wan(),
 }
 
 

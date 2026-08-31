@@ -16,12 +16,23 @@ OUT_PATH = os.path.join(ROOT, "烽火HG3142F2真机Web自动化测试报告.docx
 
 sys.path.insert(0, ROOT)
 from core.config import resolve_config  # noqa: E402
+from tools.docx_branding import (  # noqa: E402
+    FH_BODY_PREFIX, FH_COVER_HEADER, add_cover_logo, apply_fh_header,
+)
 
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
+
+
+def _mask_secret(v):
+    """密码一律脱敏：仅显示用户名，密码用占位符（真凭据仅存 .env，绝不写入文档）。"""
+    if not isinstance(v, str) or "/" not in v:
+        return v
+    user_part, _ = v.split("/", 1)
+    return f"{user_part.strip()} / ********"
 
 
 def load_cm_real_auth():
@@ -34,8 +45,8 @@ def load_cm_real_auth():
     admin = real.get("auth", {}).get("admin", {})
     user = real.get("auth", {}).get("user", {})
     return (real.get("base_url", "-"),
-            f"{admin.get('username', '-')} / {admin.get('password', '-')}",
-            f"{user.get('username', '-')} / {user.get('password', '-')}")
+            _mask_secret(f"{admin.get('username', '-')} / {admin.get('password', '-')}"),
+            _mask_secret(f"{user.get('username', '-')} / {user.get('password', '-')}"))
 
 
 def set_cn_font(run, name="微软雅黑", size=None, bold=None, color=None):
@@ -118,6 +129,30 @@ def add_pic_glob(doc, shot_dir, pattern, width_cm=13.5, caption=None):
         add_pic(doc, hits[0], width_cm=width_cm, caption=caption)
 
 
+def _cover_field_table(doc, rows):
+    """封面信息表：无边框、黑体（对齐参考样例封面版式）。"""
+    tb = doc.add_table(rows=0, cols=2)
+    tb.alignment = WD_TABLE_ALIGNMENT.CENTER
+    from docx.oxml import OxmlElement
+    tblPr = tb._tbl.tblPr
+    borders = OxmlElement("w:tblBorders")
+    for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
+        el = OxmlElement(f"w:{edge}")
+        el.set(qn("w:val"), "none")
+        el.set(qn("w:sz"), "0")
+        borders.append(el)
+    tblPr.append(borders)
+    for k, v in rows:
+        cells = tb.add_row().cells
+        cells[0].width = Cm(3.3)
+        cells[1].width = Cm(9.2)
+        r0 = cells[0].paragraphs[0].add_run(str(k))
+        set_cn_font(r0, name="黑体", size=14)
+        r1 = cells[1].paragraphs[0].add_run(str(v))
+        set_cn_font(r1, name="黑体", size=14)
+    return tb
+
+
 def find_latest_report(suite_key):
     pat = os.path.join(REPORTS, f"*_cm_real_{suite_key}")
     dirs = sorted(glob.glob(pat), reverse=True)
@@ -145,20 +180,36 @@ def main():
     style.font.size = Pt(10.5)
     style._element.rPr.rFonts.set(qn("w:eastAsia"), "微软雅黑")
 
-    # ================= 封面 =================
+    # ================= 封面（对齐参考样例：左上角 logo + 黑体标题 + 信息表） =================
+    add_cover_logo(doc)  # 封面左上角 FiberHome logo
+    for _ in range(3):
+        doc.add_paragraph()
+    add_para(doc, "（Web UI自动化自测）", size=26, bold=True,
+             align=WD_ALIGN_PARAGRAPH.CENTER, color=(0, 0, 0))
     for _ in range(4):
         doc.add_paragraph()
-    t = add_para(doc, "烽火 HG3142F2 真机 Web 自动化测试报告", size=26, bold=True,
-                 align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x1F, 0x4E, 0x79))
-    add_para(doc, "", size=12)
-    add_para(doc, "基于 Playwright 的真机 UI 自动化测试平台 · qcoder-web-autotest-agent", size=13,
-             align=WD_ALIGN_PARAGRAPH.CENTER)
-    add_para(doc, "", size=12)
-    add_para(doc, "运营商：中国移动（CM）  |  环境：真机（--env real）", size=12,
-             align=WD_ALIGN_PARAGRAPH.CENTER)
-    add_para(doc, "", size=30)
-    add_para(doc, "测试日期：2026-08-19", size=12, align=WD_ALIGN_PARAGRAPH.CENTER)
-    doc.add_page_break()
+    add_para(doc, "测试报告", size=36, bold=True,
+             align=WD_ALIGN_PARAGRAPH.CENTER, color=(0, 0, 0))
+    for _ in range(3):
+        doc.add_paragraph()
+    add_para(doc, "烽火 HG3142F2 真机 Web 自动化测试", size=16, bold=True,
+             align=WD_ALIGN_PARAGRAPH.CENTER, color=(0, 0, 0))
+    add_para(doc, "基于 Playwright 的真机 UI 自动化测试平台 · qcoder-web-autotest-agent", size=12,
+             align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x59, 0x59, 0x59))
+    for _ in range(3):
+        doc.add_paragraph()
+    _cover_field_table(doc, [
+        ("设备型号：", "烽火 HG3142F2（FTTR 智能网关）"),
+        ("产品代号：", "CM 中国移动"),
+        ("项目代号：", "真机 Web 自动化测试"),
+        ("部    门：", "自动化测试"),
+        ("拟    制：", "自动化自测"),
+        ("审    核：", ""),
+        ("批    准：", ""),
+    ])
+    # 封面节结束（分节，便于封面/正文挂不同页眉）
+    from docx.enum.section import WD_SECTION_START
+    doc.add_section(WD_SECTION_START.NEW_PAGE)
 
     # ================= 一、测试概述 =================
     add_heading(doc, "一、测试概述", 1)
@@ -389,6 +440,9 @@ def main():
                   "可在两个 Agent 平台中以自然语言直接驱动本测试平台。")
     add_para(doc, "4. 自然语言生成 + 差距检测验证有效：320MHz 频段需求在设备未实现时，生成器能提前发现差距，"
                   "真机执行结果与差距检测结论一致，可作为需求验收工具使用。")
+
+    # FH 页眉（对齐参考样例）：封面节 = FH 编号；正文节 = SDV测试报告 + FH 编号
+    apply_fh_header(doc, body_text=f"{FH_BODY_PREFIX}          {FH_COVER_HEADER}")
 
     doc.save(OUT_PATH)
     print(f"OK -> {OUT_PATH}")

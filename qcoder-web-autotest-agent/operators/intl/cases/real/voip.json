@@ -50,5 +50,39 @@
       {"action": "real.assert_input_value", "selector": "voip.registrar_port", "value": "5060", "desc": "回读验证注册端口已恢复为 5060"},
       {"action": "real.screenshot", "name": "INTL-VOIP-003_restored", "desc": "截图恢复结果"}
     ]
+  },
+  {
+    "id": "INTL-VOIP-004",
+    "title": "VoIP 注册服务器地址合法修改并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:crud"],
+    "precondition": "设备已上电，已登录，VoIP 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_voipSettings_L2", "desc": "进入 VoIP 设置页"},
+      {"action": "real.fill", "selector": "voip.registrar_server", "value": "sip.test.com", "desc": "修改注册服务器地址为 sip.test.com"},
+      {"action": "real.click", "selector": "voip.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "voip.registrar_server", "value": "sip.test.com", "desc": "回读验证注册服务器地址已更新"},
+      {"action": "real.screenshot", "name": "INTL-VOIP-004_server", "desc": "截图注册服务器地址修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-VOIP-005",
+    "title": "VoIP 注册服务器地址恢复基线配置",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:persist"],
+    "precondition": "设备已上电，已登录，VoIP 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_voipSettings_L2", "desc": "进入 VoIP 设置页"},
+      {"action": "real.fill", "selector": "voip.registrar_server", "value": "0.0.0.0", "desc": "恢复注册服务器地址为基线 0.0.0.0"},
+      {"action": "real.click", "selector": "voip.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "voip.registrar_server", "value": "0.0.0.0", "desc": "回读验证注册服务器地址已恢复基线"},
+      {"action": "real.screenshot", "name": "INTL-VOIP-005_restored", "desc": "截图恢复结果"}
+    ]
   }
 ]

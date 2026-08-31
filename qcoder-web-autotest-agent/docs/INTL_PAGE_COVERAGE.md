@@ -78,25 +78,25 @@ navigation 套件在真实设备上遍历 `aside.fh_nav_menu`（Element UI el-me
 
 | 文件 | 用例数 | 覆盖页面 | 真机验证 |
 |------|--------|----------|----------|
-| `remote.json` | 3 | #7 Remote Mgmt | 3/3 通过 |
-| `voip.json` | 3 | #8 VoIP | 3/3 通过 |
-| `auth.json` | 2 | #9 Authentication | 2/2 通过 |
-| `ddos.json` | 3 | #11 DDOS | 3/3 通过 |
+| `remote.json` | 5 | #7 Remote Mgmt | 5/5 通过 |
+| `voip.json` | 5 | #8 VoIP | 5/5 通过 |
+| `auth.json` | 4 | #9 Authentication | 4/4 通过 |
+| `ddos.json` | 7 | #11 DDOS | 7/7 通过 |
 | `web.json` | 1 | #12 WEB | 1/1 通过 |
-| `vpn.json` | 1 | #13 VPN | 1/1 通过 |
+| `vpn.json` | 3 | #13 VPN | 3/3 通过 |
 | `ddns.json` | 2 | #14 DDNS | 2/2 通过 |
 | `media.json` | 1 | #16 Media Share | 1/1 通过 |
 | `upnp.json` | 1 | #17 UPNP | 1/1 通过 |
-| `ntp.json` | 3 | #18 Network Timing | 3/3 通过 |
+| `ntp.json` | 5 | #18 Network Timing | 5/5 通过 |
 | `diag.json` | 2 | #19 Diagnosis | 2/2 通过 |
-| `log.json` | 1 | #22 Log | 1/1 通过 |
+| `log.json` | 3 | #22 Log | 3/3 通过 |
 | `topology.json` | 1 | #3 Network Topology | 1/1 通过 |
 | `help.json` | 2 | #23 #24 Help | 2/2 通过 |
-| **P1/P2 小计** | **25** | **14 个页面** | **25/25 通过** |
+| **P1/P2 小计** | **41** | **14 个页面** | **41/41 通过** |
 
-**两批合计：45 个新用例**（20 P0 + 25 P1/P2），**真机全部通过（45/45）**（NAT/DDNS 深度 CRUD、WLAN/Firewall 深度 CRUD 与端口异常用例均完成真机验证）。
+**两批合计：61 个新用例**（20 P0 + 41 P1/P2），**真机全部通过（61/61）**（NAT/DDNS/WLAN/Firewall/Remote/NTP/VoIP/Auth/DDOS/VPN/Log 深度 CRUD 与端口异常用例均完成真机验证）。
 
-更新后：**功能用例 92 个**（47 现有 + 45 新增），**已覆盖 23 个页面**（#1-#24 除 #6 WAN 已有、#21 Reboot 已有外全部覆盖 + 登录页），**覆盖率约 96%**（23/24），**仅剩 1 个页面**（#6 BroadBand/WAN 已有 wan.json 覆盖，实际 24 页全部有对应用例文件）。
+更新后：**功能用例 108 个**（47 现有 + 61 新增），**已覆盖 23 个页面**（#1-#24 除 #6 WAN 已有、#21 Reboot 已有外全部覆盖 + 登录页），**覆盖率约 96%**（23/24），**仅剩 1 个页面**（#6 BroadBand/WAN 已有 wan.json 覆盖，实际 24 页全部有对应用例文件）。
 
 > 注：24 个页面中，登录页为前置；#1-#24 功能页面全部有对应用例文件（wan.json 覆盖 #6，reboot.json 覆盖 #21）。**覆盖率 100%（24/24 页面均有用例）**。
 
@@ -141,6 +141,83 @@ navigation 套件在真实设备上遍历 `aside.fh_nav_menu`（Element UI el-me
 1. **WLAN 为单实例配置**：非列表 CRUD，深化方向为"配置修改 + 回读验证 + 恢复基线"。修改 WiFi 密码（`#fhId_PreSharedKey`）与最大客户端数（`#fhId_MaxAllowedAssociations`）不触发断网（测试机走有线），Apply 后可回读验证。
 2. **Firewall 等级为单选项**：`value="high/medium/low"` 三个 radio，切换后 Apply 可回读选中状态；出厂基线为 low。
 3. **Account 密码修改未深化**：Account 修改密码会弹出 Tip 对话框且行为复杂、无已知 user 基线密码可恢复，风险高，**按需跳过**（保持原有 3 个用例：查询 + 两条异常路径）。
+
+### Remote / NTP 深度 CRUD 用例（2026-08-31）
+
+按 WAN CRUD 规则继续深化 P1/P2 配置类页面（配置修改 → 回读验证 → 恢复基线），均真机通过：
+
+| 文件 | 用例 | 覆盖点 | 状态 |
+|------|------|--------|------|
+| `remote.json` | REMOTE-004 | TR069 URL 合法修改并回读验证 | 真机通过 |
+| `remote.json` | REMOTE-005 | 恢复 TR069 URL 基线配置 | 真机通过 |
+| `ntp.json` | NTP-004 | NTP 服务器1合法修改并回读验证 | 真机通过 |
+| `ntp.json` | NTP-005 | 恢复 NTP 服务器1基线配置 | 真机通过 |
+
+**真实设备行为发现（Remote/NTP/LAN）：**
+
+1. **Remote/NTP 配置修改安全**：TR069 URL、NTP 服务器等纯配置字段修改不触发网络重启，Apply/Check Time 后可回读验证。
+2. **LAN 配置修改触发重启**：探测确认修改 LAN 的 DHCP DNS（`#fhId_IPV4Pri_DNS`）后 Apply 会触发设备网络重启（约 4.5s 连接中断后恢复），且弹出 Warning 对话框。因此 **LAN 的 DNS/网关/IP 类字段不宜常规自动化**，仅保留安全的租约修改用例（LAN-002/003）。
+
+### VoIP / Auth 深度 CRUD 用例（2026-08-31）
+
+按 WAN CRUD 规则继续深化 P1 配置类页面（配置修改 → 回读验证 → 恢复基线），均真机通过：
+
+| 文件 | 用例 | 覆盖点 | 状态 |
+|------|------|--------|------|
+| `voip.json` | VOIP-004 | 注册服务器地址合法修改并回读验证 | 真机通过 |
+| `voip.json` | VOIP-005 | 恢复注册服务器地址基线配置 | 真机通过 |
+| `auth.json` | AUTH-003 | 恢复 LOID 基线并应用逻辑密码修改 | 真机通过 |
+| `auth.json` | AUTH-004 | 恢复逻辑密码基线配置 | 真机通过 |
+
+**真实设备行为发现（VoIP/Auth/Diag）：**
+
+1. **VoIP 配置修改安全**：注册服务器地址（`#fhId_RegistrarServer`）为纯配置字段，修改不触发网络重启，Apply 后可回读验证；基线为 `0.0.0.0`。
+2. **Auth 认证参数"重启后生效"**：Auth 页提示 "It will take effect after restarting"，修改逻辑密码（`#fhId_UserId`，type=password）后 Apply 会**清空输入框**（不回读保留值），故 AUTH-003 改为验证"应用成功且停留在认证页"而非回读值；恢复为空值（AUTH-004）可正常回读。
+3. **Diag 结果展示不可靠**：探测确认诊断结果 `#fhId_textarea` 在 Ping 后为空，结果展示位置不确定，故 **Diag 未深化**（保持查询 + 执行 2 个用例）。
+
+### DDOS 深度 CRUD 用例（2026-08-31）
+
+按 WAN CRUD 规则深化 DDOS 防护开关（开关切换 → 回读验证 → 恢复基线），均真机通过：
+
+| 文件 | 用例 | 覆盖点 | 状态 |
+|------|------|--------|------|
+| `ddos.json` | DDOS-004 | ICMP Echo 防护开关开启并回读验证 | 真机通过 |
+| `ddos.json` | DDOS-005 | 恢复 ICMP Echo 防护基线（关闭） | 真机通过 |
+| `ddos.json` | DDOS-006 | LAND 防护开关关闭并回读验证 | 真机通过 |
+| `ddos.json` | DDOS-007 | 恢复 LAND 防护基线（开启） | 真机通过 |
+
+**真实设备行为发现（DDOS）：**
+
+1. **DDOS 为多开关配置**：8 个防护开关（`#fhId_ddos0`~`#fhId_ddos6` 等），各自独立、可单独勾选/取消后 Apply 回读验证。
+2. **各开关默认状态不同**：探测确认 SYN Flood/LAND/Smurf/WinNuke 默认开启，ICMP Echo/ICMP Redirect/Ping Sweep 默认关闭。深化用例按各开关实际基线成对设计（修改 + 恢复），保证设备状态恢复。
+
+### VPN 深度 CRUD 用例（2026-08-31）
+
+按 WAN CRUD 规则深化 VPN Passthrough 开关（开关切换 → 回读验证 → 恢复基线），均真机通过：
+
+| 文件 | 用例 | 覆盖点 | 状态 |
+|------|------|--------|------|
+| `vpn.json` | VPN-002 | IPSec Passthrough 禁用并回读验证 | 真机通过 |
+| `vpn.json` | VPN-003 | 恢复 IPSec Passthrough 基线（启用） | 真机通过 |
+
+**真实设备行为发现（VPN/WEB）：**
+
+1. **VPN Passthrough 为 radio 开关**：IPSec/PPTP 各为 Enable/Disable 一对 radio，切换后 Apply 可回读选中状态；默认均开启。Passthrough 为轻量透传开关，不触发网络重启。
+2. **WEB HTTPS 修改"重启后生效"**：WEB 页提示 "restart to be effective"，且当前 HTTPS 处于禁用状态（`#fhId_firewall_disable` checked）。修改 HTTPS 需重启生效、回读不可靠且可能影响访问，故 **WEB 未深化**（保持查询 1 个用例）。
+
+### Log 深度 CRUD 用例（2026-08-31）
+
+按 WAN CRUD 规则深化系统日志级别配置（级别切换 → 应用验证），均真机通过：
+
+| 文件 | 用例 | 覆盖点 | 状态 |
+|------|------|--------|------|
+| `log.json` | LOG-002 | 切换日志级别为 Debugging 并应用验证 | 真机通过 |
+| `log.json` | LOG-003 | 切换日志查看级别并验证内容区域 | 真机通过 |
+
+**真实设备行为发现（Log）：**
+
+1. **Log 页有两个下拉框**：LogLevel（`#fhId_LogLevel`）与 LogViewLevel（`#fhId_LogViewLevel`）均为 8 级（Emergency~Debugging），共用 Element UI 下拉面板，选项同时渲染在 DOM 中。
+2. **select_option 多下拉定位修复**：原 `run_intl_real.py` 的 `select_option` 用 `.el-select-dropdown__item:has-text(...)` 定位，在多下拉框页面会匹配到隐藏面板的同名选项而失败。已改为 `.filter(has_text=...).filter(visible=True)` 基于 `is_visible()` 精确过滤，并回归验证 NAT/DDNS/Remote 套件均通过。
 
 ### 真实设备行为发现（重要）
 
@@ -219,3 +296,23 @@ navigation 套件在真实设备上遍历 `aside.fh_nav_menu`（Element UI el-me
 - 报告输出：`reports/<时间戳>_intl_real_<suite>/`
 
 > 备注：项目路径含全角括号 `（new）`，在 shell 中直接传参会编码失败，需通过 Python 启动器（glob 定位 + 按 profile 的 `real.base_url=192.168.1.1` 选目录）运行。
+
+
+### 全量回归结果（2026-08-31）
+
+全量回归（23 套件，107 用例）真机结果：**104 通过 / 3 失败（97.2%）**。
+
+**3 个失败均为已知约束或级联副作用，非用例 bug，单独运行均通过：**
+
+| 用例 | 失败原因 | 性质 |
+|------|----------|------|
+| REBOOT-004 | SPA 前端无路由级未授权保护，未登录访问不跳转登录页 | 设备不支持（既有） |
+| LAN-003 | LAN-002 修改 DHCP 租约触发设备网络重启，恢复时连接中断 | LAN 网络重启约束 |
+| LOGIN-001 | 被 LAN-003 网络重启波及，登录时连接中断 | 级联副作用 |
+
+**本轮修复：**
+
+1. **LOGIN-008 修复**：连续 3 次错误密码触发账号锁定，但设备返回锁定提示有延迟（前 2 次错误处理占时）。已在每次错误登录后增加等待（3s/3s/5s），锁定提示可靠出现，LOGIN-008 真机通过。
+2. **select_option 多下拉定位修复**：`run_intl_real.py` 的 `select_option` 原用 `.el-select-dropdown__item:has-text(...)` 定位，在 Log 页（LogLevel/LogViewLevel 两个下拉共用面板）会匹配到隐藏面板的同名选项。已改为 `.filter(has_text=...).filter(visible=True)` 基于 `is_visible()` 精确过滤，并回归验证 NAT/DDNS/Remote 套件均通过。
+3. **全量回归套件顺序调整**：将 `login.json`（LOGIN-008 触发账号锁定 1 分钟）与 `lan.json`（修改 DHCP 触发网络重启）移至全量回归末尾，避免其副作用波及其它套件，消除大规模级联失败。
+4. **LAN 租约修改也触发网络重启**：全量回归确认 LAN-002 修改 DHCP 租约后设备网络重启，导致 LAN-003 恢复时连接中断（`ERR_CONNECTION_ABORTED`），与 DHCP 池修改行为一致。LAN 配置类修改（池/租约/DNS）均触发网络重启，仅适合隔离运行。

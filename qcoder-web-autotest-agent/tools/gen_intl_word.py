@@ -17,6 +17,7 @@ import argparse
 import glob
 import json
 import os
+import sys
 from datetime import datetime
 
 from docx import Document
@@ -26,6 +27,9 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+from tools.docx_branding import FH_BODY_PREFIX, FH_COVER_HEADER, add_cover_logo, apply_fh_header  # noqa: E402
+
 CASES_DIR = os.path.join(ROOT, "operators", "intl", "cases", "real")
 REPORTS_DIR = os.path.join(ROOT, "reports", "intl_real")
 OUT_DIR = os.path.join(ROOT, "docs", "case-docs")
@@ -43,6 +47,25 @@ SUITE_NAMES = {
     "wan": "WAN 连接配置页面",
     "reboot": "重启页面",
     "security": "安全（登录锁定）",
+    "wifi": "无线（WiFi）页面",
+    "lan": "LAN 页面",
+    "nat": "NAT 页面",
+    "firewall": "防火墙页面",
+    "account": "账号管理页面",
+    "remote": "远程管理页面",
+    "voip": "VoIP 页面",
+    "auth": "认证（Auth）页面",
+    "ddos": "DDoS 防护页面",
+    "web": "Web 管理页面",
+    "vpn": "VPN 页面",
+    "ddns": "DDNS 页面",
+    "media": "媒体（Media）页面",
+    "upnp": "UPnP 页面",
+    "ntp": "NTP 页面",
+    "diag": "诊断（Diag）页面",
+    "log": "日志（Log）页面",
+    "topology": "网络拓扑页面",
+    "help": "帮助（Help）页面",
 }
 MODULE_NAMES = {
     "login": "Login",
@@ -50,6 +73,25 @@ MODULE_NAMES = {
     "wan": "WAN",
     "reboot": "System",
     "security": "Security",
+    "wifi": "WiFi",
+    "lan": "LAN",
+    "nat": "NAT",
+    "firewall": "Firewall",
+    "account": "Account",
+    "remote": "Remote",
+    "voip": "VoIP",
+    "auth": "Auth",
+    "ddos": "DDoS",
+    "web": "Web",
+    "vpn": "VPN",
+    "ddns": "DDNS",
+    "media": "Media",
+    "upnp": "UPnP",
+    "ntp": "NTP",
+    "diag": "Diag",
+    "log": "Log",
+    "topology": "Topology",
+    "help": "Help",
 }
 
 BLUE = (0x1F, 0x4E, 0x79)
@@ -154,22 +196,57 @@ def find_latest_result():
     return None, None
 
 
-def build_cover(doc):
-    for _ in range(2):
+def _cover_field_table(doc, rows):
+    """封面信息表：无边框、黑体标签（对齐参考样例 header 封面版式）。"""
+    tb = doc.add_table(rows=0, cols=2)
+    tb.alignment = WD_TABLE_ALIGNMENT.CENTER
+    # 无边框
+    from docx.oxml import OxmlElement
+    tblPr = tb._tbl.tblPr
+    borders = OxmlElement("w:tblBorders")
+    for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
+        el = OxmlElement(f"w:{edge}")
+        el.set(qn("w:val"), "none")
+        el.set(qn("w:sz"), "0")
+        borders.append(el)
+    tblPr.append(borders)
+    for k, v in rows:
+        cells = tb.add_row().cells
+        cells[0].width = Cm(3.3)
+        cells[1].width = Cm(9.2)
+        p0 = cells[0].paragraphs[0]
+        r0 = p0.add_run(str(k))
+        set_cn_font(r0, name="黑体", size=14, bold=False)
+        p1 = cells[1].paragraphs[0]
+        r1 = p1.add_run(str(v))
+        set_cn_font(r1, name="黑体", size=14)
+    return tb
+
+
+def build_cover(doc, doc_kind="测试报告"):
+    add_cover_logo(doc)  # 封面左上角 FiberHome logo（参考样例位置）
+    for _ in range(3):
         doc.add_paragraph()
-    add_para(doc, "INTL 国际版真机 Web 测试", size=28, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, color=BLUE)
-    add_para(doc, "登录 / WAN 连接配置 / 系统状态 / 重启 页面", size=15, align=WD_ALIGN_PARAGRAPH.CENTER)
-    add_para(doc, "", size=12)
-    add_kv_table(doc, [
-        ("设备型号", DEVICE["model"]),
-        ("产品代号", DEVICE["product"]),
-        ("项目代号", DEVICE["project"]),
-        ("部门", DEVICE["dept"]),
-        ("拟制", DEVICE["author"]),
-        ("审核", ""),
-        ("批准", ""),
+    add_para(doc, "（Web UI自动化自测）", size=26, bold=True,
+             align=WD_ALIGN_PARAGRAPH.CENTER, color=(0, 0, 0))
+    for _ in range(4):
+        doc.add_paragraph()
+    add_para(doc, doc_kind, size=36, bold=True,
+             align=WD_ALIGN_PARAGRAPH.CENTER, color=(0, 0, 0))
+    for _ in range(5):
+        doc.add_paragraph()
+    _cover_field_table(doc, [
+        ("设备型号：", DEVICE["model"]),
+        ("产品代号：", DEVICE["product"]),
+        ("项目代号：", DEVICE["project"]),
+        ("部    门：", DEVICE["dept"]),
+        ("拟    制：", DEVICE["author"]),
+        ("审    核：", ""),
+        ("批    准：", ""),
     ])
-    doc.add_page_break()
+    # 封面节结束（分节而非分页，便于封面节/正文节挂不同页眉——对齐参考样例）
+    from docx.enum.section import WD_SECTION_START
+    doc.add_section(WD_SECTION_START.NEW_PAGE)
 
 
 def build_version_record(doc, run_id, mode):
@@ -212,8 +289,16 @@ def build_requirement_purpose(doc):
 
 
 def case_module(cid):
+    # 长前缀优先匹配，避免 LOGIN 被 LOG、WAN 与 LAN 等子串误判
     for suite, prefix in [("login", "LOGIN"), ("status", "STATUS"), ("wan", "WAN"),
-                          ("reboot", "REBOOT"), ("security", "SEC")]:
+                          ("reboot", "REBOOT"), ("security", "SEC"),
+                          ("firewall", "FIREWALL"), ("topology", "TOPOLOGY"),
+                          ("account", "ACCOUNT"), ("remote", "REMOTE"),
+                          ("wifi", "WIFI"), ("voip", "VOIP"), ("auth", "AUTH"),
+                          ("ddos", "DDOS"), ("ddns", "DDNS"), ("upnp", "UPNP"),
+                          ("media", "MEDIA"), ("diag", "DIAG"), ("help", "HELP"),
+                          ("lan", "LAN"), ("nat", "NAT"), ("ntp", "NTP"),
+                          ("vpn", "VPN"), ("web", "WEB"), ("log", "LOG")]:
         if prefix in cid:
             return MODULE_NAMES[suite]
     return "General"
@@ -313,7 +398,7 @@ def gen_doc(cases, result_map, run_id, mode, out):
     style.font.size = Pt(10.5)
     style._element.rPr.rFonts.set(qn("w:eastAsia"), "微软雅黑")
 
-    build_cover(doc)
+    build_cover(doc, doc_kind="用例文档" if mode == "case" else "测试报告")
     build_version_record(doc, run_id, mode)
     build_requirement_purpose(doc)
     add_heading(doc, "自动化测试", 1)
@@ -330,6 +415,9 @@ def gen_doc(cases, result_map, run_id, mode, out):
             idx += 1
 
     build_result_summary(doc, result_map, mode)
+
+    # FH 页眉（对齐参考样例）：封面节 = FH 编号；正文节 = SDV测试报告 + FH 编号
+    apply_fh_header(doc, body_text=f"{FH_BODY_PREFIX}          {FH_COVER_HEADER}")
 
     if mode == "case":
         fname = f"用例文档-INTL-REAL-{datetime.now().strftime('%Y%m%d-%H%M%S')}.docx"

@@ -14,5 +14,39 @@
       {"action": "real.assert_visible", "selector": "log.content", "desc": "日志内容区域可见"},
       {"action": "real.screenshot", "name": "INTL-LOG-001_query", "desc": "截图系统日志页查询结果"}
     ]
+  },
+  {
+    "id": "INTL-LOG-002",
+    "title": "切换日志级别为 Debugging 并应用验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:system", "专项:crud"],
+    "precondition": "设备已上电，已登录，系统日志页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_log_L2", "desc": "进入系统日志页"},
+      {"action": "real.select_option", "selector": "log.log_level", "option_text": "Debugging", "desc": "切换日志级别为 Debugging"},
+      {"action": "real.click", "selector": "log.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待应用生效"},
+      {"action": "real.assert_url_contains", "substring": "log", "desc": "应用后仍停留在日志页（无报错）"},
+      {"action": "real.screenshot", "name": "INTL-LOG-002_debug", "desc": "截图日志级别切换结果"}
+    ]
+  },
+  {
+    "id": "INTL-LOG-003",
+    "title": "切换日志查看级别并验证内容区域",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:system", "专项:crud"],
+    "precondition": "设备已上电，已登录，系统日志页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_log_L2", "desc": "进入系统日志页"},
+      {"action": "real.select_option", "selector": "log.log_view_level", "option_text": "Debugging", "desc": "切换日志查看级别为 Debugging"},
+      {"action": "real.click", "selector": "log.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待应用生效"},
+      {"action": "real.assert_visible", "selector": "log.content", "desc": "日志内容区域仍可见"},
+      {"action": "real.screenshot", "name": "INTL-LOG-003_view", "desc": "截图日志查看级别切换结果"}
+    ]
   }
 ]

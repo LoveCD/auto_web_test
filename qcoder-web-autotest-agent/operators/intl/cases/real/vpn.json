@@ -14,5 +14,39 @@
       {"action": "real.assert_visible", "selector": "vpn.pptp_enable", "desc": "PPTP 启用选项可见"},
       {"action": "real.screenshot", "name": "INTL-VPN-001_query", "desc": "截图 VPN 配置查询结果"}
     ]
+  },
+  {
+    "id": "INTL-VPN-002",
+    "title": "IPSec Passthrough 禁用并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:crud"],
+    "precondition": "设备已上电，已登录，VPN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_vpn_L2", "desc": "进入 VPN 页"},
+      {"action": "real.click", "selector": "vpn.ipsec_disable", "desc": "选择禁用 IPSec Passthrough"},
+      {"action": "real.click", "selector": "vpn.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "vpn.ipsec_disable", "desc": "回读验证 IPSec 禁用已选中"},
+      {"action": "real.screenshot", "name": "INTL-VPN-002_ipsec_off", "desc": "截图 IPSec 禁用结果"}
+    ]
+  },
+  {
+    "id": "INTL-VPN-003",
+    "title": "恢复 IPSec Passthrough 基线（启用）",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:persist"],
+    "precondition": "设备已上电，已登录，VPN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_vpn_L2", "desc": "进入 VPN 页"},
+      {"action": "real.click", "selector": "vpn.ipsec_enable", "desc": "重新选择启用 IPSec Passthrough（恢复基线）"},
+      {"action": "real.click", "selector": "vpn.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "vpn.ipsec_enable", "desc": "回读验证 IPSec 启用已恢复选中"},
+      {"action": "real.screenshot", "name": "INTL-VPN-003_ipsec_on", "desc": "截图 IPSec 恢复结果"}
+    ]
   }
 ]

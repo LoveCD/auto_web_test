@@ -197,7 +197,9 @@ class IntlSession:
         loc.wait_for(state="visible", timeout=8000)
         loc.click()
         self.page.wait_for_timeout(800)
-        opt = self.page.locator(f".el-select-dropdown__item:has-text('{option_text}')")
+        # 用 filter(visible=True) 基于 is_visible() 精确过滤，避免多下拉框页面
+        # （如日志页 LogLevel/LogViewLevel 共用下拉面板）匹配到隐藏面板的同名选项
+        opt = self.page.locator(".el-select-dropdown__item").filter(has_text=option_text).filter(visible=True)
         opt.first.wait_for(state="visible", timeout=5000)
         opt.first.click()
         self.page.wait_for_timeout(500)
@@ -510,11 +512,15 @@ def main():
         "help": "help.json",
     }
     if args.suite == "all":
-        files = ["login.json", "status.json", "wan.json", "reboot.json",
-                 "wifi.json", "lan.json", "nat.json", "firewall.json", "account.json",
+        # 隔离易产生副作用的套件，避免级联失败：
+        #  - login.json 的 LOGIN-008 触发账号锁定（1 分钟），会波及其后所有套件登录
+        #  - lan.json 修改 DHCP 租约/DNS 触发设备网络重启，会波及其后所有套件
+        # 故将 login.json 与 lan.json 置于全量回归最后，使其副作用不影响其它套件。
+        files = ["status.json", "wan.json", "reboot.json",
+                 "wifi.json", "nat.json", "firewall.json", "account.json",
                  "remote.json", "voip.json", "auth.json", "ddos.json", "web.json",
                  "vpn.json", "ddns.json", "media.json", "upnp.json", "ntp.json",
-                 "diag.json", "log.json", "topology.json", "help.json"]
+                 "diag.json", "log.json", "topology.json", "help.json", "lan.json", "login.json"]
     else:
         files = [suites[args.suite]]
 

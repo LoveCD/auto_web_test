@@ -50,5 +50,39 @@
       {"action": "real.assert_input_value", "selector": "remote.inform_interval", "value": "43200", "desc": "回读验证 Inform 间隔已恢复为 43200"},
       {"action": "real.screenshot", "name": "INTL-REMOTE-003_restored", "desc": "截图恢复结果"}
     ]
+  },
+  {
+    "id": "INTL-REMOTE-004",
+    "title": "TR069 URL 合法修改并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:crud"],
+    "precondition": "设备已上电，已登录，远程管理页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_remoteManagement_L2", "desc": "进入远程管理页"},
+      {"action": "real.fill", "selector": "remote.url", "value": "http://192.168.1.100:7547/tr069", "desc": "修改 TR069 URL 为合法值"},
+      {"action": "real.click", "selector": "remote.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "remote.url", "value": "http://192.168.1.100:7547/tr069", "desc": "回读验证 TR069 URL 已更新"},
+      {"action": "real.screenshot", "name": "INTL-REMOTE-004_url", "desc": "截图 TR069 URL 修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-REMOTE-005",
+    "title": "恢复 TR069 URL 基线配置",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:persist"],
+    "precondition": "设备已上电，已登录，远程管理页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_remoteManagement_L2", "desc": "进入远程管理页"},
+      {"action": "real.fill", "selector": "remote.url", "value": "", "desc": "恢复 TR069 URL 为基线空值"},
+      {"action": "real.click", "selector": "remote.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "remote.url", "value": "", "desc": "回读验证 TR069 URL 已恢复为空"},
+      {"action": "real.screenshot", "name": "INTL-REMOTE-005_restored", "desc": "截图恢复结果"}
+    ]
   }
 ]

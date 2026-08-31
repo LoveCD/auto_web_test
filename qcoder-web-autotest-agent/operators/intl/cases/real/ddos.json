@@ -49,5 +49,73 @@
       {"action": "real.assert_checked", "selector": "ddos.syn_flood", "desc": "回读验证 SYN Flood 防护已恢复开启"},
       {"action": "real.screenshot", "name": "INTL-DDOS-003_syn_on", "desc": "截图 SYN Flood 恢复结果"}
     ]
+  },
+  {
+    "id": "INTL-DDOS-004",
+    "title": "ICMP Echo 防护开关开启并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:crud"],
+    "precondition": "设备已上电，已登录，DDOS 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_ddos_L2", "desc": "进入 DDOS 防护页"},
+      {"action": "real.check", "selector": "ddos.icmp_echo", "desc": "开启 ICMP Echo 防护"},
+      {"action": "real.click", "selector": "ddos.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "ddos.icmp_echo", "desc": "回读验证 ICMP Echo 防护已开启"},
+      {"action": "real.screenshot", "name": "INTL-DDOS-004_icmp_on", "desc": "截图 ICMP Echo 开启结果"}
+    ]
+  },
+  {
+    "id": "INTL-DDOS-005",
+    "title": "恢复 ICMP Echo 防护基线（关闭）",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:persist"],
+    "precondition": "设备已上电，已登录，DDOS 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_ddos_L2", "desc": "进入 DDOS 防护页"},
+      {"action": "real.uncheck", "selector": "ddos.icmp_echo", "desc": "关闭 ICMP Echo 防护（恢复基线）"},
+      {"action": "real.click", "selector": "ddos.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_unchecked", "selector": "ddos.icmp_echo", "desc": "回读验证 ICMP Echo 防护已关闭"},
+      {"action": "real.screenshot", "name": "INTL-DDOS-005_icmp_off", "desc": "截图 ICMP Echo 恢复结果"}
+    ]
+  },
+  {
+    "id": "INTL-DDOS-006",
+    "title": "LAND 防护开关关闭并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:crud"],
+    "precondition": "设备已上电，已登录，DDOS 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_ddos_L2", "desc": "进入 DDOS 防护页"},
+      {"action": "real.uncheck", "selector": "ddos.land", "desc": "关闭 LAND 防护"},
+      {"action": "real.click", "selector": "ddos.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_unchecked", "selector": "ddos.land", "desc": "回读验证 LAND 防护已关闭"},
+      {"action": "real.screenshot", "name": "INTL-DDOS-006_land_off", "desc": "截图 LAND 关闭结果"}
+    ]
+  },
+  {
+    "id": "INTL-DDOS-007",
+    "title": "恢复 LAND 防护基线（开启）",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:persist"],
+    "precondition": "设备已上电，已登录，DDOS 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_ddos_L2", "desc": "进入 DDOS 防护页"},
+      {"action": "real.check", "selector": "ddos.land", "desc": "重新开启 LAND 防护（恢复基线）"},
+      {"action": "real.click", "selector": "ddos.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "ddos.land", "desc": "回读验证 LAND 防护已恢复开启"},
+      {"action": "real.screenshot", "name": "INTL-DDOS-007_land_on", "desc": "截图 LAND 恢复结果"}
+    ]
   }
 ]

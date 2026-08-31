@@ -315,10 +315,15 @@ class RealWebSession:
         self.page.wait_for_timeout(600)
 
     def _dropdown_items(self, option_text):
-        """当前可见下拉面板中包含指定文本的选项。"""
+        """当前可见下拉面板中可见的、包含指定文本的选项。
+
+        用 filter(visible=True) 基于 is_visible() 精确过滤，避免多下拉框页面
+        （如日志页 LogLevel/LogViewLevel 两个 el-select 共用下拉面板）
+        匹配到隐藏面板中的同名选项（:visible 伪类在 wait_for 中可能不生效）。
+        """
         return self.page.locator(
-            ".el-select-dropdown:visible .el-select-dropdown__item",
-        ).filter(has_text=option_text)
+            ".el-select-dropdown__item",
+        ).filter(has_text=option_text).filter(visible=True)
 
     def select_option(self, selector, option_text):
         """在下拉框中选择指定文本的选项。"""

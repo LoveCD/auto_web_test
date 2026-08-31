@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """生成《开发使用说明与工作流简介》简易 Word 文档"""
 import os
+import sys
 from docx import Document
 from docx.shared import Pt, RGBColor, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -8,7 +9,11 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-OUT_PATH = os.path.join(os.path.dirname(__file__), "..", "开发使用说明与工作流简介.docx")
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, ROOT)
+from tools.docx_branding import add_cover_logo, apply_fh_header  # noqa: E402
+
+OUT_PATH = os.path.join(ROOT, "开发使用说明与工作流简介.docx")
 OUT_PATH = os.path.abspath(OUT_PATH)
 
 ACCENT = RGBColor(0x1F, 0x4E, 0x79)   # 深蓝
@@ -109,11 +114,17 @@ for sec in doc.sections:
     sec.top_margin = Cm(2.2); sec.bottom_margin = Cm(2.2)
     sec.left_margin = Cm(2.4); sec.right_margin = Cm(2.4)
 
-# ============ 封面标题 ============
+# ============ 封面（对齐参考样例：左上角 logo + 黑体标题） ============
+add_cover_logo(doc)  # 封面左上角 FiberHome logo
+for _ in range(6):
+    doc.add_paragraph()
 add_heading(doc, "QCoder Web AutoTest Agent", 0)
 add_heading(doc, "开发使用说明与工作流简介", 0)
 add_para(doc, "面向烽火网关真实 Web UI 的端到端自动化测试智能体（qcoder-web-autotest-agent）", size=11, color=GRAY, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=2)
-add_para(doc, "版本：v1.1  |  日期：2026-08-31  |  适用：开发者 / 测试工程师", size=9, color=GRAY, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=12)
+add_para(doc, "版本：v1.2  |  日期：2026-08-31  |  适用：开发者 / 测试工程师", size=9, color=GRAY, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=12)
+# 封面分节（便于封面/正文挂不同页眉）
+from docx.enum.section import WD_SECTION_START
+doc.add_section(WD_SECTION_START.NEW_PAGE)
 
 # ============ 一、项目定位 ============
 add_heading(doc, "一、项目定位", 1)
@@ -160,7 +171,7 @@ add_table(doc,
     ["环境", "说明", "典型命令"],
     [
         ["cm（中国移动）", "烽火 HG3142F2 FTTR 网关（192.168.1.1），多页结构；四类范本套件真机 22/22 + mock 20/20 验证通过", "--operator cm"],
-        ["intl（国际）", "HG6163FC1 国际版 / FG-8040H（SPA 单页结构 main.html#/）；navigation 实测 7 个 L1 × 24 个 L2 页面", "--operator intl"],
+        ["intl（国际）", "HG6163FC1 国际版 / FG-8040H（SPA 单页结构 main.html#/）；navigation 实测 7 个 L1 × 24 个 L2 页面；真机 24 套件 109 条用例（8/31 扩充 auth/ddos/log/ntp/remote/voip/vpn 等）", "--operator intl"],
         ["real（真机）", "Playwright 驱动真实设备 + 截图；INTL 走独立执行器 run_intl_real.py（每用例独立 context）", "--env real"],
         ["mock（离线）", "本地 Mock 网关（127.0.0.1），无设备可跑，可接 CI", "--env mock"],
     ],
@@ -173,8 +184,8 @@ add_code(doc, """qcoder-web-autotest-agent/
 │   ├── cm/                   # 运营商：profile / selectors / cases（四类范本 + mock 套件）
 │   └── intl/
 │       ├── profile.json / selectors.json / selectors_real.json
-│       └── cases/real/       # INTL 真机 24 套件（login/wan/status/reboot/security
-│                             #   + wifi/lan/nat/firewall/account/ntp 等 19 个页面套件）
+│       └── cases/real/       # INTL 真机 24 套件 109 条用例（login/wan/status/reboot/security
+│                             #   + wifi/lan/nat/firewall/account/ntp/auth/ddos/log/voip/vpn 等）
 ├── keywords/                 # 真机关键字层 real_keywords.py + 断言引擎
 ├── runner/run_suite.py       # CM 用例执行器 + 报告器（mock 兼容层回退读取 selectors）
 ├── runner/run_intl_real.py   # INTL 真机独立执行器（SPA 菜单 + fhId_，QCT_INTL_* 注入）
@@ -268,7 +279,7 @@ add_heading(doc, "3.7 报告与产物", 2)
 add_para(doc, "每次运行生成 reports/{时间戳}_{operator}_{env}_{suite}/：result.json（用例/步骤级结果）、report.json / report.html（人读报告）、screenshots/*.png（PASS 按步骤命名，FAIL 前缀标红）。", size=10)
 add_para(doc, "统一 DOCX 模板（gen-case-doc.js 三种模式）：① 单套件设计文档（结果=待执行）② --all 批量设计文档 ③ --result 执行报告（自动填充结果/结论/失败原因/汇总 + 嵌入截图，截图路径来自 result.detail）。", size=10)
 add_para(doc, "e2e_bootstrap（Node 链路）：三字段输入 TEST_CASE_SPEC.md → npm run test:generate 生成骨架 → npm test 执行并输出 HTML/DOCX 报告。", size=10)
-add_para(doc, "INTL 真机覆盖矩阵（docs/INTL_PAGE_COVERAGE.md）：以 navigation 实测为准的 24 页清单（7 个 L1 × 24 个 L2），逐页标注用例覆盖情况，作为 AI 全覆盖工作的基准；run_nav_intl.py 负责重新遍历刷新数据源。", size=10)
+add_para(doc, "INTL 真机覆盖矩阵（docs/INTL_PAGE_COVERAGE.md）：以 navigation 实测为准的 24 页清单（7 个 L1 × 24 个 L2），逐页标注用例覆盖情况，作为 AI 全覆盖工作的基准；run_nav_intl.py 负责重新遍历刷新数据源。2026-08-31 更新：auth/ddos/log/ntp/remote/voip/vpn 新增 16 条用例，INTL 真机用例库 93 → 109 条。", size=10)
 
 add_heading(doc, "3.8 Skill 双端封装", 2)
 add_table(doc,
@@ -300,6 +311,10 @@ add_table(doc,
         ["INTL 凭据", "QCT_INTL_BASE_URL/ADMIN_USER/ADMIN_PASS/USER_USER/USER_PASS（.env 注入，无默认值）"],
     ],
     widths=[3.4, 12.1])
+
+# FH 页眉：封面节 = FH 编号；正文节 = SDV测试报告 + FH 编号（对齐参考样例）
+from tools.docx_branding import FH_BODY_PREFIX, FH_COVER_HEADER  # noqa: E402
+apply_fh_header(doc, body_text=f"{FH_BODY_PREFIX}          {FH_COVER_HEADER}")
 
 doc.save(OUT_PATH)
 print("SAVED:", OUT_PATH)

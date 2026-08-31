@@ -1,0 +1,54 @@
+[
+  {
+    "id": "INTL-REMOTE-001",
+    "title": "TR069 远程管理配置查询展示",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_remoteManagement_L2", "desc": "进入远程管理页"},
+      {"action": "real.assert_url_contains", "substring": "remoteManagement", "desc": "URL 应包含 remoteManagement 路由"},
+      {"action": "real.assert_visible", "selector": "remote.url", "desc": "TR069 URL 输入框可见"},
+      {"action": "real.assert_visible", "selector": "remote.username", "desc": "TR069 用户名输入框可见"},
+      {"action": "real.assert_visible", "selector": "remote.con_port", "desc": "连接请求端口输入框可见"},
+      {"action": "real.assert_input_value", "selector": "remote.con_port", "value": "30005", "desc": "连接请求端口默认值为 30005"},
+      {"action": "real.screenshot", "name": "INTL-REMOTE-001_query", "desc": "截图 TR069 配置查询结果"}
+    ]
+  },
+  {
+    "id": "INTL-REMOTE-002",
+    "title": "TR069 Inform 间隔合法修改并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:crud"],
+    "precondition": "设备已上电，已登录，远程管理页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_remoteManagement_L2", "desc": "进入远程管理页"},
+      {"action": "real.fill", "selector": "remote.inform_interval", "value": "3600", "desc": "修改 Inform 间隔为 3600 秒"},
+      {"action": "real.click", "selector": "remote.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "remote.inform_interval", "value": "3600", "desc": "回读验证 Inform 间隔已更新为 3600"},
+      {"action": "real.screenshot", "name": "INTL-REMOTE-002_applied", "desc": "截图修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-REMOTE-003",
+    "title": "TR069 Inform 间隔恢复基线配置",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:persist"],
+    "precondition": "设备已上电，已登录，远程管理页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_remoteManagement_L2", "desc": "进入远程管理页"},
+      {"action": "real.fill", "selector": "remote.inform_interval", "value": "43200", "desc": "恢复 Inform 间隔为默认值 43200"},
+      {"action": "real.click", "selector": "remote.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "remote.inform_interval", "value": "43200", "desc": "回读验证 Inform 间隔已恢复为 43200"},
+      {"action": "real.screenshot", "name": "INTL-REMOTE-003_restored", "desc": "截图恢复结果"}
+    ]
+  }
+]

@@ -489,9 +489,32 @@ def main():
         "status": "status.json",
         "reboot": "reboot.json",
         "security": "security.json",
+        "wifi": "wifi.json",
+        "lan": "lan.json",
+        "nat": "nat.json",
+        "firewall": "firewall.json",
+        "account": "account.json",
+        "remote": "remote.json",
+        "voip": "voip.json",
+        "auth": "auth.json",
+        "ddos": "ddos.json",
+        "web": "web.json",
+        "vpn": "vpn.json",
+        "ddns": "ddns.json",
+        "media": "media.json",
+        "upnp": "upnp.json",
+        "ntp": "ntp.json",
+        "diag": "diag.json",
+        "log": "log.json",
+        "topology": "topology.json",
+        "help": "help.json",
     }
     if args.suite == "all":
-        files = ["login.json", "status.json", "wan.json", "reboot.json"]
+        files = ["login.json", "status.json", "wan.json", "reboot.json",
+                 "wifi.json", "lan.json", "nat.json", "firewall.json", "account.json",
+                 "remote.json", "voip.json", "auth.json", "ddos.json", "web.json",
+                 "vpn.json", "ddns.json", "media.json", "upnp.json", "ntp.json",
+                 "diag.json", "log.json", "topology.json", "help.json"]
     else:
         files = [suites[args.suite]]
 

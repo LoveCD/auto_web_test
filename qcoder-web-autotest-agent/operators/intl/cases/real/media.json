@@ -1,0 +1,17 @@
+[
+  {
+    "id": "INTL-MEDIA-001",
+    "title": "FTP 媒体共享配置查询展示",
+    "priority": "P2",
+    "tags": ["suite:regression", "type:positive", "module:application", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_application_L1", "l2": "fhId_mediaShare_L2", "desc": "进入媒体共享页"},
+      {"action": "real.assert_url_contains", "substring": "mediaShare", "desc": "URL 应包含 mediaShare 路由"},
+      {"action": "real.assert_visible", "selector": "media.ftp_enable", "desc": "FTP 启用选项可见"},
+      {"action": "real.screenshot", "name": "INTL-MEDIA-001_query", "desc": "截图媒体共享配置查询结果"}
+    ]
+  }
+]

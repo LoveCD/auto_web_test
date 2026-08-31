@@ -1,0 +1,74 @@
+[
+  {
+    "id": "INTL-FIREWALL-001",
+    "title": "防火墙等级配置查询展示",
+    "priority": "P0",
+    "tags": ["suite:regression", "type:positive", "module:firewall", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_firewall_L2", "desc": "进入防火墙控制页"},
+      {"action": "real.assert_url_contains", "substring": "firewall", "desc": "URL 应包含 firewall 路由"},
+      {"action": "real.assert_visible", "selector": "firewall.level_low", "desc": "低等级单选项可见"},
+      {"action": "real.assert_visible", "selector": "firewall.level_medium", "desc": "中等级单选项可见"},
+      {"action": "real.assert_visible", "selector": "firewall.level_high", "desc": "高等级单选项可见"},
+      {"action": "real.screenshot", "name": "INTL-FIREWALL-001_query", "desc": "截图防火墙等级查询结果"}
+    ]
+  },
+  {
+    "id": "INTL-FIREWALL-002",
+    "title": "修改防火墙等级并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:firewall", "专项:crud"],
+    "precondition": "设备已上电，已登录，防火墙页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_firewall_L2", "desc": "进入防火墙控制页"},
+      {"action": "real.click", "selector": "firewall.level_high", "desc": "选择高等级"},
+      {"action": "real.click", "selector": "firewall.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "firewall.level_high", "desc": "回读验证高等级已选中"},
+      {"action": "real.screenshot", "name": "INTL-FIREWALL-002_high", "desc": "截图防火墙等级修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-FIREWALL-003",
+    "title": "防火墙等级遍历切换（Medium→High）并回读",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:firewall", "专项:crud"],
+    "precondition": "设备已上电，已登录，防火墙页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_firewall_L2", "desc": "进入防火墙控制页"},
+      {"action": "real.click", "selector": "firewall.level_medium", "desc": "选择中等级"},
+      {"action": "real.click", "selector": "firewall.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "firewall.level_medium", "desc": "回读验证中等级已选中"},
+      {"action": "real.click", "selector": "firewall.level_high", "desc": "切换选择高等级"},
+      {"action": "real.click", "selector": "firewall.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "firewall.level_high", "desc": "回读验证高等级已选中"},
+      {"action": "real.screenshot", "name": "INTL-FIREWALL-003_high", "desc": "截图等级遍历结果"}
+    ]
+  },
+  {
+    "id": "INTL-FIREWALL-004",
+    "title": "恢复防火墙等级基线（Low）",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:firewall", "专项:persist"],
+    "precondition": "设备已上电，已登录，防火墙页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_firewall_L2", "desc": "进入防火墙控制页"},
+      {"action": "real.click", "selector": "firewall.level_low", "desc": "选择低等级（出厂基线）"},
+      {"action": "real.click", "selector": "firewall.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "firewall.level_low", "desc": "回读验证低等级已选中"},
+      {"action": "real.screenshot", "name": "INTL-FIREWALL-004_low", "desc": "截图恢复基线结果"}
+    ]
+  }
+]

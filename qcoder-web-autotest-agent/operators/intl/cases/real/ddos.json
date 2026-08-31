@@ -1,0 +1,53 @@
+[
+  {
+    "id": "INTL-DDOS-001",
+    "title": "DDOS 防护配置查询展示",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_ddos_L2", "desc": "进入 DDOS 防护页"},
+      {"action": "real.assert_url_contains", "substring": "ddos", "desc": "URL 应包含 ddos 路由"},
+      {"action": "real.assert_visible", "selector": "ddos.syn_flood", "desc": "SYN Flood 防护选项可见"},
+      {"action": "real.assert_visible", "selector": "ddos.icmp_echo", "desc": "ICMP Echo 防护选项可见"},
+      {"action": "real.assert_visible", "selector": "ddos.land", "desc": "LAND 防护选项可见"},
+      {"action": "real.screenshot", "name": "INTL-DDOS-001_query", "desc": "截图 DDOS 防护配置查询结果"}
+    ]
+  },
+  {
+    "id": "INTL-DDOS-002",
+    "title": "SYN Flood 防护开关切换并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:crud"],
+    "precondition": "设备已上电，已登录，DDOS 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_ddos_L2", "desc": "进入 DDOS 防护页"},
+      {"action": "real.uncheck", "selector": "ddos.syn_flood", "desc": "关闭 SYN Flood 防护"},
+      {"action": "real.click", "selector": "ddos.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_unchecked", "selector": "ddos.syn_flood", "desc": "回读验证 SYN Flood 防护已关闭"},
+      {"action": "real.screenshot", "name": "INTL-DDOS-002_syn_off", "desc": "截图 SYN Flood 关闭结果"}
+    ]
+  },
+  {
+    "id": "INTL-DDOS-003",
+    "title": "SYN Flood 防护开关恢复基线",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:persist"],
+    "precondition": "设备已上电，已登录，DDOS 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_ddos_L2", "desc": "进入 DDOS 防护页"},
+      {"action": "real.check", "selector": "ddos.syn_flood", "desc": "重新开启 SYN Flood 防护"},
+      {"action": "real.click", "selector": "ddos.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_checked", "selector": "ddos.syn_flood", "desc": "回读验证 SYN Flood 防护已恢复开启"},
+      {"action": "real.screenshot", "name": "INTL-DDOS-003_syn_on", "desc": "截图 SYN Flood 恢复结果"}
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "INTL-TOPOLOGY-001",
+    "title": "网络拓扑页面渲染展示",
+    "priority": "P2",
+    "tags": ["suite:regression", "type:positive", "module:status", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_networkTopology_L2", "desc": "进入网络拓扑页"},
+      {"action": "real.assert_url_contains", "substring": "networkTopology", "desc": "URL 应包含 networkTopology 路由"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待拓扑图渲染"},
+      {"action": "real.screenshot", "name": "INTL-TOPOLOGY-001_render", "desc": "截图网络拓扑页面"}
+    ]
+  }
+]

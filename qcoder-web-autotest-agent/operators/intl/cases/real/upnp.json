@@ -1,0 +1,19 @@
+[
+  {
+    "id": "INTL-UPNP-001",
+    "title": "UPNP 配置基本信息查询展示",
+    "priority": "P2",
+    "tags": ["suite:regression", "type:positive", "module:application", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_application_L1", "l2": "fhId_upnp_L2", "desc": "进入 UPNP 设置页"},
+      {"action": "real.assert_url_contains", "substring": "upnp", "desc": "URL 应包含 upnp 路由"},
+      {"action": "real.assert_visible", "selector": "upnp.enable", "desc": "UPNP 启用选项可见"},
+      {"action": "real.assert_visible", "selector": "upnp.disable", "desc": "UPNP 禁用选项可见"},
+      {"action": "real.assert_visible", "selector": "upnp.wan_interface", "desc": "WAN 接口选择可见"},
+      {"action": "real.screenshot", "name": "INTL-UPNP-001_query", "desc": "截图 UPNP 配置查询结果"}
+    ]
+  }
+]

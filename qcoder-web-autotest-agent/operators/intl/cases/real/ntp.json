@@ -1,0 +1,54 @@
+[
+  {
+    "id": "INTL-NTP-001",
+    "title": "NTP 时间同步配置查询展示",
+    "priority": "P2",
+    "tags": ["suite:regression", "type:positive", "module:application", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_application_L1", "l2": "fhId_networkTiming_L2", "desc": "进入网络时间设置页"},
+      {"action": "real.assert_url_contains", "substring": "networkTiming", "desc": "URL 应包含 networkTiming 路由"},
+      {"action": "real.assert_visible", "selector": "ntp.server1", "desc": "NTP 服务器1输入框可见"},
+      {"action": "real.assert_visible", "selector": "ntp.server2", "desc": "NTP 服务器2输入框可见"},
+      {"action": "real.assert_visible", "selector": "ntp.interval", "desc": "同步间隔输入框可见"},
+      {"action": "real.assert_input_value", "selector": "ntp.interval", "value": "86400", "desc": "同步间隔默认值为 86400"},
+      {"action": "real.screenshot", "name": "INTL-NTP-001_query", "desc": "截图 NTP 配置查询结果"}
+    ]
+  },
+  {
+    "id": "INTL-NTP-002",
+    "title": "NTP 同步间隔合法修改并回读验证",
+    "priority": "P2",
+    "tags": ["suite:regression", "type:positive", "module:application", "专项:crud"],
+    "precondition": "设备已上电，已登录，NTP 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_application_L1", "l2": "fhId_networkTiming_L2", "desc": "进入网络时间设置页"},
+      {"action": "real.fill", "selector": "ntp.interval", "value": "43200", "desc": "修改同步间隔为 43200 秒"},
+      {"action": "real.click", "selector": "ntp.check_now", "desc": "点击 Check Time 生效"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待生效"},
+      {"action": "real.assert_input_value", "selector": "ntp.interval", "value": "43200", "desc": "回读验证同步间隔已更新为 43200"},
+      {"action": "real.screenshot", "name": "INTL-NTP-002_applied", "desc": "截图修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-NTP-003",
+    "title": "NTP 同步间隔恢复基线配置",
+    "priority": "P2",
+    "tags": ["suite:regression", "type:positive", "module:application", "专项:persist"],
+    "precondition": "设备已上电，已登录，NTP 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_application_L1", "l2": "fhId_networkTiming_L2", "desc": "进入网络时间设置页"},
+      {"action": "real.fill", "selector": "ntp.interval", "value": "86400", "desc": "恢复同步间隔为默认值 86400"},
+      {"action": "real.click", "selector": "ntp.check_now", "desc": "点击 Check Time 生效"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待生效"},
+      {"action": "real.assert_input_value", "selector": "ntp.interval", "value": "86400", "desc": "回读验证同步间隔已恢复为 86400"},
+      {"action": "real.screenshot", "name": "INTL-NTP-003_restored", "desc": "截图恢复结果"}
+    ]
+  }
+]

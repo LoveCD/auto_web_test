@@ -1,0 +1,54 @@
+[
+  {
+    "id": "INTL-ACCOUNT-001",
+    "title": "账号管理页查询展示",
+    "priority": "P0",
+    "tags": ["suite:regression", "type:positive", "module:system", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_accountManagement_L2", "desc": "进入账号管理页"},
+      {"action": "real.assert_url_contains", "substring": "accountManagement", "desc": "URL 应包含 accountManagement 路由"},
+      {"action": "real.assert_visible", "selector": "account.new_password", "desc": "新密码输入框可见"},
+      {"action": "real.assert_visible", "selector": "account.confirm_password", "desc": "确认密码输入框可见"},
+      {"action": "real.screenshot", "name": "INTL-ACCOUNT-001_query", "desc": "截图账号管理页查询结果"}
+    ]
+  },
+  {
+    "id": "INTL-ACCOUNT-002",
+    "title": "新密码过短边界拒绝",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:boundary", "module:system", "专项:capacity"],
+    "precondition": "设备已上电，已登录，账号管理页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_accountManagement_L2", "desc": "进入账号管理页"},
+      {"action": "real.fill", "selector": "account.new_password", "value": "12345", "desc": "输入 5 位过短新密码（BVA 离点）"},
+      {"action": "real.fill", "selector": "account.confirm_password", "value": "12345", "desc": "确认密码一致"},
+      {"action": "real.click", "selector": "account.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待校验结果"},
+      {"action": "real.assert_url_contains", "substring": "accountManagement", "desc": "过短密码应停留在账号管理页"},
+      {"action": "real.screenshot", "name": "INTL-ACCOUNT-002_short", "desc": "截图过短密码校验结果"}
+    ]
+  },
+  {
+    "id": "INTL-ACCOUNT-003",
+    "title": "两次密码不一致被拒绝",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:negative", "module:system", "专项:capacity"],
+    "precondition": "设备已上电，已登录，账号管理页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_accountManagement_L2", "desc": "进入账号管理页"},
+      {"action": "real.fill", "selector": "account.new_password", "value": "NewPass123", "desc": "输入新密码"},
+      {"action": "real.fill", "selector": "account.confirm_password", "value": "Mismatch123", "desc": "输入不一致的确认密码"},
+      {"action": "real.click", "selector": "account.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待校验结果"},
+      {"action": "real.assert_url_contains", "substring": "accountManagement", "desc": "密码不一致应停留在账号管理页"},
+      {"action": "real.screenshot", "name": "INTL-ACCOUNT-003_mismatch", "desc": "截图密码不一致校验结果"}
+    ]
+  }
+]

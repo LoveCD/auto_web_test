@@ -243,6 +243,12 @@ def run_suite(operator, env, suite, headed=False, browser="chromium", override_u
     # WebSession(Mock/INTL) 仍读取顶层 base_url
     profile.setdefault("base_url", profile["env"][env]["base_url"])
 
+    # ---------------- real 设备：使用 selectors_real.json（顶层 login/main/menu 结构） ----------------
+    if env == "real":
+        real_sel = load_json(os.path.join(ROOT, "operators", operator, "selectors_real.json"))
+        if real_sel:
+            selectors = real_sel
+
     # ---------------- mock 兼容层：补齐旧 Page Object 需要的顶层键 ----------------
     if env == "mock":
         ecfg = profile["env"][env]
@@ -299,19 +305,35 @@ def run_suite(operator, env, suite, headed=False, browser="chromium", override_u
                 session._logged_in = True
 
         def collect_menu_items():
+            """遍历真实 INTEL 设备的两层 el-menu 菜单（L1 -> L2）。
+            L1: aside.fh_nav_menu 下 id 以 _L1 结尾的 li；L2: 展开后该 L1 内可见的 _L2 li。"""
             menu_items = []
-            l1s = session.page.evaluate("""() => [...document.querySelectorAll('#MenuArea_L1 > ul > li[id^="fhId_"]')].map(el => el.id)""")
+            # L1 菜单：优先限定在 fh_nav_menu 侧边栏内，兜底取全页面 _L1 结尾的 li
+            l1s = session.page.evaluate("""() => [...document.querySelectorAll('aside.fh_nav_menu li[id$="_L1"], aside.el-aside li[id$="_L1"]')].map(el => el.id)""")
+            if not l1s:
+                l1s = session.page.evaluate("""() => [...document.querySelectorAll('li[id$="_L1"]')].map(el => el.id)""")
             print(f"[navigation] L1 count: {len(l1s)}")
             for l1_id in l1s:
-                session.page.locator(f"#{l1_id}").click()
-                session.page.wait_for_timeout(800)
-                l2s = session.page.evaluate("""() => [...document.querySelectorAll('#MenuArea_L2 > ul > li[id^="fhId_"]')].map(el => el.id)""")
-                for l2_id in l2s:
-                    session.page.locator(f"#{l2_id}").click()
+                try:
+                    session.page.locator(f"#{l1_id}").click()
                     session.page.wait_for_timeout(800)
-                    l3s = session.page.evaluate("""() => [...document.querySelectorAll('#panel_sidebar > ul > li[id^="fhId_"]')].map(el => ({id: el.id, text: el.innerText.trim().replace(/\\s+/g, ' ')}))""")
-                    for l3 in l3s:
-                        menu_items.append({"l1": l1_id, "l2": l2_id, **l3})
+                except Exception:
+                    continue
+                l2s = session.page.evaluate("""(l1) => {
+                    const l1el = document.getElementById(l1);
+                    const items = [];
+                    const ul = l1el && l1el.querySelector('ul');
+                    if (ul) {
+                        for (const li of ul.querySelectorAll('li[id^="fhId_"]')) {
+                            if (li.offsetParent !== null) items.push({id: li.id, text: (li.innerText||'').trim().replace(/\\s+/g,' ')});
+                        }
+                    }
+                    return items;
+                }""", l1_id)
+                if not l2s:
+                    l2s = session.page.evaluate("""() => [...document.querySelectorAll('li[id$="_L2"]')].filter(e => e.offsetParent !== null).map(el => ({id: el.id, text: (el.innerText||'').trim().replace(/\\s+/g,' ')}))""")
+                for l2 in l2s:
+                    menu_items.append({"l1": l1_id, **l2})
             return menu_items
 
         ensure_logged_in()
@@ -325,10 +347,8 @@ def run_suite(operator, env, suite, headed=False, browser="chromium", override_u
             case_status = "pass"
             try:
                 ensure_logged_in()
-                # 重新展开 L1/L2, 确保 L3 可见且可点击
+                # 展开 L1 并点击 L2 进入目标页面
                 session.page.locator(f"#{item['l1']}").click()
-                session.page.wait_for_timeout(800)
-                session.page.locator(f"#{item['l2']}").click()
                 session.page.wait_for_timeout(800)
                 session.page.locator(f"#{item['id']}").click()
                 session.page.wait_for_timeout(profile["timeouts"].get("page_load_extra", 2500))
@@ -337,8 +357,8 @@ def run_suite(operator, env, suite, headed=False, browser="chromium", override_u
                 # 部分页面（帮助/状态/固件升级等）正常渲染但内容不含 fhId_* 元素，
                 # 故不能以 fhCount>0 为准，改用 #el_main 可见 + 内容长度判断。
                 render = session.page.evaluate("""() => {
-                    const main = document.querySelector('#el_main');
-                    if (!main || main.offsetParent === null) return {ok: false, reason: 'el_main not visible'};
+                    const main = document.querySelector('#el_main') || document.querySelector('main.el-main') || document.querySelector('main');
+                    if (!main || main.offsetParent === null) return {ok: false, reason: 'main not visible'};
                     const textLen = (main.innerText || '').trim().length;
                     const htmlLen = main.innerHTML.length;
                     const fhCount = main.querySelectorAll('[id^="fhId_"]').length;

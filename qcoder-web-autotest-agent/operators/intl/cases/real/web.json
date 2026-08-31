@@ -1,0 +1,18 @@
+[
+  {
+    "id": "INTL-WEB-001",
+    "title": "HTTPS 访问控制配置查询展示",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_web_L2", "desc": "进入 WEB 访问控制页"},
+      {"action": "real.assert_url_contains", "substring": "web", "desc": "URL 应包含 web 路由"},
+      {"action": "real.assert_visible", "selector": "web.https_enable", "desc": "HTTPS 启用选项可见"},
+      {"action": "real.assert_visible", "selector": "web.https_disable", "desc": "HTTPS 禁用选项可见"},
+      {"action": "real.screenshot", "name": "INTL-WEB-001_query", "desc": "截图 HTTPS 访问控制查询结果"}
+    ]
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "INTL-LOG-001",
+    "title": "系统日志页面展示",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:system", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_management_L1", "l2": "fhId_log_L2", "desc": "进入系统日志页"},
+      {"action": "real.assert_url_contains", "substring": "log", "desc": "URL 应包含 log 路由"},
+      {"action": "real.assert_visible", "selector": "log.log_level", "desc": "日志级别选择可见"},
+      {"action": "real.assert_visible", "selector": "log.content", "desc": "日志内容区域可见"},
+      {"action": "real.screenshot", "name": "INTL-LOG-001_query", "desc": "截图系统日志页查询结果"}
+    ]
+  }
+]

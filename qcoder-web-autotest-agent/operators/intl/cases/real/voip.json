@@ -1,0 +1,54 @@
+[
+  {
+    "id": "INTL-VOIP-001",
+    "title": "VoIP 配置基本信息查询展示",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_voipSettings_L2", "desc": "进入 VoIP 设置页"},
+      {"action": "real.assert_url_contains", "substring": "voipSettings", "desc": "URL 应包含 voipSettings 路由"},
+      {"action": "real.assert_visible", "selector": "voip.registrar_server", "desc": "注册服务器输入框可见"},
+      {"action": "real.assert_visible", "selector": "voip.registrar_port", "desc": "注册端口输入框可见"},
+      {"action": "real.assert_visible", "selector": "voip.directory_number", "desc": "电话号码输入框可见"},
+      {"action": "real.assert_input_value", "selector": "voip.registrar_port", "value": "5060", "desc": "注册端口默认值为 5060"},
+      {"action": "real.screenshot", "name": "INTL-VOIP-001_query", "desc": "截图 VoIP 配置查询结果"}
+    ]
+  },
+  {
+    "id": "INTL-VOIP-002",
+    "title": "VoIP 注册服务器端口合法修改并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:crud"],
+    "precondition": "设备已上电，已登录，VoIP 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_voipSettings_L2", "desc": "进入 VoIP 设置页"},
+      {"action": "real.fill", "selector": "voip.registrar_port", "value": "5061", "desc": "修改注册端口为 5061"},
+      {"action": "real.click", "selector": "voip.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "voip.registrar_port", "value": "5061", "desc": "回读验证注册端口已更新为 5061"},
+      {"action": "real.screenshot", "name": "INTL-VOIP-002_applied", "desc": "截图修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-VOIP-003",
+    "title": "VoIP 注册服务器端口恢复基线配置",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:network", "专项:persist"],
+    "precondition": "设备已上电，已登录，VoIP 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_voipSettings_L2", "desc": "进入 VoIP 设置页"},
+      {"action": "real.fill", "selector": "voip.registrar_port", "value": "5060", "desc": "恢复注册端口为默认值 5060"},
+      {"action": "real.click", "selector": "voip.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "voip.registrar_port", "value": "5060", "desc": "回读验证注册端口已恢复为 5060"},
+      {"action": "real.screenshot", "name": "INTL-VOIP-003_restored", "desc": "截图恢复结果"}
+    ]
+  }
+]

@@ -1,0 +1,124 @@
+[
+  {
+    "id": "INTL-WIFI-001",
+    "title": "WLAN 基本信息查询展示",
+    "priority": "P0",
+    "tags": ["suite:regression", "type:positive", "module:wifi", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_wifiSettings_L2", "desc": "进入 WLAN 设置页"},
+      {"action": "real.assert_url_contains", "substring": "wifiSettings", "desc": "URL 应包含 wifiSettings 路由"},
+      {"action": "real.assert_visible", "selector": "wifi.ssid", "desc": "SSID 名称输入框可见"},
+      {"action": "real.assert_visible", "selector": "wifi.security_mode", "desc": "安全模式下拉可见"},
+      {"action": "real.assert_visible", "selector": "wifi.max_clients", "desc": "最大客户端数输入框可见"},
+      {"action": "real.assert_input_value_not", "selector": "wifi.ssid", "value": "", "desc": "SSID 名称非空"},
+      {"action": "real.screenshot", "name": "INTL-WIFI-001_query", "desc": "截图 WLAN 查询结果"}
+    ]
+  },
+  {
+    "id": "INTL-WIFI-002",
+    "title": "SSID 名称合法修改并回读验证",
+    "priority": "P0",
+    "tags": ["suite:regression", "type:positive", "module:wifi", "专项:crud"],
+    "precondition": "设备已上电，已登录，WLAN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_wifiSettings_L2", "desc": "进入 WLAN 设置页"},
+      {"action": "real.fill", "selector": "wifi.ssid", "value": "TestSSID", "desc": "修改 SSID 为合法值 TestSSID"},
+      {"action": "real.click", "selector": "wifi.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "wifi.ssid", "value": "TestSSID", "desc": "回读验证 SSID 已更新为 TestSSID"},
+      {"action": "real.screenshot", "name": "INTL-WIFI-002_applied", "desc": "截图修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-WIFI-003",
+    "title": "SSID 修改后恢复基线配置",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:wifi", "专项:persist"],
+    "precondition": "设备已上电，已登录，WLAN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_wifiSettings_L2", "desc": "进入 WLAN 设置页"},
+      {"action": "real.fill", "selector": "wifi.ssid", "value": "fh_f792e0", "desc": "恢复 SSID 为出厂基线值 fh_f792e0"},
+      {"action": "real.click", "selector": "wifi.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "wifi.ssid", "value": "fh_f792e0", "desc": "回读验证 SSID 已恢复为基线值"},
+      {"action": "real.screenshot", "name": "INTL-WIFI-003_restored", "desc": "截图恢复结果"}
+    ]
+  },
+  {
+    "id": "INTL-WIFI-004",
+    "title": "空 SSID 提交被前端必填拦截",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:negative", "module:wifi", "专项:capacity"],
+    "precondition": "设备已上电，已登录，WLAN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_wifiSettings_L2", "desc": "进入 WLAN 设置页"},
+      {"action": "real.fill", "selector": "wifi.ssid", "value": "", "desc": "清空 SSID"},
+      {"action": "real.click", "selector": "wifi.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待校验结果"},
+      {"action": "real.assert_url_contains", "substring": "wifiSettings", "desc": "空 SSID 应停留在 WLAN 页"},
+      {"action": "real.screenshot", "name": "INTL-WIFI-004_empty", "desc": "截图空 SSID 校验结果"}
+    ]
+  },
+  {
+    "id": "INTL-WIFI-005",
+    "title": "WiFi 密码合法修改并回读验证",
+    "priority": "P0",
+    "tags": ["suite:regression", "type:positive", "module:wifi", "专项:crud"],
+    "precondition": "设备已上电，已登录，WLAN 页可访问（测试机走有线连接，改 WiFi 密码不影响访问）",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_wifiSettings_L2", "desc": "进入 WLAN 设置页"},
+      {"action": "real.fill", "selector": "wifi.password", "value": "wlan_test_2026", "desc": "修改 WiFi 密码为合法值 wlan_test_2026"},
+      {"action": "real.click", "selector": "wifi.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "wifi.password", "value": "wlan_test_2026", "desc": "回读验证 WiFi 密码已更新"},
+      {"action": "real.screenshot", "name": "INTL-WIFI-005_pwd", "desc": "截图密码修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-WIFI-006",
+    "title": "最大客户端数合法修改并回读验证",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:wifi", "专项:crud"],
+    "precondition": "设备已上电，已登录，WLAN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_wifiSettings_L2", "desc": "进入 WLAN 设置页"},
+      {"action": "real.fill", "selector": "wifi.max_clients", "value": "32", "desc": "修改最大客户端数为合法值 32"},
+      {"action": "real.click", "selector": "wifi.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "wifi.max_clients", "value": "32", "desc": "回读验证最大客户端数已更新为 32"},
+      {"action": "real.screenshot", "name": "INTL-WIFI-006_maxclients", "desc": "截图最大客户端数修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-WIFI-007",
+    "title": "WiFi 密码与最大客户端数恢复基线",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:wifi", "专项:persist"],
+    "precondition": "设备已上电，已登录，WLAN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_wifiSettings_L2", "desc": "进入 WLAN 设置页"},
+      {"action": "real.fill", "selector": "wifi.password", "value": "wlanxpqk4h", "desc": "恢复 WiFi 密码为出厂基线值"},
+      {"action": "real.fill", "selector": "wifi.max_clients", "value": "64", "desc": "恢复最大客户端数为出厂基线值 64"},
+      {"action": "real.click", "selector": "wifi.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "wifi.password", "value": "wlanxpqk4h", "desc": "回读验证 WiFi 密码已恢复基线"},
+      {"action": "real.assert_input_value", "selector": "wifi.max_clients", "value": "64", "desc": "回读验证最大客户端数已恢复基线"},
+      {"action": "real.screenshot", "name": "INTL-WIFI-007_restored", "desc": "截图恢复结果"}
+    ]
+  }
+]

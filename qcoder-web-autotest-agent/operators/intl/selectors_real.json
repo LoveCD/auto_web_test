@@ -57,5 +57,174 @@
     "reboot_btn": "#fhId_Reboot",
     "restore_btn": "#fhId_Restore",
     "reboot_confirm": "#fhId_confirmReboot"
+  },
+  "wifi": {
+    "ssid_choice": "#fhId_selSSID",
+    "enable": "#fhId_Enable",
+    "disable": "#fhId_Disable",
+    "ssid": "#fhId_SSID",
+    "compat_on": "#fhId_On",
+    "compat_off": "#fhId_Off",
+    "hidden_yes": "#fhId_Yes",
+    "hidden_no": "#fhId_No",
+    "security_mode": "#fhId_ModeEnabled",
+    "password": "#fhId_PreSharedKey",
+    "max_clients": "#fhId_MaxAllowedAssociations",
+    "apply": "#fhId_onApply"
+  },
+  "lan": {
+    "ip_address": "#fhId_IPInterfaceIPAddress",
+    "subnet_mask": "#fhId_IPInterfaceSubnetMask",
+    "local_address": "#fhId_LocalAddress",
+    "managed_flag": "#fhId_ManagedFlag",
+    "other_config_flag": "#fhId_OtherConfigFlag",
+    "max_interval": "#fhId_MaxInterval",
+    "min_interval": "#fhId_MinInterval",
+    "dns_source": "#fhId_IPv6DNSConfigType",
+    "prefix_mode": "#fhId_Mode",
+    "dhcpv6_enable": "#fhId_EnableDHCPIPv6Server",
+    "ipv6_min": "#fhId_IPV6MinAddress",
+    "ipv6_max": "#fhId_IPV6MaxAddress",
+    "dhcp_type": "#fhId_DHCPServerEnable",
+    "ipv4_min": "#fhId_IPV4MinAddress",
+    "ipv4_max": "#fhId_IPV4MaxAddress",
+    "dhcp_subnet": "#fhId_SubnetMask",
+    "dhcp_pri_dns": "#fhId_IPV4Pri_DNS",
+    "dhcp_sec_dns": "#fhId_IPV4Sec_DNS",
+    "dhcp_gateway": "#fhId_IPRouters",
+    "dhcp_hours": "#fhId_DHCPHours",
+    "dhcp_minutes": "#fhId_DHCPMinutes",
+    "apply": "#fhId_onApply"
+  },
+  "nat": {
+    "add_btn": "#fhId_Add",
+    "delete_btn": "#fhId_Delete",
+    "wan_select": "#fhId_wanSelect",
+    "description": "#fhId_PortMappingDescription",
+    "protocol": "#fhId_Protocol",
+    "remote_host": "#fhId_RemoteHost",
+    "ext_port": "#fhId_ExternalPort",
+    "ext_port_end": "#fhId_ExternalPortEndRange",
+    "internal_client": "#fhId_InternalClient",
+    "internal_port": "#fhId_InternalPort",
+    "internal_port_end": "#fhId_InternalPortEndRange",
+    "enabled": "#fhId_Enabled",
+    "apply": "#fhId_onApply"
+  },
+  "firewall": {
+    "level_high": "#fhId_firewall_high",
+    "level_medium": "#fhId_firewall_medium",
+    "level_low": "#fhId_firewall_low",
+    "apply": "#fhId_onEnableApply"
+  },
+  "account": {
+    "new_password": "#fhId_New_pd",
+    "confirm_password": "#fhId_confirm_pd",
+    "apply": "#fhId_onApply"
+  },
+  "remote": {
+    "tr069_enable": "#fhId_TR69Enable",
+    "tr069_disable": "#fhId_TR69Disable",
+    "url": "#fhId_TR69URL",
+    "username": "#fhId_TR69Username",
+    "password": "#fhId_TR69Pwd",
+    "con_path": "#fhId_TR69ConPath",
+    "con_port": "#fhId_TR69ConPort",
+    "req_user": "#fhId_TR69ReqUsr",
+    "req_pwd": "#fhId_TR69ReqPwd",
+    "inform_enable": "#fhId_TR69InformEnable",
+    "inform_disable": "#fhId_TR69InformDisable",
+    "inform_interval": "#fhId_TR69InformInterval",
+    "enable_apply": "#fhId_onEnableApply",
+    "apply": "#fhId_onApply"
+  },
+  "voip": {
+    "registrar_server": "#fhId_RegistrarServer",
+    "registrar_port": "#fhId_RegistrarServerPort",
+    "proxy_server": "#fhId_ProxyServer",
+    "proxy_port": "#fhId_ProxyServerPort",
+    "outbound_proxy": "#fhId_OutboundProxy",
+    "outbound_port": "#fhId_OutboundProxyPort",
+    "port1_enable": "#fhId_Enabled1",
+    "port1_disable": "#fhId_Disabled1",
+    "auth_user": "#fhId_AuthUserName1",
+    "auth_password": "#fhId_AuthPassword1",
+    "directory_number": "#fhId_DirectoryNumber1",
+    "apply": "#fhId_onApply"
+  },
+  "auth": {
+    "loid": "#fhId_UserName",
+    "logic_password": "#fhId_UserId",
+    "pass_key": "#fhId_Password",
+    "apply": "#fhId_onApply",
+    "apply2": "#fhId_onApply2"
+  },
+  "ddos": {
+    "syn_flood": "#fhId_ddos0",
+    "icmp_echo": "#fhId_ddos1",
+    "icmp_redirect": "#fhId_ddos2",
+    "land": "#fhId_ddos3",
+    "smurf": "#fhId_ddos4",
+    "winnuke": "#fhId_ddos5",
+    "ping_sweep": "#fhId_ddos6",
+    "apply": "#fhId_onEnableApply"
+  },
+  "web": {
+    "https_enable": "#fhId_firewall_enable",
+    "https_disable": "#fhId_firewall_disable",
+    "apply": "#fhId_onEnableApply"
+  },
+  "vpn": {
+    "ipsec_enable": "#fhId_IPSEC_Enable",
+    "ipsec_disable": "#fhId_IPSEC_Disable",
+    "pptp_enable": "#fhId_PPTP_Enable",
+    "pptp_disable": "#fhId_PPTP_Disable",
+    "apply": "#fhId_onEnableApply"
+  },
+  "ddns": {
+    "add_btn": "#fhId_Add",
+    "delete_btn": "#fhId_Delete",
+    "enabled": "#fhId_DDNSCfgEnabled",
+    "wan_select": "#fhId_wanSelect",
+    "username": "#fhId_DDNSUsername",
+    "password": "#fhId_DDNSPassword",
+    "hostname": "#fhId_DDNSHostName",
+    "provider": "#fhId_DDNSProvider",
+    "apply": "#fhId_onApply"
+  },
+  "media": {
+    "ftp_enable": "#fhId_Enable",
+    "ftp_disable": "#fhId_disable",
+    "apply": "#fhId_onApply"
+  },
+  "upnp": {
+    "enable": "#fhId_Enable",
+    "disable": "#fhId_Disable",
+    "wan_interface": "#fhId_UpnpInterface",
+    "apply": "#fhId_onEnableApply"
+  },
+  "ntp": {
+    "enable": "#fhId_Enable",
+    "interval": "#fhId_NTPInterval",
+    "server1": "#fhId_NTPServer1",
+    "server2": "#fhId_NTPServer2",
+    "timezone": "#fhId_LocalTimeZone",
+    "wan_binding": "#fhId_NTPServerType",
+    "check_now": "#fhId_CheckTime",
+    "apply": "#fhId_CheckTime"
+  },
+  "diag": {
+    "interface": "#fhId_Interface",
+    "ip_version": "#fhId_IPVersion",
+    "repetitions": "#fhId_NumberOfRepetitions",
+    "host": "#fhId_Host",
+    "diagnose_btn": "#fhId_Diagnose",
+    "result": "#fhId_textarea"
+  },
+  "log": {
+    "log_level": "#fhId_LogLevel",
+    "log_view_level": "#fhId_LogViewLevel",
+    "apply": "#fhId_onApply",
+    "content": "#fhId_textarea"
   }
 }

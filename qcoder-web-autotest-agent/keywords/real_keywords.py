@@ -550,9 +550,25 @@ class RealWebSession:
         return True
 
     def click_confirm(self, accept=True):
-        """点击确认框按钮：accept=True 点"确定"（执行操作），accept=False 点"取消"（零风险）。"""
-        label = "确定" if accept else "取消"
-        self.page.get_by_role("button", name=label).first.click()
+        """点击确认框按钮：accept=True 点"确定/Confirm"（执行操作），accept=False 点"取消/Cancel"（零风险）。
+
+        真机为英文 locale（fg_confirm 按钮显示 "Confirm"/"Cancel"），
+        同时兼容中文 "确定"/"取消"，按按钮文本精确匹配，避免 get_by_role 子串误配。
+        """
+        if accept:
+            labels = ["确定", "Confirm", "OK"]
+        else:
+            labels = ["取消", "Cancel"]
+        box = self._confirm_box()
+        for label in labels:
+            btn = box.get_by_role("button", name=label, exact=True)
+            if btn.count() > 0:
+                btn.first.click()
+                self.page.wait_for_timeout(500)
+                return True
+        # 兜底：确认框内最后一个按钮通常为主操作（Confirm），第一个为取消
+        btns = box.locator("button")
+        (btns.last if accept else btns.first).click()
         self.page.wait_for_timeout(500)
         return True
 

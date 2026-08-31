@@ -1,0 +1,32 @@
+[
+  {
+    "id": "INTL-HELP-001",
+    "title": "用户手册页面渲染展示",
+    "priority": "P3",
+    "tags": ["suite:regression", "type:positive", "module:help", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_help_L1", "l2": "fhId_userManual_L2", "desc": "进入用户手册页"},
+      {"action": "real.assert_url_contains", "substring": "userManual", "desc": "URL 应包含 userManual 路由"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待页面渲染"},
+      {"action": "real.screenshot", "name": "INTL-HELP-001_manual", "desc": "截图用户手册页面"}
+    ]
+  },
+  {
+    "id": "INTL-HELP-002",
+    "title": "FAQs 页面渲染展示",
+    "priority": "P3",
+    "tags": ["suite:regression", "type:positive", "module:help", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_help_L1", "l2": "fhId_FAQs_L2", "desc": "进入 FAQs 页"},
+      {"action": "real.assert_url_contains", "substring": "FAQs", "desc": "URL 应包含 FAQs 路由"},
+      {"action": "real.wait", "ms": "1500", "desc": "等待页面渲染"},
+      {"action": "real.screenshot", "name": "INTL-HELP-002_faq", "desc": "截图 FAQs 页面"}
+    ]
+  }
+]

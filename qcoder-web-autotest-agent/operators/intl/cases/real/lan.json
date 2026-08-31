@@ -1,0 +1,56 @@
+[
+  {
+    "id": "INTL-LAN-001",
+    "title": "LAN 配置基本信息查询展示",
+    "priority": "P0",
+    "tags": ["suite:regression", "type:positive", "module:lan", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_lanSettings_L2", "desc": "进入 LAN 设置页"},
+      {"action": "real.assert_url_contains", "substring": "lanSettings", "desc": "URL 应包含 lanSettings 路由"},
+      {"action": "real.assert_visible", "selector": "lan.ip_address", "desc": "LAN IP 输入框可见"},
+      {"action": "real.assert_visible", "selector": "lan.subnet_mask", "desc": "子网掩码输入框可见"},
+      {"action": "real.assert_visible", "selector": "lan.ipv4_min", "desc": "DHCP 起始地址输入框可见"},
+      {"action": "real.assert_visible", "selector": "lan.ipv4_max", "desc": "DHCP 结束地址输入框可见"},
+      {"action": "real.assert_input_value", "selector": "lan.ip_address", "value": "192.168.1.1", "desc": "LAN IP 默认值为 192.168.1.1"},
+      {"action": "real.assert_input_value", "selector": "lan.ipv4_min", "value": "2", "desc": "DHCP 起始地址默认值为 2"},
+      {"action": "real.screenshot", "name": "INTL-LAN-001_query", "desc": "截图 LAN 查询结果"}
+    ]
+  },
+  {
+    "id": "INTL-LAN-002",
+    "title": "DHCP 租约时间合法修改并回读验证",
+    "priority": "P0",
+    "tags": ["suite:regression", "type:positive", "module:lan", "专项:crud"],
+    "precondition": "设备已上电，已登录，LAN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_lanSettings_L2", "desc": "进入 LAN 设置页"},
+      {"action": "real.fill", "selector": "lan.dhcp_hours", "value": "12", "desc": "修改租约小时数为 12"},
+      {"action": "real.click", "selector": "lan.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "lan.dhcp_hours", "value": "12", "desc": "回读验证租约小时数已更新为 12"},
+      {"action": "real.screenshot", "name": "INTL-LAN-002_lease", "desc": "截图租约修改结果"}
+    ]
+  },
+  {
+    "id": "INTL-LAN-003",
+    "title": "LAN 配置修改后恢复基线",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:lan", "专项:persist"],
+    "precondition": "设备已上电，已登录，LAN 页可访问",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_network_L1", "l2": "fhId_lanSettings_L2", "desc": "进入 LAN 设置页"},
+      {"action": "real.fill", "selector": "lan.dhcp_hours", "value": "24", "desc": "恢复租约小时数为默认值 24"},
+      {"action": "real.click", "selector": "lan.apply", "desc": "点击应用"},
+      {"action": "real.wait", "ms": "2000", "desc": "等待应用生效"},
+      {"action": "real.assert_input_value", "selector": "lan.dhcp_hours", "value": "24", "desc": "回读验证租约小时数已恢复为 24"},
+      {"action": "real.screenshot", "name": "INTL-LAN-003_restored", "desc": "截图恢复结果"}
+    ]
+  }
+]

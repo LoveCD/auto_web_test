@@ -1,0 +1,18 @@
+[
+  {
+    "id": "INTL-VPN-001",
+    "title": "VPN 配置基本信息查询展示",
+    "priority": "P1",
+    "tags": ["suite:regression", "type:positive", "module:security", "专项:query"],
+    "precondition": "设备已上电，已登录，浏览器可访问 192.168.1.1",
+    "steps": [
+      {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
+      {"action": "real.login", "desc": "管理员登录"},
+      {"action": "real.click_menu", "l1": "fhId_security_L1", "l2": "fhId_vpn_L2", "desc": "进入 VPN 设置页"},
+      {"action": "real.assert_url_contains", "substring": "vpn", "desc": "URL 应包含 vpn 路由"},
+      {"action": "real.assert_visible", "selector": "vpn.ipsec_enable", "desc": "IPSEC 启用选项可见"},
+      {"action": "real.assert_visible", "selector": "vpn.pptp_enable", "desc": "PPTP 启用选项可见"},
+      {"action": "real.screenshot", "name": "INTL-VPN-001_query", "desc": "截图 VPN 配置查询结果"}
+    ]
+  }
+]

@@ -9,10 +9,10 @@
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
       {"action": "real.assert_visible", "selector": "#user_name", "desc": "用户名输入框可见"},
       {"action": "real.assert_visible", "selector": "#loginpp", "desc": "密码输入框可见"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入正确用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入正确用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入正确密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
-      {"action": "real.assert_url_contains", "substring": "main.html#/home", "desc": "跳转到首页"},
+      {"action": "real.assert_url_contains", "substring": "main.html#/", "desc": "跳转到首页"},
       {"action": "real.assert_visible", "selector": "#app", "desc": "主应用容器可见"},
       {"action": "real.screenshot", "name": "INTL-LOGIN-001_home", "desc": "截图首页"}
     ]
@@ -25,7 +25,7 @@
     "precondition": "设备已上电，浏览器可访问 192.168.1.1",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入正确用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入正确用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "WrongPass123", "desc": "输入错误密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
       {"action": "real.assert_login_error", "desc": "断言错误提示显示"},
@@ -55,7 +55,7 @@
     "precondition": "设备已上电，浏览器可访问 192.168.1.1",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入正确用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入正确用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "", "desc": "清空密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
       {"action": "real.assert_login_stays", "desc": "前端校验拦截，停留登录页且无错误提示"}
@@ -69,7 +69,7 @@
     "precondition": "设备已上电，浏览器可访问 192.168.1.1",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": " admin ", "desc": "输入带前后空格的用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": " ${QCT_INTL_ADMIN_USER} ", "desc": "输入带前后空格的用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入正确密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
       {"action": "real.assert_login_error", "desc": "断言错误提示显示（空格不自动去除）"},
@@ -84,10 +84,10 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入正确用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入正确用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入正确密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
-      {"action": "real.assert_url_contains", "substring": "main.html#/home", "desc": "登录成功"},
+      {"action": "real.assert_url_contains", "substring": "main.html#/", "desc": "登录成功"},
       {"action": "real.logout", "desc": "点击登出并确认"},
       {"action": "real.assert_url_contains", "substring": "login.html", "desc": "登出后回到登录页"},
       {"action": "real.screenshot", "name": "INTL-LOGIN-006_logout", "desc": "截图登出后页面"}
@@ -112,21 +112,21 @@
     "precondition": "设备已上电，浏览器可访问 192.168.1.1，无未过期的登录锁定状态",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "WrongPass1", "desc": "第1次输入错误密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
       {"action": "real.assert_login_error", "desc": "第1次登录失败提示"},
       {"action": "real.wait", "ms": "3000", "desc": "等待设备处理第1次错误请求"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "WrongPass2", "desc": "第2次输入错误密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
       {"action": "real.assert_login_error", "desc": "第2次登录失败提示"},
       {"action": "real.wait", "ms": "3000", "desc": "等待设备处理第2次错误请求"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "WrongPass3", "desc": "第3次输入错误密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "点击登录"},
       {"action": "real.wait", "ms": "5000", "desc": "等待锁定提示更新（设备返回锁定提示有延迟）"},
-      {"action": "real.assert_text_contains", "selector": "#login_error_hint", "text": "wrong 3 times", "desc": "连续3次错误后账号被锁定，提示锁定信息"},
+      {"action": "real.assert_text_contains", "selector": ".login_error_hint", "text": "wrong 3 times", "desc": "连续3次错误后账号被锁定，提示锁定信息"},
       {"action": "real.assert_url_contains", "substring": "login.html", "desc": "账号锁定，仍停留在登录页"},
       {"action": "real.screenshot", "name": "INTL-LOGIN-008_locked", "desc": "截图账号锁定提示"}
     ]

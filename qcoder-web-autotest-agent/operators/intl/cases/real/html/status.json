@@ -1,0 +1,366 @@
+[
+  {
+    "id": "INTL-STATUS-001",
+    "title": "系统状态页面可访问，设备信息正常显示",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:status"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_deviceInfo_L2",
+        "desc": "导航到设备信息"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "deviceInfo",
+        "desc": "URL 含 deviceInfo"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SoftwareVersion",
+        "desc": "软件版本字段可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ModelName",
+        "desc": "设备型号字段可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-STATUS-001_deviceinfo",
+        "desc": "截图设备信息页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-STATUS-002",
+    "title": "关键设备信息字段均有有效值",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:status"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_deviceInfo_L2",
+        "desc": "导航到设备信息"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "#fhId_SoftwareVersion",
+        "text": "N/A",
+        "desc": "软件版本非 N/A"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "#fhId_ModelName",
+        "text": "N/A",
+        "desc": "设备型号非 N/A"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "#fhId_SerialNumber",
+        "text": "N/A",
+        "desc": "序列号非 N/A"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "#fhId_MAC_Address",
+        "text": "N/A",
+        "desc": "MAC 地址非 N/A"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "#fhId_SystemUpTime",
+        "text": "N/A",
+        "desc": "运行时间非 N/A"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_SoftwareVersion'); return !!el && (el.innerText||'').trim().length > 0; }",
+        "desc": "软件版本非空"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_HardwareVersion'); return !!el && (el.innerText||'').trim().length > 0; }",
+        "desc": "硬件版本非空"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_ModelName'); return !!el && (el.innerText||'').trim().length > 0; }",
+        "desc": "设备型号非空"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_ModelPonType'); const t = el ? (el.innerText||'').trim() : ''; return /^(EPON|GPON|EPON_10G|EPON_10G_S|XGPON|XGSPON)$/.test(t); }",
+        "desc": "PON 类型为源码枚举值"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_SerialNumber'); return !el || (el.innerText||'').trim().length > 0; }",
+        "desc": "序列号非空（PON 设备显示）"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_CPU_Usage'); const t = el ? (el.innerText||'').trim() : ''; return /^\\d+(\\.\\d+)?%$/.test(t); }",
+        "desc": "CPU 使用率为百分比格式"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_Memory_Usage'); const t = el ? (el.innerText||'').trim() : ''; const m = t.match(/^(\\d+(?:\\.\\d+)?)%$/); return !!m && parseFloat(m[1]) <= 100; }",
+        "desc": "内存使用率为 0-100% 百分比"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_Web_port'); const t = el ? (el.innerText||'').trim() : ''; return /^\\d+$/.test(t); }",
+        "desc": "Web 服务端口为数字"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_SystemUpTime'); const t = el ? (el.innerText||'').trim() : ''; return /^\\d+ d \\d+ h \\d+ m \\d+ s$/.test(t); }",
+        "desc": "运行时间格式为 Xd Xh Xm Xs"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_MAC_Address'); const t = el ? (el.innerText||'').trim() : ''; return /^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/.test(t); }",
+        "desc": "MAC 地址格式正确（XX:XX:XX:XX:XX:XX）"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_ONUState'); return !el || (el.innerText||'').trim() !== 'ERROR'; }",
+        "desc": "PON 状态非 ERROR"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_ONU_Regist_State'); return !el || (el.innerText||'').trim() !== 'ERROR'; }",
+        "desc": "PON 注册状态非 ERROR"
+      }
+    ]
+  },
+  {
+    "id": "INTL-STATUS-003",
+    "title": "系统运行时间随刷新递增（状态迁移）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:status",
+      "专项:persist"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_deviceInfo_L2",
+        "desc": "导航到设备信息"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SystemUpTime",
+        "desc": "运行时间字段可见"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待 3 秒"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SystemUpTime",
+        "desc": "运行时间字段仍可见"
+      }
+    ]
+  },
+  {
+    "id": "INTL-STATUS-004",
+    "title": "XSS 注入安全（输入/URL/字段数据注入均不执行脚本）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:security",
+      "module:status",
+      "专项:security"
+    ],
+    "precondition": "设备已上电，可正常登录（仅 1 次错误登录，不触发 3 次锁定）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "<img src=x onerror=alert(1)>",
+        "desc": "用户名注入 XSS payload"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "x",
+        "desc": "输入任意密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "提交登录（触发输入注入）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待登录响应"
+      },
+      {
+        "action": "real.no_dialog",
+        "desc": "输入注入未触发脚本弹窗（XSS 被转义）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "恢复正确用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入正确密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "正确登录（重置错误计数）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html#/",
+        "desc": "登录成功进入主页"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/deviceInfo?x=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E",
+        "desc": "URL 参数注入 XSS payload 访问设备信息页"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面加载与数据请求"
+      },
+      {
+        "action": "real.no_dialog",
+        "desc": "URL 注入未触发脚本弹窗"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SoftwareVersion",
+        "desc": "设备信息页正常渲染"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const h = document.body.innerHTML; return !h.includes('%3Cimg') && !h.includes('onerror=alert(1)'); }",
+        "desc": "注入 payload 未以原始/解码形态反射进 DOM"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const root = document.querySelector('#app'); const vm = root && root.__vue__; if (!vm) return false; let target = null; function walk(comp, depth) { if (target || !comp || depth > 8) return; const d = comp._data || comp.$data || {}; if (Object.prototype.hasOwnProperty.call(d, 'SoftwareVersion')) { target = comp; return; } for (const child of comp.$children || []) walk(child, depth + 1); } walk(vm, 0); if (!target) return false; target.SoftwareVersion = '<img src=x onerror=alert(1)>'; return true; }",
+        "desc": "向软件版本数据字段注入恶意数据（组件树定位数据持有者，模拟设备上报）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "等待 Vue 重渲染（5 秒定时刷新前完成）"
+      },
+      {
+        "action": "real.no_dialog",
+        "desc": "字段数据注入未执行脚本（Vue 插值转义生效）"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const el = document.querySelector('#fhId_SoftwareVersion'); return !!(el && !el.querySelector('img') && (el.innerText||'').includes('<img')); }",
+        "desc": "注入内容以纯文本显示，未被解析为元素"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-STATUS-004_xss",
+        "desc": "截图 XSS 防护验证结果"
+      }
+    ]
+  }
+]

@@ -18,7 +18,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -75,7 +75,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -142,7 +142,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -201,7 +201,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -287,7 +287,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -358,7 +358,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -429,7 +429,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -500,7 +500,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -702,7 +702,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -872,7 +872,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -1056,7 +1056,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -1228,7 +1228,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -1382,7 +1382,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -1551,7 +1551,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -1745,7 +1745,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -1954,7 +1954,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -2138,7 +2138,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -2302,7 +2302,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -2480,7 +2480,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -2674,7 +2674,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -2863,7 +2863,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -3046,7 +3046,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -3235,7 +3235,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -3418,7 +3418,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {
@@ -3607,7 +3607,7 @@
       {
         "action": "real.fill",
         "selector": "#user_name",
-        "value": "admin",
+        "value": "${QCT_INTL_ADMIN_USER}",
         "desc": "输入用户名"
       },
       {

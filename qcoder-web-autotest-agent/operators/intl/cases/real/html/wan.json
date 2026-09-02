@@ -1,0 +1,2892 @@
+[
+  {
+    "id": "INTL-WAN-001",
+    "title": "WAN 配置页面可访问（BroadBand Settings）",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "broadBandSettings",
+        "desc": "URL 含 broadBandSettings"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Add",
+        "desc": "Add New WAN 按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WAN-001_wan",
+        "desc": "截图 WAN 配置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-002",
+    "title": "点击 Add New WAN 打开添加表单（CRUD-Create）",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add New WAN"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_connectMode",
+        "desc": "连接模式字段出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_VLANID",
+        "desc": "VLAN ID 字段出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_MTU",
+        "desc": "MTU 字段出现"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WAN-002_addform",
+        "desc": "截图添加 WAN 表单"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-003",
+    "title": "连接模式下拉包含 Route/Bridge 选项",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add New WAN"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "连接模式含 Route"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_connectMode",
+        "option_text": "Bridge",
+        "desc": "连接模式含 Bridge"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-004",
+    "title": "选择 Route 连接模式后字段联动显示（关联逻辑）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "选择 Route 模式"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPMode",
+        "desc": "IP 模式字段联动显示"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_AddressingType",
+        "desc": "寻址类型字段联动显示"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_AddressingType",
+        "option_text": "DHCP",
+        "desc": "寻址类型含 DHCP"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_AddressingType",
+        "option_text": "Static",
+        "desc": "寻址类型含 Static"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_AddressingType",
+        "option_text": "Static",
+        "desc": "选择 Static 寻址"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ExternalIPAddress",
+        "desc": "外网 IP 字段联动启用"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_iporppp",
+        "desc": "封装类型字段联动显示"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_MTU",
+        "desc": "MTU 字段联动显示"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_NATEnabled",
+        "desc": "NAT 字段联动显示"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-005",
+    "title": "桥接模式字段联动：路由专属参数隐藏（关联逻辑）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Bridge",
+        "desc": "选择 Bridge 模式"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ServiceList",
+        "desc": "桥接模式保留服务类型字段"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_VLANID",
+        "desc": "桥接模式保留 VLAN ID 字段"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_p8021Mark",
+        "desc": "桥接模式保留 802.1p 优先级字段"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_iporppp",
+        "desc": "桥接模式隐藏封装类型"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_IPMode",
+        "desc": "桥接模式隐藏 IP 模式"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_AddressingType",
+        "desc": "桥接模式隐藏寻址类型"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_MTU",
+        "desc": "桥接模式隐藏 MTU"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_NATEnabled",
+        "desc": "桥接模式隐藏 NAT"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_Username",
+        "desc": "桥接模式隐藏 PPPoE 账号"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-006",
+    "title": "参数校验综合用例（VLAN ID/MTU/802.1p/IP 的边界值、非法性与必填）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "type:negative",
+      "type:required",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.close_dialog",
+        "desc": "容错：关闭上一用例可能残留的新建表单"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add New WAN 打开全新表单"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_VLANID",
+        "desc": "前提：VLAN ID 字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "1",
+        "desc": "输入 VLAN ID 下边界 1"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_VLANID",
+        "value": "1",
+        "desc": "VLAN ID 可输入下边界 1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "4094",
+        "desc": "输入 VLAN ID 上边界 4094"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_VLANID",
+        "value": "4094",
+        "desc": "VLAN ID 可输入上边界 4094"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_p8021Mark",
+        "desc": "前提：802.1p 优先级字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_p8021Mark",
+        "value": "0",
+        "desc": "输入 802.1p 下边界 0"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_p8021Mark",
+        "value": "0",
+        "desc": "802.1p 可输入下边界 0"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_p8021Mark",
+        "value": "7",
+        "desc": "输入 802.1p 上边界 7"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_p8021Mark",
+        "value": "7",
+        "desc": "802.1p 可输入上边界 7"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "0",
+        "desc": "输入 VLAN ID 下边界外 0"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1 and 4094",
+        "desc": "VLAN ID 0 被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "4095",
+        "desc": "输入 VLAN ID 上边界外 4095"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1 and 4094",
+        "desc": "VLAN ID 4095 被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "abc",
+        "desc": "输入非数字字符 abc"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1 and 4094",
+        "desc": "VLAN ID 非数字被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "100",
+        "desc": "恢复合法 VLAN ID 排除干扰"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_MTU",
+        "desc": "前提：MTU 字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1280",
+        "desc": "输入 MTU 下边界 1280"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_MTU",
+        "value": "1280",
+        "desc": "MTU 可输入下边界 1280"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1500",
+        "desc": "输入 MTU 上边界 1500"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_MTU",
+        "value": "1500",
+        "desc": "MTU 可输入上边界 1500"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1279",
+        "desc": "输入 MTU 下边界外 1279"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1280 and 1500",
+        "desc": "MTU 1279 被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1501",
+        "desc": "输入 MTU 上边界外 1501"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1280 and 1500",
+        "desc": "MTU 1501 被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "abc",
+        "desc": "输入非数字字符 abc"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1280 and 1500",
+        "desc": "MTU 非数字被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1492",
+        "desc": "恢复合法 MTU 排除干扰"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "",
+        "desc": "清空 VLAN ID（确保为空）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_p8021Mark",
+        "value": "",
+        "desc": "清空 802.1p 优先级"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1 and 4094",
+        "desc": "VLAN ID 必填未填被拦截"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 0 and 7",
+        "desc": "802.1p 必填未填被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "100",
+        "desc": "恢复合法 VLAN ID"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_p8021Mark",
+        "value": "0",
+        "desc": "恢复合法 802.1p"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "选择 Route 模式"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_AddressingType",
+        "option_text": "Static",
+        "desc": "选择 Static 寻址类型"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ExternalIPAddress",
+        "desc": "前提：Static 寻址下外网 IP 字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalIPAddress",
+        "value": "999.999.999.999",
+        "desc": "输入非法 IP 地址"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv4 address",
+        "desc": "非法 IP 被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalIPAddress",
+        "value": "192.168.1.100",
+        "desc": "恢复合法外网 IP 排除干扰"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SubnetMask",
+        "desc": "前提：Static 寻址下子网掩码字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SubnetMask",
+        "value": "255.255.255.1",
+        "desc": "输入非法子网掩码（末段非连续 1）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发子网掩码校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid netmask",
+        "desc": "非法子网掩码 255.255.255.1 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SubnetMask",
+        "value": "1.2.3.4",
+        "desc": "输入非掩码格式 1.2.3.4"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发子网掩码校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid netmask",
+        "desc": "非掩码格式 1.2.3.4 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SubnetMask",
+        "value": "255.255.255.0",
+        "desc": "输入合法子网掩码 255.255.255.0"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_SubnetMask",
+        "value": "255.255.255.0",
+        "desc": "合法子网掩码可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SubnetMask",
+        "value": "255.255.255.128",
+        "desc": "输入合法子网掩码 255.255.255.128（1 位主机位）"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_SubnetMask",
+        "value": "255.255.255.128",
+        "desc": "255.255.255.128 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SubnetMask",
+        "value": "255.255.255.0",
+        "desc": "恢复合法子网掩码 255.255.255.0"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DefaultGateway",
+        "value": "999.1.1.1",
+        "desc": "输入非法默认网关（段越界）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发默认网关校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv4 address",
+        "desc": "非法默认网关被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DefaultGateway",
+        "value": "192.168.1.1",
+        "desc": "输入合法默认网关"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_DefaultGateway",
+        "value": "192.168.1.1",
+        "desc": "合法默认网关可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Pri_DNS",
+        "value": "888.8.8.8",
+        "desc": "输入非法首选 DNS（段越界）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发首选 DNS 校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv4 address",
+        "desc": "非法首选 DNS 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Pri_DNS",
+        "value": "8.8.8.8",
+        "desc": "输入合法首选 DNS"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_Pri_DNS",
+        "value": "8.8.8.8",
+        "desc": "合法首选 DNS 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Sec_DNS",
+        "value": "8.8.8.999",
+        "desc": "输入非法备用 DNS（末段越界）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发备用 DNS 校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv4 address",
+        "desc": "非法备用 DNS 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Sec_DNS",
+        "value": "8.8.4.4",
+        "desc": "输入合法备用 DNS"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_Sec_DNS",
+        "value": "8.8.4.4",
+        "desc": "合法备用 DNS 可输入"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_AddressingType",
+        "option_text": "DHCP",
+        "desc": "切回 DHCP 寻址（显示 Vendor ID 字段）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_option60Value",
+        "desc": "前提：DHCP 下 Vendor ID 字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_option60Value",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "desc": "输入 65 字符 Vendor ID（超上限）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发 Vendor ID 长度校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "more than 64 characters",
+        "desc": "65 字符 Vendor ID 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_option60Value",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "desc": "输入 64 字符 Vendor ID（上限内）"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_option60Value",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "desc": "64 字符 Vendor ID 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_option60Value",
+        "value": "",
+        "desc": "清空 Vendor ID"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "取消未保存的新建表单（还原界面）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "wan_validation",
+        "desc": "用例成果截图"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-007",
+    "title": "IPv6 参数校验综合用例（IPv6/双栈地址合法性、带掩码、网关、DNS、前缀、AFTR 的边界值、非法性与合法输入）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "type:negative",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.close_dialog",
+        "desc": "容错：关闭上一用例可能残留的新建表单"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add New WAN 打开全新表单"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_VLANID",
+        "desc": "前提：表单已打开"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "100",
+        "desc": "填合法 VLAN ID 排除必填干扰"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "选择 Route 模式"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_IPv6IPAddress",
+        "desc": "前提：默认 IPv4 模式下 IPv6 地址字段不显示"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_IPMode",
+        "option_text": "IPv6",
+        "desc": "IP 模式选择 IPv6（IPv6 字段显示前提一：非 IPv4）"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_IPv6IPAddress",
+        "desc": "前提二未满足：寻址仍为 DHCP 时 IPv6 地址字段仍隐藏"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_AddressingType",
+        "option_text": "Static",
+        "desc": "寻址类型选择 Static（IPv6 字段显示前提二，前缀模式自动转 Static）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPv6IPAddress",
+        "desc": "双前提满足（非 IPv4 且 Static）：IPv6 地址字段显示"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "gggg::1",
+        "desc": "输入非法 IPv6 地址（含非法字符）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 address",
+        "desc": "IPv6 模式非法地址被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "2001:db8::1",
+        "desc": "输入合法 IPv6 地址"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "2001:db8::1",
+        "desc": "IPv6 模式合法地址可输入"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_IPMode",
+        "option_text": "IPv4&IPv6",
+        "desc": "切换为 IPv4/IPv6 双栈模式（双栈前提）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPv6IPAddress",
+        "desc": "双栈模式且 Static：IPv6 地址字段仍显示"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "gggg::1",
+        "desc": "双栈模式输入非法 IPv6 地址"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 address",
+        "desc": "双栈模式非法地址被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "2001:db8::1",
+        "desc": "双栈模式输入合法 IPv6 地址"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "2001:db8::1",
+        "desc": "双栈模式合法地址可输入"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_IPMode",
+        "option_text": "IPv6",
+        "desc": "切回纯 IPv6 模式（后续字段校验）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "2001:db8::1/64",
+        "desc": "输入带合法掩码的 IPv6 地址"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "2001:db8::1/64",
+        "desc": "带掩码 2001:db8::1/64 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "2001:db8::1/129",
+        "desc": "输入掩码越界地址 /129"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 address",
+        "desc": "掩码越界 /129 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6IPAddress",
+        "value": "2001:db8::1",
+        "desc": "恢复合法 IPv6 地址"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DefaultIPv6Gateway",
+        "value": "gggg::1",
+        "desc": "输入非法 IPv6 默认网关（含非法字符）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 address",
+        "desc": "非法 IPv6 网关被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DefaultIPv6Gateway",
+        "value": "2001:db8::1",
+        "desc": "输入合法 IPv6 默认网关"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_DefaultIPv6Gateway",
+        "value": "2001:db8::1",
+        "desc": "合法 IPv6 网关可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6Pri_DNS",
+        "value": "gggg::1",
+        "desc": "输入非法 IPv6 首选 DNS"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 address",
+        "desc": "非法 IPv6 首选 DNS 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6Pri_DNS",
+        "value": "2001:4860:4860::8888",
+        "desc": "输入合法 IPv6 首选 DNS"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_IPv6Pri_DNS",
+        "value": "2001:4860:4860::8888",
+        "desc": "合法 IPv6 首选 DNS 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6Sec_DNS",
+        "value": "gggg::1",
+        "desc": "输入非法 IPv6 备用 DNS"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 address",
+        "desc": "非法 IPv6 备用 DNS 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6Sec_DNS",
+        "value": "2001:4860:4860::8844",
+        "desc": "输入合法 IPv6 备用 DNS"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_IPv6Sec_DNS",
+        "value": "2001:4860:4860::8844",
+        "desc": "合法 IPv6 备用 DNS 可输入"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPv6Prefix",
+        "desc": "前提：Static 寻址下 IPv6 前缀字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6Prefix",
+        "value": "2001:db8::/65",
+        "desc": "输入掩码越界的前缀 /65"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 prefix",
+        "desc": "前缀掩码 /65 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6Prefix",
+        "value": "2001:db8::",
+        "desc": "输入无掩码的前缀"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 prefix",
+        "desc": "无掩码前缀被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPv6Prefix",
+        "value": "2001:db8::/64",
+        "desc": "输入合法前缀 2001:db8::/64"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_IPv6Prefix",
+        "value": "2001:db8::/64",
+        "desc": "合法前缀可输入"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Dslite_Enable",
+        "desc": "前提：INTERNET+IPv6 下 DS-lite 使能可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Dslite_Enable",
+        "desc": "勾选 Enable DS-lite"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_AftrMode",
+        "desc": "前提：DS-lite 使能后 AFTR 手动配置可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_AftrMode",
+        "desc": "勾选 AFTR Manual Configuration"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Aftr",
+        "desc": "前提：手动配置后 AFTR 输入框可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Aftr",
+        "value": "gggg::1",
+        "desc": "输入非法 AFTR 地址（含非法字符）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 address or domain",
+        "desc": "非法 AFTR 地址被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Aftr",
+        "value": "abc:bad:port",
+        "desc": "输入非域名格式 AFTR"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPv6PrefixDelegationEnabled",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "valid IPv6 address or domain",
+        "desc": "非域名格式 AFTR 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Aftr",
+        "value": "aftr.example.com",
+        "desc": "输入合法 AFTR 域名"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_Aftr",
+        "value": "aftr.example.com",
+        "desc": "合法 AFTR 域名可输入"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_AftrMode",
+        "desc": "取消勾选 AFTR 手动配置（还原）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Dslite_Enable",
+        "desc": "取消勾选 DS-lite（还原）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "取消未保存的新建表单（还原界面）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "wan_ipv6_validation",
+        "desc": "用例成果截图"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-008",
+    "title": "PPPoE 参数校验综合用例（MTU 1280-1492/Username/Password/IdleDisconnectTime/AutoConnection 的边界值、非法性与必填）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "type:negative",
+      "type:required",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.close_dialog",
+        "desc": "容错：关闭上一用例可能残留的新建表单"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add New WAN 打开全新表单"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_VLANID",
+        "desc": "前提：表单已打开"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "100",
+        "desc": "填合法 VLAN ID 排除必填干扰"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_iporppp",
+        "option_text": "PPPoE",
+        "desc": "封装类型选 PPPoE（触发 MTU 1492/寻址 PPPoE）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Username",
+        "desc": "前提：PPPoE 模式下用户名/密码字段可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_MTU",
+        "desc": "前提：MTU 字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1280",
+        "desc": "输入 MTU 下边界 1280"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_MTU",
+        "value": "1280",
+        "desc": "MTU 1280 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1492",
+        "desc": "输入 MTU 上边界 1492（PPPoE 模式）"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_MTU",
+        "value": "1492",
+        "desc": "MTU 1492 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1279",
+        "desc": "输入 MTU 下边界外 1279"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发 MTU 校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1280 and 1492",
+        "desc": "PPPoE 模式 MTU 1279 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1493",
+        "desc": "输入 MTU 上边界外 1493"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发 MTU 校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1280 and 1492",
+        "desc": "PPPoE 模式 MTU 1493 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1492",
+        "desc": "恢复合法 MTU 排除干扰"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Username",
+        "value": "",
+        "desc": "清空 PPPoE 用户名"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发用户名必填校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "user name between 1 and 63 characters",
+        "desc": "用户名未填被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Username",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "desc": "输入 64 字符用户名（超上限）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发用户名长度校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1 and 63 characters",
+        "desc": "用户名 64 字符被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Username",
+        "value": "测试用户",
+        "desc": "输入含中文的用户名"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发用户名字符校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please do not enter Chinese character",
+        "desc": "用户名含中文被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Username",
+        "value": "testuser",
+        "desc": "恢复合法用户名排除干扰"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Password",
+        "value": "",
+        "desc": "清空 PPPoE 密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发密码必填校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "password between 1 and 63 characters",
+        "desc": "密码未填被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Password",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "desc": "输入 64 字符密码（超上限）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发密码长度校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 1 and 63 characters",
+        "desc": "密码 64 字符被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Password",
+        "value": "测试密码",
+        "desc": "输入含中文的密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发密码字符校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please do not enter Chinese character",
+        "desc": "密码含中文被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Password",
+        "value": "testpass",
+        "desc": "恢复合法密码排除干扰"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ConnectionTrigger",
+        "option_text": "OnDemand",
+        "desc": "连接触发选 OnDemand（显示空闲断连时间）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IdleDisconnectTime",
+        "desc": "前提：空闲断连时间字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IdleDisconnectTime",
+        "value": "0",
+        "desc": "输入空闲断连时间下边界 0"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_IdleDisconnectTime",
+        "value": "0",
+        "desc": "空闲断连时间 0 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IdleDisconnectTime",
+        "value": "65535",
+        "desc": "输入空闲断连时间上边界 65535"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_IdleDisconnectTime",
+        "value": "65535",
+        "desc": "空闲断连时间 65535 可输入"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IdleDisconnectTime",
+        "value": "-1",
+        "desc": "输入空闲断连时间 -1"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发空闲断连时间校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 0 and 65535",
+        "desc": "空闲断连时间 -1 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IdleDisconnectTime",
+        "value": "65536",
+        "desc": "输入空闲断连时间 65536"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发空闲断连时间校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 0 and 65535",
+        "desc": "空闲断连时间 65536 被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IdleDisconnectTime",
+        "value": "abc",
+        "desc": "输入非数字空闲断连时间"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发空闲断连时间校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "between 0 and 65535",
+        "desc": "空闲断连时间非数字被拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IdleDisconnectTime",
+        "value": "300",
+        "desc": "恢复合法空闲断连时间"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ConnectionTrigger",
+        "option_text": "Manual",
+        "desc": "连接触发选 Manual（显示手动连接选择）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_AutoConnectionConn",
+        "desc": "前提：手动连接 Connect/Disconnect 单选可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发手动连接必填校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "select whether to connect manually",
+        "desc": "未选手动连接方式被拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_AutoConnectionConn",
+        "desc": "选择 Connect 手动连接"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "取消未保存的新建表单（还原界面）"
+      },
+      {
+        "action": "real.screenshot",
+        "desc": "用例成果截图",
+        "name": "wan_pppoe_validation"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-009",
+    "title": "PPPoE 密码回填假密码（防密码泄露）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:security",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；设备为密码防回显模式（非 pwd_enable_flag=1 直显设备）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建：点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "INTERNET",
+        "desc": "选择服务类型 INTERNET"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "选择连接模式 Route"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_iporppp",
+        "option_text": "PPPoE",
+        "desc": "选择 IP 封装 PPPoE"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Username",
+        "desc": "前提：PPPoE 模式下用户名/密码字段显示"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Password",
+        "desc": "前提：密码字段显示"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "100",
+        "desc": "输入 VLAN ID 100"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Username",
+        "value": "test_pppoe",
+        "desc": "输入 PPPoE 用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Password",
+        "value": "test123",
+        "desc": "输入 PPPoE 密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_100",
+        "desc": "创建成功：列表出现 PPPoE WAN"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=INTERNET_R_VID_100",
+        "desc": "点击列表项查看详情"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待详情加载"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_Password",
+        "value": "••••••••••",
+        "desc": "密码框回填假密码而非明文（防泄露）"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "INTERNET_R_VID_100",
+        "desc": "清理：勾选行并点击表格 Delete 按钮"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "清理：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "清理：点击 Confirm 确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_100",
+        "desc": "清理：列表项已消失"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-010",
+    "title": "WAN 删除操作提示场景（未勾选提示/确认框取消）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录（用例前置自动创建临时 WAN 保证列表非空）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.close_dialog",
+        "desc": "容错：关闭可能残留的新建表单"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "前置：点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "INTERNET",
+        "desc": "前置：选择服务类型 INTERNET"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "前置：选择连接模式 Route"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_iporppp",
+        "option_text": "PPPoE",
+        "desc": "前置：选择 IP 封装 PPPoE"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "101",
+        "desc": "前置：输入 VLAN ID 101"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1492",
+        "desc": "前置：输入 MTU 1492"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Username",
+        "value": "test_wan015",
+        "desc": "前置：输入 PPPoE 用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Password",
+        "value": "test123",
+        "desc": "前置：输入 PPPoE 密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "前置：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "前置：等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_101",
+        "desc": "前置：临时 WAN 已创建"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "容错：关闭创建结果弹窗（模态遮罩会拦截后续点击）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Delete",
+        "desc": "未勾选任何 WAN 直接点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "cannot be deleted",
+        "desc": "弹出未选择 WAN 的提示"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "INTERNET_R_VID_101",
+        "desc": "勾选临时 WAN 并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除确认框弹出"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": false,
+        "desc": "点击 Cancel 取消删除"
+      },
+      {
+        "action": "real.assert_confirm_hidden",
+        "desc": "取消后确认框关闭"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "INTERNET_R_VID_101",
+        "desc": "清理：再次勾选并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "清理：删除确认框弹出"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "清理：点击 Confirm 确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_101",
+        "desc": "清理：临时 WAN 已删除"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-011",
+    "title": "特殊配置限制：TR069 单条 + VLAN ID 重复校验",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建 TR069：点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "TR069",
+        "desc": "选择服务类型 TR069"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_VLANID",
+        "desc": "前提：VLAN ID 字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "200",
+        "desc": "输入 VLAN ID 200"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "TR069_R_VID_200",
+        "desc": "TR069 WAN 创建成功"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "容错：关闭创建结果弹窗（避免模态遮罩拦截后续点击）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "重复创建 TR069：点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "TR069",
+        "desc": "再次选择服务类型 TR069"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_VLANID",
+        "desc": "前提：VLAN ID 字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "300",
+        "desc": "输入 VLAN ID 300"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "already exists",
+        "desc": "TR069 仅支持单条：重复创建被拦截"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭重复创建提示弹窗（模态遮罩会拦截后续点击）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "INTERNET",
+        "desc": "切换服务类型为 INTERNET"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "200",
+        "desc": "输入与已有 WAN 相同的 VLAN ID 200"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "conflicts",
+        "desc": "VLAN ID 重复配置被拦截"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭 VLAN 冲突提示弹窗（模态遮罩会拦截后续点击）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "取消未保存的新建表单"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "TR069_R_VID_200",
+        "desc": "清理：勾选 TR069 行并点击表格 Delete 按钮"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "清理：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "清理：点击 Confirm 确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "TR069_R_VID_200",
+        "desc": "清理：TR069 列表项已消失"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-CRUD-001",
+    "title": "INTERNET 路由 PPP WAN 创建/查询/修改/删除（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建：点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "INTERNET",
+        "desc": "选择服务类型 INTERNET"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "选择连接模式 Route"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_iporppp",
+        "option_text": "PPPoE",
+        "desc": "选择 IP 封装 PPPoE"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Username",
+        "desc": "前提：PPPoE 模式下用户名/密码字段显示"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "100",
+        "desc": "输入 VLAN ID 100"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1492",
+        "desc": "输入 MTU 1492"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Username",
+        "value": "test_pppoe",
+        "desc": "输入 PPPoE 用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Password",
+        "value": "test123",
+        "desc": "输入 PPPoE 密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_100",
+        "desc": "查询：列表出现 INTERNET 路由 PPP WAN"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=INTERNET_R_VID_100",
+        "desc": "查询：点击列表项查看详情"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待详情加载"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_VLANID",
+        "value": "100",
+        "desc": "查询：VLAN ID 回读为 100"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1400",
+        "desc": "修改：修改 MTU 为 1400"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_MTU",
+        "value": "1400",
+        "desc": "修改：MTU 回读为 1400"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "desc": "删除：勾选行并点击表格 Delete 按钮",
+        "row_text": "INTERNET_R_VID_100"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：点击 Confirm 确认"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_100",
+        "desc": "删除：列表项已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WAN-CRUD-001_done",
+        "desc": "截图删除后页面"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-CRUD-002",
+    "title": "INTERNET 路由 IP WAN 创建/查询/修改/删除（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建：点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "INTERNET",
+        "desc": "选择服务类型 INTERNET"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "选择连接模式 Route"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_iporppp",
+        "option_text": "IPoE",
+        "desc": "选择 IP 封装 IPoE"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_AddressingType",
+        "option_text": "DHCP",
+        "desc": "选择寻址类型 DHCP"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "101",
+        "desc": "输入 VLAN ID 101"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_MTU",
+        "desc": "前提：MTU 字段可见（Route+INTERNET）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1500",
+        "desc": "输入 MTU 1500"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_101",
+        "desc": "查询：列表出现 INTERNET 路由 IP WAN"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=INTERNET_R_VID_101",
+        "desc": "查询：点击列表项查看详情"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待详情加载"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_VLANID",
+        "value": "101",
+        "desc": "查询：VLAN ID 回读为 101"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1480",
+        "desc": "修改：修改 MTU 为 1480"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_MTU",
+        "value": "1480",
+        "desc": "修改：MTU 回读为 1480"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "desc": "删除：勾选行并点击表格 Delete 按钮",
+        "row_text": "INTERNET_R_VID_101"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：点击 Confirm 确认"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_101",
+        "desc": "删除：列表项已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WAN-CRUD-002_done",
+        "desc": "截图删除后页面"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-CRUD-003",
+    "title": "INTERNET 桥接 WAN 创建/查询/修改/删除（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建：点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "INTERNET",
+        "desc": "选择服务类型 INTERNET"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Bridge",
+        "desc": "选择连接模式 Bridge"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "102",
+        "desc": "输入 VLAN ID 102"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "INTERNET_B_VID_102",
+        "desc": "查询：列表出现 INTERNET 桥接 WAN"
+      },
+      {
+        "action": "real.click",
+        "selector": "tr:has-text(\"INTERNET_B_VID_102\") >> nth=0",
+        "desc": "查询：点击列表项查看详情"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待详情加载"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_VLANID",
+        "value": "102",
+        "desc": "查询：VLAN ID 回读为 102"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_p8021Mark",
+        "desc": "前提：802.1p 优先级字段可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_p8021Mark",
+        "value": "3",
+        "desc": "修改：修改优先级为 3"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_p8021Mark",
+        "value": "3",
+        "desc": "修改：修改优先级为 3"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "desc": "删除：勾选行并点击表格 Delete 按钮",
+        "row_text": "INTERNET_B_VID_102"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：点击 Confirm 确认"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "INTERNET_B_VID_102",
+        "desc": "删除：列表项已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WAN-CRUD-003_done",
+        "desc": "截图删除后页面"
+      }
+    ]
+  }
+]

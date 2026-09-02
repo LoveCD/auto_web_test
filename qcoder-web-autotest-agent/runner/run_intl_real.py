@@ -170,7 +170,7 @@ class IntlSession:
         return text not in (loc.inner_text() or "")
 
     def assert_login_error(self):
-        err = self.page.locator("#login_error_hint")
+        err = self.page.locator("#login_error_hint, .login_error_hint")
         err.wait_for(state="visible", timeout=8000)
         return True
 
@@ -178,7 +178,7 @@ class IntlSession:
         # 空用户名/空密码等前端校验拦截：停留登录页且错误提示隐藏
         if "/login.html" not in self.page.url:
             return False
-        err = self.page.locator("#login_error_hint")
+        err = self.page.locator("#login_error_hint, .login_error_hint")
         if err.count() == 0:
             return True
         return not err.first.is_visible()
@@ -245,6 +245,142 @@ class IntlSession:
             return True
         except PWTimeout:
             return False
+
+    # 关闭表单/弹窗对话框（WAN 添加表单等）。
+    # 老 UI 的 WAN 添加表单为页面内嵌表单（无 el-dialog），关闭用 #fhId_Cancel；
+    # Element UI 弹窗用 .el-dialog__headerbtn/.el-dialog__close；兜底按 Escape。
+    def close_dialog(self):
+        for sel in ("#fhId_Cancel", ".el-dialog__headerbtn", ".el-dialog__close",
+                    ".el-dialog__header-close", ".modal_close", ".close_btn"):
+            loc = self.page.locator(sel)
+            if loc.count() and loc.first.is_visible():
+                loc.first.click()
+                self.page.wait_for_timeout(500)
+                return True
+        self.page.keyboard.press("Escape")
+        self.page.wait_for_timeout(500)
+        return True
+
+    def close_boxes(self):
+        """容错：循环关闭页面上所有残留弹窗/提示（模态遮罩会拦截后续点击）。
+        覆盖 Element UI message-box / dialog / message 及常见自定义弹层，
+        最多 5 轮直到无可见弹窗。返回是否清干净。"""
+        for _ in range(5):
+            cleaned = False
+            # 1) Element UI 确认框（.el-message-box）：点最后一个按钮（确定/OK）
+            boxes = self.page.locator(".el-message-box")
+            for i in range(boxes.count()):
+                b = boxes.nth(i)
+                if b.is_visible():
+                    btns = b.locator("button").all()
+                    if btns:
+                        btns[-1].click()
+                        self.page.wait_for_timeout(600)
+                        cleaned = True
+            if boxes.count() and cleaned:
+                continue
+            # 2) Element UI 对话框关闭按钮
+            for sel in (".el-dialog__headerbtn", ".el-dialog__close", ".el-dialog__header-close"):
+                loc = self.page.locator(sel)
+                for i in range(loc.count()):
+                    el = loc.nth(i)
+                    if el.is_visible():
+                        el.click()
+                        self.page.wait_for_timeout(500)
+                        cleaned = True
+            if cleaned:
+                continue
+            # 3) Element UI message 提示（右上角小气泡）关闭
+            for sel in (".el-message__closeBtn", ".el-notification__closeBtn"):
+                loc = self.page.locator(sel)
+                for i in range(loc.count()):
+                    el = loc.nth(i)
+                    if el.is_visible():
+                        el.click()
+                        self.page.wait_for_timeout(300)
+                        cleaned = True
+            if cleaned:
+                continue
+            # 4) 兜底：Escape 关闭
+            any_visible = any(
+                self.page.locator(sel).count() and self.page.locator(sel).first.is_visible()
+                for sel in (".el-message-box", ".el-dialog", ".el-message", ".modal_mask", ".ui-dialog")
+            )
+            if any_visible:
+                self.page.keyboard.press("Escape")
+                self.page.wait_for_timeout(500)
+                cleaned = True
+            if not cleaned:
+                break
+        self.page.wait_for_timeout(500)
+        return True
+
+    # ---------- WAN 列表行删除（老 UI 表格） ----------
+    def delete_wan_row(self):
+        """老 UI（HTML 多页版）WAN 表格行删除：
+        勾选列表第一行（checkbox/radio 优先，其次点击行本身），再点击表格 Delete 按钮。
+        用例前置已创建目标 WAN 并处于宽带设置页；删除确认框由后续
+        assert_confirm_visible / click_confirm 步骤处理。"""
+        page = self.page
+        # 确保在宽带设置页
+        try:
+            if page.locator("#fhId_broadBandSettings_L2").count() == 0:
+                page.click("#fhId_network_L1", timeout=8000)
+                page.wait_for_timeout(1200)
+                page.click("#fhId_broadBandSettings_L2", timeout=8000)
+                page.wait_for_timeout(2500)
+        except Exception:
+            pass
+        # 先关闭残留弹窗，避免模态遮罩拦截勾选/删除点击
+        self.close_boxes()
+        # 1) 定位 WAN 列表容器（优先 #fhId_wanTable，其次任意 table）
+        table = page.locator("#fhId_wanTable")
+        if table.count() == 0 or not table.first.is_visible():
+            table = page.locator("table")
+        # 2) 勾选第一行：行内 checkbox/radio 优先，其次点击行本身
+        picked = False
+        if table.count() and table.first.is_visible():
+            rows = table.first.locator("tbody tr")
+            if rows.count() == 0:
+                rows = table.first.locator("tr")
+            if rows.count():
+                row = rows.first
+                # 行内单选/复选控件
+                for sel in ("input[type=checkbox]", "input[type=radio]", ".el-checkbox", ".el-radio",
+                            ".checkbox", "input[name='WanCheck']", "input[name='wan_check']"):
+                    cb = row.locator(sel)
+                    if cb.count():
+                        target = cb.first
+                        try:
+                            target.check() if sel.startswith("input") else target.click()
+                        except Exception:
+                            target.click(force=True)
+                        page.wait_for_timeout(500)
+                        picked = True
+                        break
+                if not picked:
+                    row.click()
+                    page.wait_for_timeout(500)
+                    picked = True
+        if not picked:
+            # 3) 兜底：li 列表结构（与 cleanup_wan 一致的旧容器）
+            items = page.locator("li[id^='fhId_Wan']").all()
+            if not items:
+                items = page.locator("li:has(.del_wan_icon)").all()
+            if items:
+                items[0].click()
+                page.wait_for_timeout(500)
+                picked = True
+        if not picked:
+            raise AssertionError("delete_wan_row: 未找到可勾选的 WAN 行")
+        # 4) 点击表格 Delete 按钮
+        del_btn = page.locator("#fhId_Delete")
+        if del_btn.count() == 0 or not del_btn.first.is_visible():
+            # 容错：未勾选时点 Delete 会弹"未选择"提示——此处已勾选，理论上不会走到
+            raise AssertionError("delete_wan_row: 未找到 Delete 按钮 #fhId_Delete")
+        del_btn.first.click(timeout=5000)
+        page.wait_for_timeout(1200)
+        return True
 
     # ---------- 其它 ----------
     def evaluate(self, script):
@@ -421,6 +557,9 @@ ACTION_MAP = {
     "real.assert_confirm_visible": lambda s, a: s.assert_confirm_visible(a.get("keyword", "")),
     "real.click_confirm": lambda s, a: s.click_confirm(a.get("accept", True)),
     "real.assert_confirm_hidden": lambda s, a: s.assert_confirm_hidden(),
+    "real.close_dialog": lambda s, a: s.close_dialog(),
+    "real.close_boxes": lambda s, a: s.close_boxes(),
+    "real.delete_wan_row": lambda s, a: s.delete_wan_row(),
     "real.evaluate": lambda s, a: s.evaluate(a["script"]),
     "real.screenshot": lambda s, a: s.screenshot(a["name"]),
     "real.no_dialog": lambda s, a: s.no_dialog(),
@@ -481,46 +620,71 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--suite", default="all", help="login|wan|status|reboot|all")
     ap.add_argument("--headful", action="store_true")
-    ap.add_argument("--out", default=os.path.join(ROOT, "reports", "intl_real"))
+    ap.add_argument("--out", default=None)
+    # --variant html: 国际老 UI（HTML 多页版）真机用例 operators/intl/cases/real/html/
+    #                 （login/mobile/reboot/security/status/wan 共 6 套件）
+    ap.add_argument("--variant", default="new_ui", choices=["new_ui", "html"],
+                    help="new_ui=SPA 新 UI（默认）；html=国际老 UI 多页版")
     args = ap.parse_args()
 
-    cases_dir = os.path.join(ROOT, "operators", "intl", "cases", "real")
-    suites = {
-        "login": "login.json",
-        "wan": "wan.json",
-        "status": "status.json",
-        "reboot": "reboot.json",
-        "security": "security.json",
-        "wifi": "wifi.json",
-        "lan": "lan.json",
-        "nat": "nat.json",
-        "firewall": "firewall.json",
-        "account": "account.json",
-        "remote": "remote.json",
-        "voip": "voip.json",
-        "auth": "auth.json",
-        "ddos": "ddos.json",
-        "web": "web.json",
-        "vpn": "vpn.json",
-        "ddns": "ddns.json",
-        "media": "media.json",
-        "upnp": "upnp.json",
-        "ntp": "ntp.json",
-        "diag": "diag.json",
-        "log": "log.json",
-        "topology": "topology.json",
-        "help": "help.json",
-    }
+    if args.variant == "html":
+        cases_dir = os.path.join(ROOT, "operators", "intl", "cases", "real", "html")
+        default_out = os.path.join(ROOT, "reports", "intl_real_html")
+        suites = {
+            "login": "login.json",
+            "wan": "wan.json",
+            "status": "status.json",
+            "reboot": "reboot.json",
+            "security": "security.json",
+            "mobile": "mobile.json",
+        }
+    else:
+        # new_ui（SPA 新 UI）套件已从 real/ 迁移到 real/new_ui/（24 套件）
+        cases_dir = os.path.join(ROOT, "operators", "intl", "cases", "real", "new_ui")
+        default_out = os.path.join(ROOT, "reports", "intl_real")
+        suites = {
+            "login": "login.json",
+            "wan": "wan.json",
+            "status": "status.json",
+            "reboot": "reboot.json",
+            "security": "security.json",
+            "wifi": "wifi.json",
+            "lan": "lan.json",
+            "nat": "nat.json",
+            "firewall": "firewall.json",
+            "account": "account.json",
+            "remote": "remote.json",
+            "voip": "voip.json",
+            "auth": "auth.json",
+            "ddos": "ddos.json",
+            "web": "web.json",
+            "vpn": "vpn.json",
+            "ddns": "ddns.json",
+            "media": "media.json",
+            "upnp": "upnp.json",
+            "ntp": "ntp.json",
+            "diag": "diag.json",
+            "log": "log.json",
+            "topology": "topology.json",
+            "help": "help.json",
+        }
+    args.out = args.out or default_out
     if args.suite == "all":
-        # 隔离易产生副作用的套件，避免级联失败：
-        #  - login.json 的 LOGIN-008 触发账号锁定（1 分钟），会波及其后所有套件登录
-        #  - lan.json 修改 DHCP 租约/DNS 触发设备网络重启，会波及其后所有套件
-        # 故将 login.json 与 lan.json 置于全量回归最后，使其副作用不影响其它套件。
-        files = ["status.json", "wan.json", "reboot.json",
-                 "wifi.json", "nat.json", "firewall.json", "account.json",
-                 "remote.json", "voip.json", "auth.json", "ddos.json", "web.json",
-                 "vpn.json", "ddns.json", "media.json", "upnp.json", "ntp.json",
-                 "diag.json", "log.json", "topology.json", "help.json", "lan.json", "login.json"]
+        if args.variant == "html":
+            # 副作用隔离：security（连续 3 次错误密码触发账号锁定约 1 分钟）放最后，
+            # 避免锁定波及其后套件登录；wan CRUD 有创建/删除动作放中段；其余只读/无副作用。
+            files = ["status.json", "wan.json", "mobile.json",
+                     "reboot.json", "login.json", "security.json"]
+        else:
+            # 隔离易产生副作用的套件，避免级联失败：
+            #  - login.json 的 LOGIN-008 触发账号锁定（1 分钟），会波及其后所有套件登录
+            #  - lan.json 修改 DHCP 租约/DNS 触发设备网络重启，会波及其后所有套件
+            # 故将 login.json 与 lan.json 置于全量回归最后，使其副作用不影响其它套件。
+            files = ["status.json", "wan.json", "reboot.json",
+                     "wifi.json", "nat.json", "firewall.json", "account.json",
+                     "remote.json", "voip.json", "auth.json", "ddos.json", "web.json",
+                     "vpn.json", "ddns.json", "media.json", "upnp.json", "ntp.json",
+                     "diag.json", "log.json", "topology.json", "help.json", "lan.json", "login.json"]
     else:
         files = [suites[args.suite]]
 
@@ -540,6 +704,7 @@ def main():
         browser = p.chromium.launch(headless=not args.headful)
         for case in all_cases:
             summary["total"] += 1
+            t0 = datetime.now()
             # 每个用例使用独立 context，隔离会话与 cookie
             context = browser.new_context(viewport={"width": 1600, "height": 900})
             page = context.new_page()
@@ -561,6 +726,9 @@ def main():
                     except Exception:
                         pass
             context.close()
+            # 每条用例耗时统计（秒，保留 1 位小数）
+            res["duration_s"] = round((datetime.now() - t0).total_seconds(), 1)
+            res["start"] = t0.isoformat()
             summary["cases"].append(res)
             if res["status"] == "PASS":
                 summary["pass"] += 1
@@ -572,6 +740,7 @@ def main():
         browser.close()
 
     summary["end"] = datetime.now().isoformat()
+    summary["duration_s"] = round((datetime.now() - datetime.fromisoformat(summary["start"])).total_seconds(), 1)
     summary["pass_rate"] = round(summary["pass"] / summary["total"] * 100, 1) if summary["total"] else 0
     result_file = os.path.join(out_dir, "result.json")
     with open(result_file, "w", encoding="utf-8") as f:

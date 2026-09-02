@@ -1,0 +1,61 @@
+{
+  "profile": "intl_real",
+  "selector_version": "INTL_REAL_1.0.0",
+  "strategy": "基于真机 192.168.1.1 实际 DOM 探测结果（SPA main.html#/... + fhId_ 菜单）",
+  "login": {
+    "username": "#user_name",
+    "password": "#loginpp",
+    "submit": "#login_btn",
+    "cancel": "#login_cancel",
+    "error_hint": ".login_error_hint"
+  },
+  "main": {
+    "app_container": "#app",
+    "logout": "#fhId_Exit",
+    "logout_btn": "#fhId_logout"
+  },
+  "menu": {
+    "status": "fhId_status_L1",
+    "network": "fhId_network_L1",
+    "security": "fhId_security_L1",
+    "application": "fhId_application_L1",
+    "management": "fhId_management_L1",
+    "help": "fhId_help_L1",
+    "deviceInfo": "fhId_deviceInfo_L2",
+    "interfaceStatus": "fhId_interfaceStatus_L2",
+    "broadBandSettings": "fhId_broadBandSettings_L2",
+    "deviceManagement": "fhId_deviceManagement_L2"
+  },
+  "home": {
+    "mac_address": "#mac_address",
+    "system_uptime": "#fhId_SystemUpTime",
+    "wan_ipv4": "#fhId_wanIPv4Address",
+    "lan_ip": "#fhId_lanIp",
+    "go_wan": "#fhId_goWan",
+    "click_reboot": "#fhId_clickReboot"
+  },
+  "wan": {
+    "add_btn": "#fhId_Add",
+    "wan_table": "#fhId_wanTable",
+    "no_data": "#fhId_NoData"
+  },
+  "status": {
+    "cpu_usage": "#fhId_CPU_Usage",
+    "memory_usage": "#fhId_Memory_Usage",
+    "software_version": "#fhId_SoftwareVersion",
+    "hardware_version": "#fhId_HardwareVersion",
+    "device_model": "#fhId_ModelName",
+    "device_pon_type": "#fhId_ModelPonType",
+    "device_serial": "#fhId_SerialNumber",
+    "onu_state": "#fhId_ONUState",
+    "onu_regist_state": "#fhId_ONU_Regist_State",
+    "web_port": "#fhId_Web_port",
+    "system_uptime": "#fhId_SystemUpTime",
+    "mac_address": "#fhId_MAC_Address"
+  },
+  "reboot": {
+    "reboot_btn": "#fhId_Reboot",
+    "restore_btn": "#fhId_Restore",
+    "reboot_confirm": "#fhId_confirmReboot"
+  }
+}

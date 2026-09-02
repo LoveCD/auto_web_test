@@ -1,0 +1,473 @@
+[
+  {
+    "id": "INTL-SEC-001",
+    "title": "连续错误密码触发登录锁定状态机",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:login",
+      "专项:security"
+    ],
+    "precondition": "设备已上电，浏览器可访问 192.168.1.1",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.login",
+        "desc": "前置：正确登录一次，重置服务端错误计数"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html",
+        "desc": "前置：登录成功"
+      },
+      {
+        "action": "real.logout",
+        "desc": "前置：退出回到登录页"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "回到登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "Wrong1",
+        "desc": "第1次错误密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "点击登录"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待登录响应完成（设备对过快提交有限速）"
+      },
+      {
+        "action": "real.assert_login_error",
+        "desc": "第1次错误提示"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "Wrong2",
+        "desc": "第2次错误密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "点击登录"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待登录响应完成"
+      },
+      {
+        "action": "real.assert_login_error",
+        "desc": "第2次错误提示"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "Wrong3",
+        "desc": "第3次错误密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "点击登录"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待锁定提示更新"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": ".login_error_hint",
+        "text": "wrong 3 times, please retry",
+        "desc": "触发锁定提示（3次错误锁定1分钟）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SEC-001_locked",
+        "desc": "截图锁定提示"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SEC-002",
+    "title": "锁定期间即使正确密码也无法登录",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:login",
+      "专项:security"
+    ],
+    "precondition": "设备刚触发过登录锁定（INTL-SEC-001 执行后）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入正确用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入正确密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "点击登录"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待锁定提示更新"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": ".login_error_hint",
+        "text": "wrong 3 times, please retry",
+        "desc": "锁定期间仍提示锁定，无法登录"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "login.html",
+        "desc": "仍停留在登录页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SEC-003",
+    "title": "普通用户登录成功但无法访问管理员菜单页面",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:login",
+      "专项:security"
+    ],
+    "precondition": "设备已上电；普通用户账号 user/user123；前置先管理员登录一次重置错误计数，避免普通用户试错触发锁定",
+    "steps": [
+      {
+        "action": "real.wait",
+        "ms": "70000",
+        "desc": "等待 SEC-001 触发的账号锁定自然解除（约 1 分钟），再执行后续登录"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.login",
+        "desc": "前置：管理员正确登录一次，重置服务端错误计数"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html",
+        "desc": "前置：登录成功"
+      },
+      {
+        "action": "real.logout",
+        "desc": "前置：退出回到登录页"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "回到登录页"
+      },
+      {
+        "action": "real.login",
+        "role": "user",
+        "desc": "普通用户（user/user123）登录"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html",
+        "desc": "普通用户登录成功进入受限主页"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_management_L1",
+        "desc": "管理员菜单（Management）不可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SEC-003_user_menu",
+        "desc": "截图普通用户受限菜单"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/management/deviceManagement/rebootDevice",
+        "desc": "直接访问管理员页面路由（重启页）"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_Reboot",
+        "desc": "管理员页面内容不展示（菜单不可见或路由被拦截）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SEC-003_route_blocked",
+        "desc": "截图直接访问管理员路由的拦截结果"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SEC-004",
+    "title": "管理员账号可访问全部管理页面（正向对照）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:auth",
+      "专项:security"
+    ],
+    "precondition": "设备已上电；管理员账号可正常登录",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.login",
+        "desc": "管理员账号登录"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html",
+        "desc": "管理员登录成功"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_status_L1",
+        "desc": "状态菜单可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_network_L1",
+        "desc": "网络菜单可见（管理员必显示）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_management_L1",
+        "desc": "管理菜单可见（对照 SEC-003 普通用户隐藏）"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/management/deviceManagement/rebootDevice",
+        "desc": "访问重启页路由"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Reboot",
+        "desc": "重启按钮可见（对照 SEC-003 普通用户隐藏）"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/network/broadBandSettings/internetSettings",
+        "desc": "访问宽带设置（WAN）路由"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Add",
+        "desc": "WAN 管理页正常渲染（Add 按钮可见）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_broadBandSettings_L2",
+        "desc": "宽带设置二级菜单可见（对照 SEC-005 普通用户隐藏）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SEC-004_admin_full_access",
+        "desc": "截图管理员全量页面访问"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SEC-005",
+    "title": "普通用户页面访问差异化与接口级拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:auth",
+      "专项:security"
+    ],
+    "precondition": "设备已上电；普通用户账号 user/user123；前置管理员登录一次重置错误计数",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.login",
+        "desc": "前置：管理员正确登录一次，重置服务端错误计数"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html",
+        "desc": "前置：登录成功"
+      },
+      {
+        "action": "real.logout",
+        "desc": "前置：退出回到登录页"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "回到登录页"
+      },
+      {
+        "action": "real.login",
+        "role": "user",
+        "desc": "普通用户（user/user123）登录"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html",
+        "desc": "普通用户登录成功"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_status_L1",
+        "desc": "普通用户可见状态菜单（差异化：可见面）"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_management_L1",
+        "desc": "管理菜单对普通用户隐藏（差异化：不可见面）"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_broadBandSettings_L2",
+        "desc": "宽带设置二级菜单对普通用户隐藏（user==2 硬条件）"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/network/broadBandSettings/internetSettings",
+        "desc": "直接访问 WAN 管理路由"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面与接口请求"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_Add",
+        "desc": "WAN 管理内容不渲染（Add 按钮隐藏）"
+      },
+      {
+        "action": "real.assert_unauthorized",
+        "desc": "后端接口对普通用户返回 401/403（接口级拦截）"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/management/accountManagement/userAccount",
+        "desc": "直接访问账号管理路由"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面与接口请求"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_management_L1",
+        "desc": "越权访问后管理菜单仍隐藏（页面未越权渲染）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SEC-005_user_restricted",
+        "desc": "截图普通用户差异化访问"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SEC-006",
+    "title": "未登录访问受保护页面跳转登录（权限基线）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:auth",
+      "专项:security"
+    ],
+    "precondition": "浏览器无登录态（每用例独立 context，天然隔离）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/status/deviceInfo/deviceInfo",
+        "desc": "未登录直接访问设备信息页路由"
+      },
+      {
+        "action": "real.assert_unauth_redirect",
+        "desc": "被重定向到登录页（URL 含 login.html 或登录表单可见）"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/management/accountManagement/userAccount",
+        "desc": "未登录直接访问账号管理路由"
+      },
+      {
+        "action": "real.assert_unauth_redirect",
+        "desc": "同样被拦截重定向登录页"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/network/broadBandSettings/internetSettings",
+        "desc": "未登录直接访问宽带设置路由"
+      },
+      {
+        "action": "real.assert_unauth_redirect",
+        "desc": "同样被拦截重定向登录页"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SEC-006_unauth_blocked",
+        "desc": "截图未登录拦截结果"
+      }
+    ]
+  }
+]

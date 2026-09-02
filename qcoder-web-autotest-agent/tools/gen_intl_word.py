@@ -30,9 +30,23 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 from tools.docx_branding import FH_BODY_PREFIX, FH_COVER_HEADER, add_cover_logo, apply_fh_header  # noqa: E402
 
-CASES_DIR = os.path.join(ROOT, "operators", "intl", "cases", "real")
-REPORTS_DIR = os.path.join(ROOT, "reports", "intl_real")
+CASES_DIR_NEW = os.path.join(ROOT, "operators", "intl", "cases", "real", "new_ui")
+CASES_DIR_HTML = os.path.join(ROOT, "operators", "intl", "cases", "real", "html")
+REPORTS_DIR_NEW = os.path.join(ROOT, "reports", "intl_real")
+REPORTS_DIR_HTML = os.path.join(ROOT, "reports", "intl_real_html")
 OUT_DIR = os.path.join(ROOT, "docs", "case-docs")
+
+# --variant html = 国际老 UI（HTML 多页版）；new_ui = SPA 新 UI（默认）
+VARIANT = "new_ui"
+
+
+def _cases_dir():
+    return CASES_DIR_HTML if VARIANT == "html" else CASES_DIR_NEW
+
+
+def _reports_dir():
+    return REPORTS_DIR_HTML if VARIANT == "html" else REPORTS_DIR_NEW
+
 
 DEVICE = {
     "model": "HG6163FC1（GPON 智能网关）",
@@ -43,6 +57,7 @@ DEVICE = {
 }
 SUITE_NAMES = {
     "login": "登录页面",
+    "mobile": "手机端兼容性",
     "status": "系统状态页面",
     "wan": "WAN 连接配置页面",
     "reboot": "重启页面",
@@ -69,6 +84,7 @@ SUITE_NAMES = {
 }
 MODULE_NAMES = {
     "login": "Login",
+    "mobile": "Mobile",
     "status": "Status",
     "wan": "WAN",
     "reboot": "System",
@@ -172,25 +188,32 @@ def add_pic(doc, path, width_cm=13.5, caption=None):
 
 def load_cases():
     cases = {}
-    for f in sorted(glob.glob(os.path.join(CASES_DIR, "*.json"))):
+    for f in sorted(glob.glob(os.path.join(_cases_dir(), "*.json"))):
         name = os.path.splitext(os.path.basename(f))[0]
         cases[name] = json.load(open(f, encoding="utf-8"))
     return cases
 
 
-def find_latest_result():
-    """找到最新的主套件（login/status/wan/reboot）结果。
-    security（登录锁定）套件受设备 IP 级锁定状态影响、行为不稳定，
+def find_latest_result(run_id=None):
+    """按 run_id 精确取结果；未指定时取最新的主套件（login/status/wan/reboot）结果。
+    new_ui 变体：security（登录锁定）套件受设备 IP 级锁定状态影响、行为不稳定，
     不纳入主报告统计，作为补充安全测试单独说明。
+    html 变体：security（锁定状态机+权限基线）为核心套件，正常纳入统计。
     """
-    dirs = sorted(glob.glob(os.path.join(REPORTS_DIR, "*")), reverse=True)
+    if run_id and run_id != "latest":
+        d = os.path.join(_reports_dir(), run_id)
+        rj = os.path.join(d, "result.json")
+        if os.path.exists(rj):
+            return d, json.load(open(rj, encoding="utf-8"))
+        print(f"[warn] 未找到指定 run_id={run_id} 的结果，回退最新结果")
+    dirs = sorted(glob.glob(os.path.join(_reports_dir(), "*")), reverse=True)
     for d in dirs:
         rj = os.path.join(d, "result.json")
         if not os.path.exists(rj):
             continue
         data = json.load(open(rj, encoding="utf-8"))
         ids = {c.get("id") for c in data.get("cases", [])}
-        if any(x.startswith("INTL-SEC-") for x in ids):
+        if VARIANT != "html" and any(x.startswith("INTL-SEC-") for x in ids):
             continue
         return d, data
     return None, None
@@ -319,6 +342,8 @@ def build_test_item(doc, idx, case, result_map, run_id, mode):
         steps_pass = sum(1 for s in steps if s.get("status") == "PASS")
         steps_total = len(steps)
         exec_time = result.get("start", "")
+        dur = result.get("duration_s")
+        dur_text = f"{dur}s" if dur is not None else "-"
         actual = f"实际结果：{'通过' if status == 'PASS' else '失败'}（{steps_pass}/{steps_total} 个步骤通过）"
         conclusion = "通过" if status == "PASS" else "失败"
         exec_status = "通过" if status == "PASS" else "失败"
@@ -327,6 +352,7 @@ def build_test_item(doc, idx, case, result_map, run_id, mode):
         conclusion = "待执行"
         exec_status = "待执行"
         exec_time = "-"
+        dur_text = "-"
 
     # 测试步骤文本
     step_lines = []
@@ -346,7 +372,7 @@ def build_test_item(doc, idx, case, result_map, run_id, mode):
     expect_text = "\n".join(expect_lines) if expect_lines else "1. 页面无异常，行为符合预期"
 
     env_text = (f"1. 运营商: intl\n2. 环境: real\n3. 浏览器: chromium\n"
-                f"4. 运行ID: {run_id}\n5. 执行时间: {exec_time[:19] if exec_time else '-'}\n6. 耗时: -")
+                f"4. 运行ID: {run_id}\n5. 执行时间: {exec_time[:19] if exec_time else '-'}\n6. 耗时: {dur_text}")
 
     add_kv_table(doc, [
         ("测试类型", module),
@@ -372,17 +398,136 @@ def build_test_item(doc, idx, case, result_map, run_id, mode):
     doc.add_page_break()
 
 
-def build_result_summary(doc, result_map, mode):
+def _fmt_seconds(sec):
+    """秒 → 'X 分 Y 秒' / 'Y 秒'"""
+    if sec is None:
+        return "-"
+    sec = round(float(sec))
+    if sec >= 60:
+        return f"{sec // 60} 分 {sec % 60} 秒"
+    return f"{sec} 秒"
+
+
+def _suite_key_of(cid):
+    """用例 ID → 套件 key（与 case_module 的前缀规则保持一致）"""
+    pairs = [("INTL-LOGIN-", "login"), ("INTL-MOBILE-", "mobile"), ("INTL-STATUS-", "status"),
+             ("INTL-WAN-", "wan"),
+             ("INTL-REBOOT-", "reboot"), ("INTL-SEC-", "security"), ("INTL-FIREWALL-", "firewall"),
+             ("INTL-TOPOLOGY-", "topology"), ("INTL-ACCOUNT-", "account"), ("INTL-REMOTE-", "remote"),
+             ("INTL-WIFI-", "wifi"), ("INTL-VOIP-", "voip"), ("INTL-AUTH-", "auth"),
+             ("INTL-DDOS-", "ddos"), ("INTL-DDNS-", "ddns"), ("INTL-UPNP-", "upnp"),
+             ("INTL-MEDIA-", "media"), ("INTL-DIAG-", "diag"), ("INTL-HELP-", "help"),
+             ("INTL-LAN-", "lan"), ("INTL-NAT-", "nat"), ("INTL-NTP-", "ntp"),
+             ("INTL-VPN-", "vpn"), ("INTL-WEB-", "web"), ("INTL-LOG-", "log")]
+    for prefix, key in pairs:
+        if cid.startswith(prefix):
+            return key
+    return "other"
+
+
+def _classify_failure(error):
+    """失败原因粗分类"""
+    if not error:
+        return "未捕获异常"
+    if "TimeoutError" in error:
+        return "断言超时（元素未出现/未跳转）"
+    if "AssertionError" in error:
+        return "断言不成立（实际行为与预期不符）"
+    if "PWTimeout" in error or "Timeout" in error:
+        return "等待超时"
+    return "执行异常"
+
+
+def build_result_summary(doc, result_map, mode, result=None):
     add_heading(doc, "测试结果", 1)
     total = len(result_map)
     passed = sum(1 for r in result_map.values() if r.get("status") == "PASS")
     failed = total - passed
+
+    # ---- 总体统计 ----
     add_para(doc, f"总用例：{total}", size=11)
     add_para(doc, f"通过：{passed}", size=11)
     add_para(doc, f"失败：{failed}", size=11)
     add_para(doc, "跳过：0", size=11)
     add_para(doc, "超时：0", size=11)
     add_para(doc, "中断：0", size=11)
+    pass_rate = f"{passed / total * 100:.1f}%" if total else "-"
+
+    if result and mode != "case":
+        dur = result.get("duration_s")
+        add_para(doc, f"通过率：{pass_rate}", size=11)
+        add_para(doc, f"总耗时：{_fmt_seconds(dur)}（{dur}s）", size=11)
+        durs = [c.get("duration_s") for c in result.get("cases", []) if c.get("duration_s") is not None]
+        if durs:
+            add_para(doc, f"平均单条用例耗时：{sum(durs) / len(durs):.1f}s（最短 {min(durs)}s，最长 {max(durs)}s）",
+                     size=11)
+        add_para(doc, f"执行区间：{str(result.get('start', '-'))[:19]} ~ {str(result.get('end', '-'))[:19]}", size=11)
+
+        # ---- 分套件统计表 ----
+        add_heading(doc, "分套件统计", 2)
+        stats = {}
+        order = []
+        for c in result.get("cases", []):
+            key = _suite_key_of(c.get("id", ""))
+            if key not in stats:
+                stats[key] = {"total": 0, "pass": 0, "dur": 0.0}
+                order.append(key)
+            stats[key]["total"] += 1
+            if c.get("status") == "PASS":
+                stats[key]["pass"] += 1
+            stats[key]["dur"] += c.get("duration_s") or 0
+        tb = doc.add_table(rows=1, cols=6)
+        tb.style = "Table Grid"
+        headers = ["序号", "套件", "用例数", "通过", "失败", "耗时"]
+        for i, h in enumerate(headers):
+            tb.rows[0].cells[i].text = ""
+            r = tb.rows[0].cells[i].paragraphs[0].add_run(h)
+            set_cn_font(r, size=9.5, bold=True, color=(0xFF, 0xFF, 0xFF))
+            shade_cell(tb.rows[0].cells[i], HEADER_FILL)
+        for i, key in enumerate(order, 1):
+            s = stats[key]
+            row = tb.add_row()
+            vals = [str(i), f"{key}（{SUITE_NAMES.get(key, key)}）", str(s["total"]),
+                    str(s["pass"]), str(s["total"] - s["pass"]), f"{s['dur']:.1f}s"]
+            for j, v in enumerate(vals):
+                row.cells[j].text = ""
+                r = row.cells[j].paragraphs[0].add_run(v)
+                set_cn_font(r, size=9.5)
+
+        # ---- 失败用例分析 ----
+        fail_cases = [c for c in result.get("cases", []) if c.get("status") != "PASS"]
+        if fail_cases:
+            add_heading(doc, "失败用例分析", 2)
+            tb = doc.add_table(rows=1, cols=5)
+            tb.style = "Table Grid"
+            headers = ["用例ID", "用例标题", "失败步骤", "原因分类", "失败原因摘要"]
+            for i, h in enumerate(headers):
+                tb.rows[0].cells[i].text = ""
+                r = tb.rows[0].cells[i].paragraphs[0].add_run(h)
+                set_cn_font(r, size=9.5, bold=True, color=(0xFF, 0xFF, 0xFF))
+                shade_cell(tb.rows[0].cells[i], HEADER_FILL)
+            for c in fail_cases:
+                err = (c.get("error") or "").split("\n")[0][:120]
+                step_desc = ""
+                for st in c.get("steps", []):
+                    if st.get("status") != "PASS":
+                        step_desc = f"{st.get('index', '-')} {st.get('desc', '')}"
+                        break
+                if not step_desc and err.startswith("step "):
+                    step_desc = err.split("]")[0].strip(" [")
+                row = tb.add_row()
+                vals = [c.get("id", "-"), c.get("title", "-"), step_desc or "-",
+                        _classify_failure(c.get("error")), err or "-"]
+                for j, v in enumerate(vals):
+                    row.cells[j].text = ""
+                    r = row.cells[j].paragraphs[0].add_run(v)
+                    set_cn_font(r, size=9)
+
+        # ---- 设备行为差异与安全发现 ----
+        add_heading(doc, "设备行为差异与安全发现", 2)
+        for t in _analysis_notes():
+            add_para(doc, t, size=10.5)
+
     add_heading(doc, "测试结论", 1)
     if mode == "case":
         add_para(doc, "待执行", size=12, bold=True)
@@ -391,7 +536,49 @@ def build_result_summary(doc, result_map, mode):
                  color=(0x00, 0x80, 0x00) if failed == 0 else (0xC0, 0x00, 0x00))
 
 
-def gen_doc(cases, result_map, run_id, mode, out):
+# ---- 分析结论（随轮次更新；--variant html 用 HTML 版，new_ui 用 NEWUI 版）----
+RESULT_ANALYSIS_NOTES_NEWUI = [
+    "1、本轮真机为国际版网关（SPA 架构、英文 UI），管理员账号由环境变量注入（用户名 1），登录成功后落地路由为 "
+    "main.html#/status/deviceInfo/deviceInfo（非基线 #/home），登录相关用例断言已按实际行为适配；登录失败提示"
+    "元素为 div.login_error_hint（class 实现），连续错误 3 次触发账号锁定提示并锁定约 1 分钟。",
+    "2、失败原因分布（54 条）：菜单点击超时 15 条、表单元素填充/点击超时 14 条（合计 29 条，占失败 54%）——"
+    "根因是本机为另一型号国际网关，WLAN/WAN 等页面的菜单入口与表单元素 id 与基线选择器（HG6163FC1 实测沉淀）"
+    "存在差异，属测试基线适配缺口，非直接产品缺陷；文本断言不成立 17 条（集中在 WAN-CRUD/WAN-BIND 创建后"
+    "列表回显断言，需结合本机列表结构人工复核是否为创建未生效）；可见性/URL 断言超时 4 条；会话残留 2 条；其他 2 条。",
+    "3、菜单差距实测：本机一级菜单为 Status/Network/Security/Application/Management，其中 NTP、媒体（Media）、"
+    "帮助（Help）、拓扑（Topology）菜单在本机不存在（NTP 5 条、MEDIA 1 条、HELP 2 条、TOPOLOGY 1 条用例"
+    "因此无法执行到断言步骤）——需确认本机是否裁剪该功能或入口位置不同。",
+    "4、安全发现（INTL-LOGIN-007 失败根因）：执行过登录/登出的客户端 IP，在登出后服务端会话未失效，"
+    "全新浏览器上下文（无 Cookie）直接访问 main.html#/status/deviceInfo/deviceInfo 仍可渲染完整菜单并"
+    "返回真实数据（FHNCAPIS/FHAPIS 接口全部返回 200，含软件版本 RP3694、硬件信息等），"
+    "说明登出仅清除前端状态或会话按客户端 IP 残留，存在会话固定/未授权访问风险，建议研发确认登出接口"
+    "是否调用服务端会话销毁。",
+    "5、全量回归执行顺序将 lan（修改 DHCP 触发网络重启）与 login（含账号锁定用例）置于末尾，"
+    "避免副作用级联影响其它套件；security（登录锁定）2 条用例受设备 IP 级锁定状态影响，按既有约定不纳入"
+    "全量回归，作为补充安全测试单独执行（本轮登录套件单跑已验证 7/8 通过）。",
+]
+RESULT_ANALYSIS_NOTES_HTML = [
+    "1、本轮真机为国际老 UI 网关（login.html 独立登录页 + main.html#/ SPA 外壳、英文 UI），管理员账号由环境变量"
+    "注入（用户名 1），登录成功后落地路由为 main.html#/status/deviceInfo/deviceInfo；登录失败提示元素为 "
+    "div.login_error_hint（class 实现，文本 \"Username or Password Error!\"），连续错误 3 次触发账号锁定提示"
+    "\"Username or password is wrong 3 times, please retry 1\"（锁定约 1 分钟）。",
+    "2、失败原因分布（待回归完成后回填精确数字）。",
+    "3、菜单结构实测：一级菜单 Status/Network/Security/Application/Management，fhId_* 菜单体系与 SPA 新 UI 一致，"
+    "本机无 NTP/媒体/帮助/拓扑菜单（老 UI 功能裁剪），相关用例未纳入本轮回归。",
+    "4、安全发现（INTL-LOGIN-005 失败根因）：执行过登录/登出的客户端 IP，在登出后服务端会话未失效，"
+    "全新浏览器上下文（无 Cookie）直接访问受保护页面仍可渲染完整菜单并返回真实数据，"
+    "说明登出仅清除前端状态或会话按客户端 IP 残留，存在会话固定/未授权访问风险，建议研发确认登出接口"
+    "是否调用服务端会话销毁。",
+    "5、全量回归执行顺序将 security（连续 3 次错误密码触发账号锁定）置于末尾，避免锁定波及其后套件登录；"
+    "老 UI security 套件为锁定状态机 + 权限基线核心用例，正常纳入全量回归与统计。",
+]
+
+
+def _analysis_notes():
+    return RESULT_ANALYSIS_NOTES_HTML if VARIANT == "html" else RESULT_ANALYSIS_NOTES_NEWUI
+
+
+def gen_doc(cases, result_map, run_id, mode, out, result=None):
     doc = Document()
     style = doc.styles["Normal"]
     style.font.name = "Times New Roman"
@@ -407,14 +594,15 @@ def gen_doc(cases, result_map, run_id, mode, out):
     for suite, cases_list in cases.items():
         if suite not in SUITE_NAMES or not cases_list:
             continue
-        if suite == "security":
-            # security（登录锁定）受设备 IP 级锁定状态影响，作为补充说明，不生成测试项
+        if suite == "security" and VARIANT != "html":
+            # new_ui：security（登录锁定）受设备 IP 级锁定状态影响，作为补充说明，不生成测试项
+            # html：老 UI security（锁定状态机+权限基线）为核心套件，正常生成测试项
             continue
         for c in cases_list:
             build_test_item(doc, idx, c, result_map, run_id, mode)
             idx += 1
 
-    build_result_summary(doc, result_map, mode)
+    build_result_summary(doc, result_map, mode, result=result)
 
     # FH 页眉（对齐参考样例）：封面节 = FH 编号；正文节 = SDV测试报告 + FH 编号
     apply_fh_header(doc, body_text=f"{FH_BODY_PREFIX}          {FH_COVER_HEADER}")
@@ -430,15 +618,19 @@ def gen_doc(cases, result_map, run_id, mode, out):
 
 
 def main():
+    global VARIANT
     ap = argparse.ArgumentParser()
     ap.add_argument("--result", default="latest")
     ap.add_argument("--out", default=OUT_DIR)
     ap.add_argument("--mode", default="both", choices=["case", "report", "both"])
+    ap.add_argument("--variant", default="new_ui", choices=["new_ui", "html"],
+                    help="new_ui=SPA 新 UI（默认）；html=国际老 UI 多页版")
     args = ap.parse_args()
+    VARIANT = args.variant
 
     os.makedirs(args.out, exist_ok=True)
     cases = load_cases()
-    result_dir, result = find_latest_result()
+    result_dir, result = find_latest_result(args.result)
     run_id = os.path.basename(result_dir) if result_dir else "N/A"
 
     result_map = {}
@@ -452,7 +644,7 @@ def main():
         if result is None:
             print("[warn] 未找到结果，跳过测试报告")
         else:
-            gen_doc(cases, result_map, run_id, "report", args.out)
+            gen_doc(cases, result_map, run_id, "report", args.out, result=result)
 
 
 if __name__ == "__main__":

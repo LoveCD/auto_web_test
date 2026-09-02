@@ -1,0 +1,359 @@
+[
+  {
+    "id": "INTL-MOBILE-001",
+    "title": "手机端登录页兼容性：登录与登出正常",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:mobile",
+      "device:mobile"
+    ],
+    "precondition": "设备已上电，浏览器可访问 192.168.1.1（手机端形态：iPhone 13 视口/UA/触摸模拟）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "手机端访问登录页"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#user_name",
+        "desc": "用户名输入框在手机端可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#loginpp",
+        "desc": "密码输入框在手机端可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#login_btn",
+        "desc": "登录按钮在手机端可见"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入正确用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入正确密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "点击登录"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html#/",
+        "desc": "手机端登录成功跳转主页面"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#app",
+        "desc": "主应用容器在手机端可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-MOBILE-001_home",
+        "desc": "截图手机端首页"
+      },
+      {
+        "action": "real.logout",
+        "desc": "手机端点击登出并确认"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "login.html",
+        "desc": "手机端登出后回到登录页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-MOBILE-002",
+    "title": "手机端设备信息页兼容性：关键字段可见且无显著横向溢出",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:mobile",
+      "device:mobile"
+    ],
+    "precondition": "设备已上电，可正常登录（手机端形态：iPhone 13 视口/UA/触摸模拟）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "手机端访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.navigate_spa",
+        "route": "/status/deviceInfo/deviceInfo",
+        "desc": "手机端直达设备信息页"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SoftwareVersion",
+        "desc": "软件版本字段在手机端可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ModelName",
+        "desc": "设备型号字段在手机端可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SystemUpTime",
+        "desc": "运行时间字段在手机端可见"
+      },
+      {
+        "action": "real.evaluate",
+        "script": "() => { const w = document.documentElement.scrollWidth; const iw = window.innerWidth; return (w - iw) <= 100; }",
+        "desc": "页面无显著横向溢出（固定 985px 布局 vs 移动布局视口）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-MOBILE-002_deviceInfo",
+        "desc": "截图手机端设备信息页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-MOBILE-003",
+    "title": "手机端菜单导航兼容性：顶部/侧边菜单可点击导航到 WAN 配置页",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:mobile",
+      "device:mobile"
+    ],
+    "precondition": "设备已上电，可正常登录（手机端形态：iPhone 13 视口/UA/触摸模拟）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "手机端访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "手机端点击网络/宽带设置菜单"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "broadBandSettings",
+        "desc": "手机端菜单导航成功（URL 含 broadBandSettings）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Add",
+        "desc": "Add New WAN 按钮在手机端可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-MOBILE-003_wan",
+        "desc": "截图手机端 WAN 配置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-MOBILE-004",
+    "title": "手机端 WAN 添加表单兼容性：表单打开/字段可见/可关闭",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:mobile",
+      "device:mobile"
+    ],
+    "precondition": "设备已上电，可正常登录（手机端形态：iPhone 13 视口/UA/触摸模拟）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "手机端访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "手机端导航到宽带设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "手机端点击 Add New WAN"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_connectMode",
+        "desc": "连接模式字段在手机端可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_VLANID",
+        "desc": "VLAN ID 字段在手机端可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_MTU",
+        "desc": "MTU 字段在手机端可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-MOBILE-004_addform",
+        "desc": "截图手机端添加 WAN 表单"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "手机端点击关闭按钮关闭表单"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_connectMode",
+        "desc": "表单在手机端正常关闭"
+      }
+    ]
+  },
+  {
+    "id": "INTL-MOBILE-005",
+    "title": "手机端重启页兼容性：确认框弹出与取消",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:mobile",
+      "device:mobile"
+    ],
+    "precondition": "设备已上电，可正常登录（手机端形态：iPhone 13 视口/UA/触摸模拟）",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "手机端访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_deviceManagement_L2",
+        "l3": "fhId_rebootDevice_L3",
+        "desc": "手机端导航到重启页面"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "rebootDevice",
+        "desc": "手机端导航成功（URL 含 rebootDevice）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Reboot",
+        "desc": "Reboot 按钮在手机端可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Reboot",
+        "desc": "手机端点击 Reboot 按钮"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "reboot",
+        "desc": "手机端确认对话框出现且含 reboot 提示"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-MOBILE-005_confirm",
+        "desc": "截图手机端重启确认框"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": false,
+        "desc": "手机端点击 Cancel 取消"
+      },
+      {
+        "action": "real.assert_confirm_hidden",
+        "desc": "手机端确认框正常关闭"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "rebootDevice",
+        "desc": "仍停留在重启页（未重启）"
+      }
+    ]
+  }
+]

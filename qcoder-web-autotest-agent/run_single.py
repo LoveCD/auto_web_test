@@ -13,7 +13,17 @@ run_case = mod.run_case
 
 case_id = sys.argv[1] if len(sys.argv) > 1 else "INTL-WAN-CRUD-008"
 suite_file = sys.argv[2] if len(sys.argv) > 2 else "wan.json"
-cases = json.load(open(os.path.join(ROOT, "operators", "intl", "cases", "real", suite_file), encoding="utf-8"))
+# 套件迁移到 real/new_ui/（24 套件 SPA）；html 变体在 real/html/；old real/ 兜底
+candidates = [
+    os.path.join(ROOT, "operators", "intl", "cases", "real", "new_ui", suite_file),
+    os.path.join(ROOT, "operators", "intl", "cases", "real", "html", suite_file),
+    os.path.join(ROOT, "operators", "intl", "cases", "real", suite_file),
+]
+case_path = next((p for p in candidates if os.path.exists(p)), None)
+if not case_path:
+    print("套件文件不存在:", suite_file)
+    sys.exit(1)
+cases = json.load(open(case_path, encoding="utf-8"))
 case = next((c for c in cases if c["id"] == case_id), None)
 if not case:
     print("用例不存在:", case_id)

@@ -7,7 +7,7 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
       {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
@@ -25,7 +25,7 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
       {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
@@ -44,7 +44,7 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
       {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
@@ -61,7 +61,7 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
       {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
@@ -76,7 +76,7 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
       {"action": "real.assert_url_contains", "substring": "main.html#/home", "desc": "登录后到首页"},
@@ -92,7 +92,7 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
       {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},
@@ -108,7 +108,7 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {"action": "real.navigate", "path": "/login.html", "desc": "访问登录页"},
-      {"action": "real.fill", "selector": "#user_name", "value": "admin", "desc": "输入用户名"},
+      {"action": "real.fill", "selector": "#user_name", "value": "${QCT_INTL_ADMIN_USER}", "desc": "输入用户名"},
       {"action": "real.fill", "selector": "#loginpp", "value": "${QCT_INTL_ADMIN_PASS}", "desc": "输入密码"},
       {"action": "real.click", "selector": "#login_btn", "desc": "登录"},
       {"action": "real.click_menu", "l1": "fhId_status_L1", "l2": "fhId_deviceInfo_L2", "desc": "导航到设备信息"},

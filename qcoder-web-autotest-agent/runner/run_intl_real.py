@@ -315,6 +315,41 @@ class IntlSession:
         self.page.wait_for_timeout(500)
         return True
 
+    def _find_wan_table(self):
+        """定位 WAN 列表数据表格（兼容老 UI 多页版与 SPA 新 UI）。
+        SPA 新 UI 用 #fhId_wanTable；老 UI 多页版是两个独立 table，数据表含
+        INTERNET/TR069/VOIP 行且行末有 checkbox。"""
+        page = self.page
+        table = page.locator("#fhId_wanTable")
+        if table.count() and table.first.is_visible():
+            return table.first
+        best = None
+        best_score = -1
+        all_tables = page.locator("table")
+        for i in range(all_tables.count()):
+            t = all_tables.nth(i)
+            try:
+                if not t.is_visible():
+                    continue
+            except Exception:
+                continue
+            rows = t.locator("tr")
+            score = 0
+            for j in range(rows.count()):
+                try:
+                    r = rows.nth(j)
+                    txt = (r.inner_text() or "").replace("\n", " ")
+                except Exception:
+                    continue
+                if any(k in txt for k in ("INTERNET", "TR069", "VOIP")):
+                    score += 10
+                if r.locator("input[type=checkbox]").count():
+                    score += 1
+            if score > best_score:
+                best_score = score
+                best = t
+        return best
+
     # ---------- WAN 列表行删除（老 UI 表格） ----------
     def delete_wan_row(self):
         """老 UI（HTML 多页版）WAN 表格行删除：
@@ -333,31 +368,50 @@ class IntlSession:
             pass
         # 先关闭残留弹窗，避免模态遮罩拦截勾选/删除点击
         self.close_boxes()
-        # 1) 定位 WAN 列表容器（优先 #fhId_wanTable，其次任意 table）
-        table = page.locator("#fhId_wanTable")
-        if table.count() == 0 or not table.first.is_visible():
-            table = page.locator("table")
+        # 1) 定位 WAN 列表数据表格（老 UI 多页版 table 不含 id，按内容打分）
+        table = self._find_wan_table()
+        if not table:
+            raise AssertionError("delete_wan_row: 未找到 WAN 表格")
         # 2) 勾选第一行：行内 checkbox/radio 优先，其次点击行本身
         picked = False
-        if table.count() and table.first.is_visible():
-            rows = table.first.locator("tbody tr")
+        if table.count() and table.is_visible():
+            rows = table.locator("tbody tr")
             if rows.count() == 0:
-                rows = table.first.locator("tr")
+                rows = table.locator("tr")
             if rows.count():
                 row = rows.first
-                # 行内单选/复选控件
-                for sel in ("input[type=checkbox]", "input[type=radio]", ".el-checkbox", ".el-radio",
-                            ".checkbox", "input[name='WanCheck']", "input[name='wan_check']"):
+                # 行内单选/复选控件（Element UI 老 UI 隐藏 input，优先点击 label）
+                for sel in (".el-checkbox", ".el-radio", ".el-checkbox__input", ".el-radio__input"):
                     cb = row.locator(sel)
-                    if cb.count():
-                        target = cb.first
+                    if cb.count() and cb.first.is_visible():
                         try:
-                            target.check() if sel.startswith("input") else target.click()
+                            cb.first.click()
                         except Exception:
-                            target.click(force=True)
+                            cb.first.click(force=True)
                         page.wait_for_timeout(500)
                         picked = True
                         break
+                if not picked:
+                    for sel in ("input[type=checkbox]", "input[type=radio]"):
+                        cb = row.locator(sel)
+                        if cb.count() and cb.first.is_visible():
+                            try:
+                                cb.first.check()
+                            except Exception:
+                                cb.first.click(force=True)
+                            page.wait_for_timeout(500)
+                            picked = True
+                            break
+                if not picked:
+                    # 兜底：JS 勾选隐藏 input 并触发 change 事件
+                    hidden = row.locator("input[type=checkbox]").first
+                    if hidden.count():
+                        hidden.evaluate(
+                            "el => { el.checked = true; "
+                            "el.dispatchEvent(new Event('change', { bubbles: true })); }"
+                        )
+                        page.wait_for_timeout(500)
+                        picked = True
                 if not picked:
                     row.click()
                     page.wait_for_timeout(500)

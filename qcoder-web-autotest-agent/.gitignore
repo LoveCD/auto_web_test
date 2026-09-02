@@ -26,6 +26,9 @@ operators/*/cases/generated/
 !docs/case-docs/
 !docs/case-docs/*.docx
 
+# ---- 使用说明文档（交付物，例外入库）----
+!docs/开发使用说明与工作流简介.docx
+
 # ---- IDE / OS ----
 .idea/
 .vscode/

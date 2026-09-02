@@ -117,6 +117,7 @@ qcoder-web-autotest-agent/
 ## 详细文档
 
 - 使用方法：`docs/USAGE.md`（命令矩阵 / NL 生成器 / 用例规范 / .env 配置 / Skill 安装）
+- 一页式说明：`docs/开发使用说明与工作流简介.docx`（项目定位 / 工作流全景 / 开发使用 / 测试报告生成，可用 `python tools/gen_usage_doc.py` 重新生成）
 - 部署方法：`docs/DEPLOYMENT.md`
 - 实现效果：`docs/IMPLEMENTATION_EFFECTS.md`（执行结果、覆盖矩阵、修复记录）
 

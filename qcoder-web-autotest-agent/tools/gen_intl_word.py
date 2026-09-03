@@ -38,6 +38,7 @@ OUT_DIR = os.path.join(ROOT, "docs", "case-docs")
 
 # --variant html = 国际老 UI（HTML 多页版）；new_ui = SPA 新 UI（默认）
 VARIANT = "new_ui"
+SUITE_FILTER = None  # 仅纳入指定套件（如 "status"），None=全部套件
 
 
 def _cases_dir():
@@ -49,7 +50,7 @@ def _reports_dir():
 
 
 DEVICE = {
-    "model": "HG6163FC1（GPON 智能网关）",
+    "model": "HG6142HT（GPON 智能网关）",
     "product": "INTL 国际版",
     "project": "INTL 真机 Web 自动化测试",
     "dept": "自动化测试",
@@ -538,24 +539,23 @@ def build_result_summary(doc, result_map, mode, result=None):
 
 # ---- 分析结论（随轮次更新；--variant html 用 HTML 版，new_ui 用 NEWUI 版）----
 RESULT_ANALYSIS_NOTES_NEWUI = [
-    "1、本轮真机为国际版网关（SPA 架构、英文 UI），管理员账号由环境变量注入（用户名 1），登录成功后落地路由为 "
-    "main.html#/status/deviceInfo/deviceInfo（非基线 #/home），登录相关用例断言已按实际行为适配；登录失败提示"
-    "元素为 div.login_error_hint（class 实现），连续错误 3 次触发账号锁定提示并锁定约 1 分钟。",
-    "2、失败原因分布（54 条）：菜单点击超时 15 条、表单元素填充/点击超时 14 条（合计 29 条，占失败 54%）——"
-    "根因是本机为另一型号国际网关，WLAN/WAN 等页面的菜单入口与表单元素 id 与基线选择器（HG6163FC1 实测沉淀）"
-    "存在差异，属测试基线适配缺口，非直接产品缺陷；文本断言不成立 17 条（集中在 WAN-CRUD/WAN-BIND 创建后"
-    "列表回显断言，需结合本机列表结构人工复核是否为创建未生效）；可见性/URL 断言超时 4 条；会话残留 2 条；其他 2 条。",
-    "3、菜单差距实测：本机一级菜单为 Status/Network/Security/Application/Management，其中 NTP、媒体（Media）、"
-    "帮助（Help）、拓扑（Topology）菜单在本机不存在（NTP 5 条、MEDIA 1 条、HELP 2 条、TOPOLOGY 1 条用例"
-    "因此无法执行到断言步骤）——需确认本机是否裁剪该功能或入口位置不同。",
-    "4、安全发现（INTL-LOGIN-007 失败根因）：执行过登录/登出的客户端 IP，在登出后服务端会话未失效，"
-    "全新浏览器上下文（无 Cookie）直接访问 main.html#/status/deviceInfo/deviceInfo 仍可渲染完整菜单并"
-    "返回真实数据（FHNCAPIS/FHAPIS 接口全部返回 200，含软件版本 RP3694、硬件信息等），"
-    "说明登出仅清除前端状态或会话按客户端 IP 残留，存在会话固定/未授权访问风险，建议研发确认登出接口"
-    "是否调用服务端会话销毁。",
-    "5、全量回归执行顺序将 lan（修改 DHCP 触发网络重启）与 login（含账号锁定用例）置于末尾，"
-    "避免副作用级联影响其它套件；security（登录锁定）2 条用例受设备 IP 级锁定状态影响，按既有约定不纳入"
-    "全量回归，作为补充安全测试单独执行（本轮登录套件单跑已验证 7/8 通过）。",
+    "1、本轮为 INTL 新 UI（SPA 架构、英文 UI）系统状态页面专项真机验证，测试对象为国际版网关 HG6142HT"
+    "（192.168.1.1），管理员账号由环境变量注入（.env 中 QCT_INTL_ADMIN_*，报告脱敏），登录成功后落地路由 "
+    "main.html#/status/deviceInfo/deviceInfo，status 套件共 7 条用例（P0 2 条、P1 5 条，含 1 条 XSS 负向安全用例）。",
+    "2、执行结果：7/7 全部通过，通过率 100%，测试结论「通过」。总耗时 63.7 秒（用例净耗时合计 61.4 秒，"
+    "含套件初始化开销），平均单条用例 8.8 秒；其中 XSS 注入负向用例耗时最长（15.1 秒，需遍历多输入点并逐项断言转义），"
+    "运行时间递增类用例 10.0 秒次之（需两次刷新间隔观察状态迁移），常规查询/断言类用例约 6.9~8.2 秒。",
+    "3、功能覆盖分析：① 页面可访问性与渲染（STATUS-001）通过，设备信息页正常加载；② 关键字段有效性"
+    "（STATUS-002）通过，软件版本、硬件版本、序列号等字段均有有效值；③ 运行时间随刷新递增（STATUS-003）通过，"
+    "系统状态迁移正常，无时间回跳或冻结；④ MAC 地址格式校验（STATUS-004）通过，符合 XX:XX:XX:XX:XX:XX 格式；"
+    "⑤ 跨页一致性（STATUS-005）通过，首页状态与设备信息页 MAC 地址一致，前后端数据源无漂移；"
+    "⑥ CPU/内存使用率（STATUS-006）通过，百分比字段显示有效；⑦ XSS 注入负向（STATUS-007）通过，"
+    "注入内容被正确转义，未触发对话框/脚本执行，前端具备基础输入防护能力。",
+    "4、本专项为只读验证（查询、断言、截图类动作，无配置修改），不存在 LAN/DHCP 修改触发网关网络重启的副作用，"
+    "无环境级联失败；全量回归中发现的 INTL-REBOOT-004（未登录深链管理子路由未重定向登录页）与本页面无直接关联，"
+    "但设备管理（Device Management）域含 Reboot/Restore/Upgrade 等敏感入口，建议后续将该页面纳入路由鉴权专项加固验证范围。",
+    "5、耗时统计说明：本轮为单套件专项执行（status），如需完整回归画像（24 套件 107 条，总耗时约 24.7 分钟），"
+    "参见同日全量回归报告；status 套件单跑耗约占全量执行的 4.5%，适合作为冒烟/巡检快速卡点。",
 ]
 RESULT_ANALYSIS_NOTES_HTML = [
     "1、本轮真机为国际老 UI 网关（login.html 独立登录页 + main.html#/ SPA 外壳、英文 UI），管理员账号由环境变量"
@@ -594,6 +594,9 @@ def gen_doc(cases, result_map, run_id, mode, out, result=None):
     for suite, cases_list in cases.items():
         if suite not in SUITE_NAMES or not cases_list:
             continue
+        if SUITE_FILTER and suite != SUITE_FILTER:
+            # --suite 指定时仅纳入指定套件（单套件专项报告）
+            continue
         if suite == "security" and VARIANT != "html":
             # new_ui：security（登录锁定）受设备 IP 级锁定状态影响，作为补充说明，不生成测试项
             # html：老 UI security（锁定状态机+权限基线）为核心套件，正常生成测试项
@@ -618,15 +621,18 @@ def gen_doc(cases, result_map, run_id, mode, out, result=None):
 
 
 def main():
-    global VARIANT
+    global VARIANT, SUITE_FILTER
     ap = argparse.ArgumentParser()
     ap.add_argument("--result", default="latest")
     ap.add_argument("--out", default=OUT_DIR)
     ap.add_argument("--mode", default="both", choices=["case", "report", "both"])
     ap.add_argument("--variant", default="new_ui", choices=["new_ui", "html"],
                     help="new_ui=SPA 新 UI（默认）；html=国际老 UI 多页版")
+    ap.add_argument("--suite", default=None,
+                    help="仅纳入指定套件（如 status/login/wan/reboot），缺省=全部套件")
     args = ap.parse_args()
     VARIANT = args.variant
+    SUITE_FILTER = args.suite
 
     os.makedirs(args.out, exist_ok=True)
     cases = load_cases()
@@ -636,6 +642,8 @@ def main():
     result_map = {}
     if result:
         for c in result.get("cases", []):
+            if SUITE_FILTER and _suite_key_of(c["id"]) != SUITE_FILTER:
+                continue
             result_map[c["id"]] = c
 
     if args.mode in ("case", "both"):

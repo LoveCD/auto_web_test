@@ -5,7 +5,9 @@
 架构: login.html 独立登录页 + main.html#/... SPA (ElementUI)
 
 用法:
-  python runner/run_intl_real.py --suite login|wan|status|reboot|all [--headful] [--out DIR]
+  python runner/run_intl_real.py --suite login|wan|status|reboot|all [--scheme <协议>] [--headful] [--out DIR]
+  --scheme 支持自然语言描述是否走 HTTPS/HTTP，如 "https加密访问"、"http明文"、"自动探测"；
+           默认 auto：自动探测设备可达协议（HTTPS 优先，自签证书自动忽略校验）。
 """
 import argparse
 import json
@@ -26,7 +28,74 @@ load_dotenv()  # 从工程根 .env 注入 QCT_INTL_* 等凭据（.env 不入库�
 BASE_URL = os.environ.get("QCT_INTL_BASE_URL", "http://192.168.1.1")
 ADMIN_USER = os.environ.get("QCT_INTL_ADMIN_USER", "admin")
 ADMIN_PASS = os.environ.get("QCT_INTL_ADMIN_PASS", "")  # 无默认值：缺失即空串
+USER_USER = os.environ.get("QCT_INTL_USER_USER", "user")
 USER_PASS = os.environ.get("QCT_INTL_USER_PASS", "")    # 同上，真机登录前须在 .env 配置
+
+
+# ---------- 访问协议（HTTP/HTTPS）选择：支持自然语言描述 ----------
+def set_base_url(url):
+    """运行期更新模块级 BASE_URL（SPA 路由/登录页跳转均引用它）"""
+    global BASE_URL
+    BASE_URL = url.rstrip("/")
+
+
+def parse_scheme(text):
+    """自然语言解析访问协议: 返回 'https' | 'http' | 'auto'
+
+    支持: "https" / "https加密" / "安全" / "tls" / "ssl" -> https
+          "http" / "明文" / "不加密" / "非加密"          -> http
+          "自动" / "auto" / "都支持" / 空                -> auto（探测，HTTPS 优先）
+    """
+    if not text:
+        return "auto"
+    t = str(text).strip().lower()
+    if not t:
+        return "auto"
+    if any(k in t for k in ("auto", "自动", "都支持", "都可以", "both", "探测")):
+        return "auto"
+    # https 关键词先判（避免 'http' 子串误命中 'https'）
+    if any(k in t for k in ("https", "加密", "安全", "tls", "ssl", "证书")):
+        return "https"
+    if any(k in t for k in ("http", "明文", "不加密", "非加密", "普通")):
+        return "http"
+    return "auto"
+
+
+def probe_scheme(host):
+    """探测设备实际可达协议：HTTPS 优先（自签证书忽略校验），失败回退 HTTP"""
+    import ssl
+    import urllib.request
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    for scheme in ("https", "http"):
+        try:
+            req = urllib.request.Request(f"{scheme}://{host}/login.html", method="GET")
+            resp = urllib.request.urlopen(req, timeout=6, context=ctx if scheme == "https" else None)
+            if resp.status in (200, 301, 302, 401, 403):
+                return scheme
+        except Exception:
+            continue
+    return None
+
+
+def resolve_base_url(scheme_text):
+    """按自然语言协议描述解析最终 BASE_URL；auto 时自动探测"""
+    m = re.match(r"^(?:https?://)?([^/]+)", BASE_URL)
+    host = m.group(1) if m else "192.168.1.1"
+    scheme = parse_scheme(scheme_text)
+    if scheme == "auto":
+        detected = probe_scheme(host)
+        if not detected:
+            print("[WARN] 自动探测失败（HTTPS/HTTP 均不可达），回退 HTTP")
+            detected = "http"
+        scheme = detected
+        print(f"[SCHEME] 自动探测: 使用 {scheme.upper()} 访问 {host}")
+    else:
+        print(f"[SCHEME] 指定协议: 使用 {scheme.upper()} 访问 {host}")
+    set_base_url(f"{scheme}://{host}")
+    return BASE_URL
+
 
 SEL = json.load(open(os.path.join(ROOT, "operators", "intl", "selectors_real.json"), encoding="utf-8"))
 
@@ -96,7 +165,7 @@ class IntlSession:
 
     # ---------- 登录/登出 ----------
     def login(self, role="admin", expect=True):
-        username = ADMIN_USER if role == "admin" else "user"
+        username = ADMIN_USER if role == "admin" else USER_USER
         password = ADMIN_PASS if role == "admin" else USER_PASS
         self.page.fill("#user_name", username)
         self.page.fill("#loginpp", password)
@@ -675,6 +744,9 @@ def main():
     ap.add_argument("--suite", default="all", help="login|wan|status|reboot|all")
     ap.add_argument("--headful", action="store_true")
     ap.add_argument("--out", default=None)
+    # 访问协议：支持自然语言描述（"https加密"/"http明文"/"自动探测"），默认 auto=HTTPS 优先自动探测
+    ap.add_argument("--scheme", default="auto",
+                    help='访问协议，支持自然语言: "https加密"/"http明文"/"自动探测"，默认 auto')
     # --variant html: 国际老 UI（HTML 多页版）真机用例 operators/intl/cases/real/html/
     #                 （login/mobile/reboot/security/status/wan 共 6 套件）
     ap.add_argument("--variant", default="new_ui", choices=["new_ui", "html"],
@@ -722,6 +794,7 @@ def main():
             "topology": "topology.json",
             "help": "help.json",
         }
+    resolve_base_url(args.scheme)
     args.out = args.out or default_out
     if args.suite == "all":
         if args.variant == "html":
@@ -755,7 +828,9 @@ def main():
 
     summary = {"total": 0, "pass": 0, "fail": 0, "cases": [], "start": datetime.now().isoformat()}
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=not args.headful)
+        # HTTPS 自签证书场景需忽略校验；纯 HTTP 场景该参数无副作用
+        browser = p.chromium.launch(headless=not args.headful,
+                                    args=["--ignore-certificate-errors"])
         for case in all_cases:
             summary["total"] += 1
             t0 = datetime.now()

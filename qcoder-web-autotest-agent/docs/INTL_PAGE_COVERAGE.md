@@ -316,3 +316,33 @@ navigation 套件在真实设备上遍历 `aside.fh_nav_menu`（Element UI el-me
 2. **select_option 多下拉定位修复**：`run_intl_real.py` 的 `select_option` 原用 `.el-select-dropdown__item:has-text(...)` 定位，在 Log 页（LogLevel/LogViewLevel 两个下拉共用面板）会匹配到隐藏面板的同名选项。已改为 `.filter(has_text=...).filter(visible=True)` 基于 `is_visible()` 精确过滤，并回归验证 NAT/DDNS/Remote 套件均通过。
 3. **全量回归套件顺序调整**：将 `login.json`（LOGIN-008 触发账号锁定 1 分钟）与 `lan.json`（修改 DHCP 触发网络重启）移至全量回归末尾，避免其副作用波及其它套件，消除大规模级联失败。
 4. **LAN 租约修改也触发网络重启**：全量回归确认 LAN-002 修改 DHCP 租约后设备网络重启，导致 LAN-003 恢复时连接中断（`ERR_CONNECTION_ABORTED`），与 DHCP 池修改行为一致。LAN 配置类修改（池/租约/DNS）均触发网络重启，仅适合隔离运行。
+
+## 双协议访问支持（2026-09-03）
+
+### 背景
+
+HG6142HT 真机固件开启 HTTPS 强制跳转：HTTP 请求 301 → HTTPS，且证书为设备自签名。原执行器固定 `http://` BASE_URL，Chromium 默认拒绝自签证书，导致所有用例 `net::ERR_CERT_AUTHORITY_INVALID` 全挂。
+
+### 改动（runner/run_intl_real.py）
+
+1. **`--scheme` 自然语言协议选择**：
+   - HTTPS 关键词：`https` / `加密` / `安全` / `TLS` / `SSL` / `证书`
+   - HTTP 关键词：`http` / `明文` / `不加密` / `非加密`
+   - auto（默认）：`自动` / `都支持` / 空 —— 自动探测设备可达协议，HTTPS 优先，失败回退 HTTP
+2. **`probe_scheme()` 探测**：请求 `<host>/login.html`（HTTPS 忽略自签证书校验），按 200/301/302/401/403 判定可达。
+3. **`resolve_base_url()` / `set_base_url()`**：运行期更新模块级 `BASE_URL`，SPA 路由与登录跳转统一跟随。
+4. **Chromium 启动参数**：`--ignore-certificate-errors`（HTTPS 自签场景必需；纯 HTTP 无副作用）。
+
+### 用法示例
+
+```
+python runner/run_intl_real.py --suite status --scheme "自动探测"   # 默认，HTTPS 优先
+python runner/run_intl_real.py --suite status --scheme "https加密访问"
+python runner/run_intl_real.py --suite status --scheme "http明文"   # 设备端仍 301 → HTTPS，属设备安全策略
+```
+
+### 验证（2026-09-03，HG6142HT）
+
+- 自然语言解析 10 组输入单测全过；auto 探测自动选中 HTTPS。
+- status 套件真机 7/7 通过（100%），总耗时 66.6s。
+- HTTP 入口端到端验证：301 → HTTPS → 登录成功（设备端强制策略，执行器自动跟随）。

@@ -16,6 +16,9 @@ e2e_bootstrap/screenshots/
 # ---- 敏感配置 ----
 .env
 
+# ---- 运行日志 ----
+runs/
+
 # ---- 测试产物 / 报告（含真实设备截图，不进入版本库）----
 reports/
 *.docx

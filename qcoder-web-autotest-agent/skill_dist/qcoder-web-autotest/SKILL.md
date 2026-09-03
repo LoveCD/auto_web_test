@@ -1,6 +1,6 @@
 ---
 name: qcoder-web-autotest
-description: 运营商网关 Web UI 自动化测试工具（WorkBuddy/QCoder 双端适配）。适用于烽火 FTTR 等网关设备管理界面的端到端测试，支持 CM（中国移动）/INTL（国际）双运营商、真机 Playwright（--env real）与离线 Mock（--env mock）双环境、中文自然语言一键生成可执行测试用例（如"测试wan连接页面vlan绑定功能"、"测试wifi基础设置功能支持320MHZ频段设置"）、全菜单遍历截图、回归/冒烟套件执行与报告输出。当用户提出测试网关/路由器 Web 界面、运行 smoke/regression/navigation 套件、用自然语言生成 Web 测试用例、真机 UI 验证、Mock 离线测试、或要求封装/使用本测试工具时触发。
+description: 运营商网关 Web UI 自动化测试工具（WorkBuddy/QCoder 双端适配）。适用于烽火 FTTR 等网关设备管理界面的端到端测试，支持 CM（中国移动）/INTL（国际）双运营商、真机 Playwright（--env real）与离线 Mock（--env mock）双环境、中文自然语言一键生成可执行测试用例（如"测试wan连接页面vlan绑定功能"、"测试wifi基础设置功能支持320MHZ频段设置"）、全菜单遍历截图、回归/冒烟套件执行与报告输出。INTL 国际版真机使用独立执行器 run_intl_real.py（--suite 单套件 / --variant new_ui|html / --scheme HTTPS|HTTP 自动探测），Word 报告用 gen_intl_word.py（--result <run_id> --suite <套件名>，--suite 必须首次生成时带上）。当用户提出测试网关/路由器 Web 界面、运行 smoke/regression/navigation 套件、跑 INTL 真机单套件回归并出报告、用自然语言生成 Web 测试用例、真机 UI 验证、Mock 离线测试、或要求封装/使用本测试工具时触发。
 license: Internal
 disable: false
 ---
@@ -42,7 +42,10 @@ qcoder-web-autotest-agent/
 ├── keywords/
 │   ├── real_keywords.py        # 真机会话：导航/登录/元素级动作/断言/dialog 捕获
 │   └── assert_keywords.py      # Mock 旧断言引擎
-├── runner/run_suite.py         # 执行器：加载 profile/suite → 逐 case 执行 → 报告
+├── runner/
+│   ├── run_suite.py            # 执行器：加载 profile/suite → 逐 case 执行 → 报告
+│   └── run_intl_real.py        # INTL 真机独立执行器（--suite/--variant/--scheme）
+├── tools/gen_intl_word.py      # INTL 真机 Word 报告生成（--result <run_id> --suite）
 ├── generator/
 │   ├── page_index.py           # UI 源码索引器（setItemId → fhId_xxx）
 │   ├── generate_case.py        # NL 用例生成器（含 gap 检测）
@@ -90,6 +93,31 @@ run_suite.py 的 `real.screenshot` 步骤会把截图路径写入 `result.detail
 
 ⚠️ 连续 3 次密码错误设备锁定 1 分钟；涉及配置修改的用例只做只读断言，不点"保存设置"。
 
+## 环境与账号（INTL 真机）与执行器差异
+
+```text
+设备地址   ${QCT_INTL_BASE_URL}（默认 http://192.168.1.1）
+管理员     ${QCT_INTL_ADMIN_USER} / ${QCT_INTL_ADMIN_PASS}
+普通用户   ${QCT_INTL_USER_USER} / ${QCT_INTL_USER_PASS}
+登录       main.html#/ SPA（新 UI）或 login.html（老 UI html 变体）；错误提示 div.login_error_hint
+```
+
+INTL 真机与 CM 链路的关键差异（改用例前必读）：
+
+1. **独立执行器** `runner/run_intl_real.py`：每用例独立 browser context（状态隔离）；
+   `--scheme auto` 默认 HTTPS 优先（自签证书已自动忽略校验，chromium 加
+   `--ignore-certificate-errors`），失败回退 HTTP。
+2. **双变体**：`--variant new_ui`（SPA 新 UI，24 套件 109 条，security 锁定套件报告自动排除）
+   / `--variant html`（老 UI 多页版，6 套件 39 条，security 正常纳入统计）。
+3. **Element UI 弹窗**：确认框是 `.el-message-box`（`$confirm` DOM 弹窗），Playwright dialog
+   事件不触发，须用 `assert_confirm_visible`/`click_confirm`。
+4. **回归顺序**：login/lan 套件置末尾执行，防登录态副作用级联。
+5. **Word 报告**：`tools/gen_intl_word.py --variant <v> --result <run_id> --suite <s>`；
+   `--suite` **必须首次生成时就带上**（漏带产出全量版报告，需删除重生成）；
+   归档前 docx 解包脱敏扫描（扫描 CM/INTL 两套真机密码字面量，取值见工程根
+   `.env` 的 `QCT_CM_*`/`QCT_INTL_*` 变量，**密码不得写入任何入库文件**），
+   CLEAN 后按 `测试报告-INTL-REAL-<SUITE>-<型号>-<ts>.docx` 命名归档 workspace 根。
+
 ## 命令速查（在项目根目录执行）
 
 ```bash
@@ -111,6 +139,16 @@ python runner/run_suite.py --operator cm --env real --suite generated/gen_wifi_3
 python mock_web_ui/server.py                            # 终端 1：起 Mock（127.0.0.1:8899）
 python runner/run_suite.py --operator intl --env mock --suite smoke
 python runner/run_suite.py --operator cm  --env mock --suite mock_smoke
+
+# ---- 5. INTL 真机单套件回归（独立链路，一步一条）----
+# 凭据走 .env 的 QCT_INTL_*；新 UI 用例在 operators/intl/cases/real/new_ui/
+python runner/run_intl_real.py --suite status --scheme auto          # 单套件（HTTPS 自动探测）
+python tools/gen_intl_word.py --variant new_ui --result <run_id> --suite status
+# ⚠️ gen_intl_word 的 --suite 必须首次生成时就带上，漏带会生成全量版报告需删掉重来
+# 产出 docs/case-docs/用例文档-INTL-REAL-<ts>.docx + 测试报告-INTL-REAL-<ts>.docx
+# 归档：脱敏扫描（docx 解包扫 CM/INTL 两套密码）→ 复制 workspace 根
+# → 测试报告-INTL-REAL-<SUITE>-HG6142HT-<ts>.docx / 用例文档-INTL-REAL-<SUITE>-<ts>.docx
+# 老 UI 设备用 --variant html（operators/intl/cases/real/html/，6 套件 39 条）
 
 # 可选参数：--headed（有头调试）/ --browser firefox / --url http://x.x.x.x（覆盖 base_url）
 # 退出码：0 全通过，1 有失败（可接 CI 门禁）

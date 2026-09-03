@@ -100,6 +100,47 @@ python runner/run_suite.py --operator cm  --env mock --suite mock_smoke  # CM �
 
 退出码：`0` 全部通过，`1` 存在失败（可直接接入 CI 门禁）。
 
+## 2.5 INTL 真机链路（run_intl_real.py 独立执行器）
+
+INTL 国际版真机不走 `run_suite.py`，使用独立执行器 `runner/run_intl_real.py`
+（每用例独立 context、内置 HTTPS 自签证书忽略、`QCT_INTL_*` 凭据从 `.env` 注入）：
+
+```bash
+# 单套件执行（login|wan|status|reboot|... 或 all）
+python runner/run_intl_real.py --suite status --scheme auto
+
+# 关键参数
+#   --suite     套件名（status/login/wan/reboot/security/...）或 all
+#   --variant   new_ui=SPA 新 UI（默认，用例在 operators/intl/cases/real/new_ui/）
+#               html=国际老 UI 多页版（operators/intl/cases/real/html/，6 套件 39 条）
+#   --scheme    访问协议，支持自然语言："https加密"/"http明文"/"自动探测"
+#               默认 auto=HTTPS 优先探测（自签证书自动忽略校验），失败回退 HTTP
+#   --headful   有头调试模式
+```
+
+结果输出 `reports/intl_real/<run_id>/result.json`（new_ui 变体；
+html 变体输出到 `reports/intl_real_html/`），含每条用例耗时 `duration_s`。
+
+### 单套件报告生成（gen_intl_word.py）与归档 SOP
+
+```bash
+# ⚠️ --suite 必须在首次生成时就带上：漏带会生成"全部套件"版报告，需删除重生成
+python tools/gen_intl_word.py --variant new_ui --result <run_id> --suite status
+# 产出 docs/case-docs/用例文档-INTL-REAL-<ts>.docx + 测试报告-INTL-REAL-<ts>.docx
+# （html 变体加 --variant html，此时 security 套件正常纳入统计）
+```
+
+单套件回归标准流程（3 个执行动作，已验证）：
+
+1. `python runner/run_intl_real.py --suite <s> --scheme auto` —— 真机执行（~1 分钟）
+2. `python tools/gen_intl_word.py --variant new_ui --result <run_id> --suite <s>` —— 生成报告
+3. 脱敏扫描 + 按模板归档：解包 docx 扫描 CM/INTL 两套真机密码字面量
+   （取值见工程根 `.env` 的 `QCT_CM_*`/`QCT_INTL_*` 变量，**任何密码不得写入仓库文档**），
+   命中即泄露；CLEAN 后复制到 workspace 根并按惯例命名：
+   `测试报告-INTL-REAL-<SUITE>-HG6142HT-<ts>.docx`、`用例文档-INTL-REAL-<SUITE>-<ts>.docx`
+
+> Windows venv 注意：若 venv 根目录无 python.exe，解释器在 `venv\Scripts\python.exe`。
+
 ## 3. 自然语言生成用例（核心能力）
 
 ### 3.1 基本用法
@@ -209,6 +250,9 @@ python runner/run_suite.py --operator cm  --env mock --suite mock_smoke
 | `result.json` | 用例/步骤级结果（含失败原因） |
 | `report.json` / `report.html` | 人读报告 |
 | `screenshots/*.png` | 全部截图（PASS 按步骤命名，FAIL 前缀标红） |
+
+> INTL 真机链路（`run_intl_real.py`）的结果在 `reports/intl_real/<run_id>/`，
+> Word 报告用 `tools/gen_intl_word.py` 生成，见 2.5 节 SOP。
 
 ## 7. e2e_bootstrap（Node 端用例生成 + DOCX 报告）
 

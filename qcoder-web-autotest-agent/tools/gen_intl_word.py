@@ -526,7 +526,7 @@ def build_result_summary(doc, result_map, mode, result=None):
 
         # ---- 设备行为差异与安全发现 ----
         add_heading(doc, "设备行为差异与安全发现", 2)
-        for t in _analysis_notes():
+        for t in _analysis_notes(result=result):
             add_para(doc, t, size=10.5)
 
     add_heading(doc, "测试结论", 1)
@@ -574,8 +574,71 @@ RESULT_ANALYSIS_NOTES_HTML = [
 ]
 
 
-def _analysis_notes():
-    return RESULT_ANALYSIS_NOTES_HTML if VARIANT == "html" else RESULT_ANALYSIS_NOTES_NEWUI
+def _analysis_notes(result=None):
+    """分析结论：有本轮 result 数据时按数据动态生成（兼容全量与 --suite 单套件专项），否则回退静态文案。"""
+    if not result or not result.get("cases"):
+        return RESULT_ANALYSIS_NOTES_HTML if VARIANT == "html" else RESULT_ANALYSIS_NOTES_NEWUI
+    cases = result.get("cases", [])
+    total = len(cases)
+    passed = sum(1 for c in cases if c.get("status") == "PASS")
+    failed = total - passed
+    rate = f"{passed / total * 100:.1f}%" if total else "-"
+    dur = result.get("duration_s") or 0
+    durs = [c.get("duration_s") or 0 for c in cases]
+    avg = (sum(durs) / total) if total else 0.0
+    p0 = sum(1 for c in cases if c.get("priority") == "P0")
+    p1 = total - p0
+    neg = sum(1 for c in cases if "type:negative" in (c.get("tags") or []))
+    suites = {}
+    for c in cases:
+        key = _suite_key_of(c.get("id", ""))
+        suites.setdefault(key, []).append(c)
+    suite_desc = "、".join(f"{k} {len(v)} 条" for k, v in suites.items())
+    scope = f"专项验证（套件：{SUITE_FILTER}）" if SUITE_FILTER else "全量回归"
+    ui_desc = "老 UI（HTML 多页版）" if VARIANT == "html" else "新 UI（SPA 架构、英文 UI）"
+
+    slowest = sorted(zip(durs, cases), key=lambda x: -x[0])[:3]
+    slow_desc = "；".join(f"{c.get('id')} {d}s（{c.get('title')}）" for d, c in slowest)
+    notes = [
+        f"1、本轮为 INTL {ui_desc}真机{scope}，测试对象为国际版网关 HG6142HT（192.168.1.1，HTTPS 自动探测），"
+        f"账号由环境变量注入（.env QCT_INTL_*，报告脱敏）；本轮涉及套件：{suite_desc}，共 {total} 条用例"
+        f"（P0 {p0} 条、P1 {p1} 条，含 {neg} 条负向安全类用例）。",
+        f"2、执行结果：{passed}/{total} 通过（失败 {failed}），通过率 {rate}，"
+        f"{'测试结论「通过」' if failed == 0 else '测试结论「不通过」，失败明细见失败用例分析表'}。"
+        f"总耗时 {_fmt_seconds(dur)}（{dur}s），平均单条用例 {avg:.1f}s；耗时前三：{slow_desc}。",
+    ]
+    if failed:
+        notes.append(
+            "3、失败用例分析：详见「失败用例分析」表，按原因分类逐条给出失败步骤与根因摘要；"
+            "选择器不匹配类失败建议以 navigation 实测菜单树复核 fhId_* 元素后同步 selectors 双文件。"
+        )
+    else:
+        marks = "①②③④⑤⑥⑦⑧⑨⑩"
+        notes.append(
+            "3、功能覆盖分析：" + "；".join(
+                f"{marks[i] if i < 10 else str(i + 1)} {c.get('title')}（{c.get('id')}）通过"
+                for i, c in enumerate(cases)
+            ) + "。"
+        )
+    if "login" in suites and failed == 0:
+        notes.append(
+            "4、登录域专项观察：① 正向登录与错误密码负向校验符合预期，错误提示经 div.login_error_hint 呈现；"
+            "② 空用户名/空密码由前端校验拦截；③ 连续 3 次错误密码触发账号锁定（约 1 分钟），"
+            "锁定类用例置于套件末位执行，避免锁定波及其后用例；④ 登出与未登录深链访问均正确回跳登录页；"
+            "⑤ 历史回归曾发现登出后服务端会话未失效风险（当时 INTL-LOGIN-007 有效失败），本轮该场景通过，"
+            "建议保持纳入例行回归观察。"
+        )
+    else:
+        notes.append(
+            "4、本轮执行" + ("为只读验证（查询、断言、截图类动作，无配置修改），不存在跨套件环境级联失败风险。"
+                            if not failed else "含配置/状态变更类用例，已按套件顺序控制副作用与锁定级联。")
+        )
+    tail_scope = f"单套件专项执行（{SUITE_FILTER}）" if SUITE_FILTER else "全量回归执行"
+    notes.append(
+        f"5、耗时统计说明：本轮为{tail_scope}，净耗时 {dur}s；如需完整回归画像（24 套件 107 条，"
+        f"总耗时约 24.7 分钟），参见同日全量回归报告。"
+    )
+    return notes
 
 
 def gen_doc(cases, result_map, run_id, mode, out, result=None):

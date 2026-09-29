@@ -1,0 +1,648 @@
+[
+  {
+    "id": "INTL-ROUTE-002",
+    "title": "静态路由页面可访问，新增路由表单完整（CRUD-Create）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:route",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_staticRoute_L3",
+        "desc": "导航到静态路由"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "staticRoute",
+        "desc": "URL 含 staticRoute"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Add",
+        "desc": "Add 按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Delete",
+        "desc": "Delete 按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_staticRouteList",
+        "desc": "静态路由列表表格可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开路由表单"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_selectWan",
+        "desc": "WAN 选择出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_GatewayIPAddress",
+        "desc": "网关地址输入出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DestIPAddress",
+        "desc": "目的 IP 输入出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DestSubnetMask",
+        "desc": "目的子网掩码输入出现"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-002_static",
+        "desc": "截图静态路由页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-ROUTE-004",
+    "title": "静态路由网关地址非法被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:route",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_staticRoute_L3",
+        "desc": "导航到静态路由"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开路由表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_GatewayIPAddress",
+        "value": "999.1.1.1",
+        "desc": "输入越界网关地址"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address",
+        "desc": "非法网关被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-004_gw",
+        "desc": "截图网关校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-ROUTE-005",
+    "title": "静态路由目的掩码非法被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:route",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_staticRoute_L3",
+        "desc": "导航到静态路由"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开路由表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestSubnetMask",
+        "value": "255.255.0.1",
+        "desc": "输入非法子网掩码"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid subnet mask",
+        "desc": "非法掩码被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-005_mask",
+        "desc": "截图掩码校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-ROUTE-006",
+    "title": "静态路由目的 IP 不完整被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:route",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_staticRoute_L3",
+        "desc": "导航到静态路由"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开路由表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPAddress",
+        "value": "192.168.1",
+        "desc": "输入不完整的目的 IP"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address",
+        "desc": "不完整目的 IP 被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-006_destip",
+        "desc": "截图目的 IP 校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-ROUTE-007",
+    "title": "静态路由表单 Cancel 关闭且不产生副作用",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:route",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_staticRoute_L3",
+        "desc": "导航到静态路由"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开路由表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPAddress",
+        "value": "192.168.50.0",
+        "desc": "输入目的网段"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestSubnetMask",
+        "value": "255.255.255.0",
+        "desc": "输入目的掩码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 取消添加"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_DestIPAddress",
+        "desc": "表单关闭，目的 IP 输入框隐藏"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-007_cancel",
+        "desc": "截图 Cancel 关闭表单"
+      }
+    ]
+  },
+  {
+    "id": "INTL-ROUTE-008",
+    "title": "静态路由规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:route",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；依赖 INTL-WAN-012 预置的 INTERNET_R_VID_99 WAN 接口（需先执行 wan 套件）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_staticRoute_L3",
+        "desc": "导航到静态路由"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "staticRoute",
+        "desc": "URL 含 staticRoute"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开路由表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_selectWan",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "新增：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_GatewayIPAddress",
+        "value": "192.168.1.1",
+        "desc": "新增：网关地址 192.168.1.1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPAddress",
+        "value": "192.168.99.0",
+        "desc": "新增：目的 IP 192.168.99.0"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestSubnetMask",
+        "value": "255.255.255.0",
+        "desc": "新增：目的掩码 255.255.255.0"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "192.168.99.0",
+        "desc": "回读：列表出现新增路由目的 IP"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=192.168.99.0",
+        "desc": "修改：点击路由行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPAddress",
+        "value": "192.168.100.0",
+        "desc": "修改：目的 IP 改为 192.168.100.0"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "192.168.100.0",
+        "desc": "修改生效：列表回读新目的 IP"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=192.168.100.0",
+        "desc": "非法修改：再次打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_GatewayIPAddress",
+        "value": "999.1.1.1",
+        "desc": "非法修改：网关填越界地址"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "非法修改：点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address",
+        "desc": "非法值被前端拦截"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "192.168.100.0",
+        "desc": "原值不变：列表仍显示原目的 IP"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "关闭编辑表单（不应用非法修改）"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "192.168.100.0",
+        "desc": "删除：勾选路由行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "192.168.100.0",
+        "desc": "删除后无残留：路由已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-008_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-ROUTE-009",
+    "title": "静态路由规则批量删除（勾选多条后删除）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:route",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；依赖 INTL-WAN-012 预置的 INTERNET_R_VID_99 WAN 接口（需先执行 wan 套件）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_staticRoute_L3",
+        "desc": "导航到静态路由"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第一条：打开路由表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_selectWan",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "创建第一条：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_GatewayIPAddress",
+        "value": "192.168.1.1",
+        "desc": "创建第一条：网关地址 192.168.1.1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPAddress",
+        "value": "192.168.99.0",
+        "desc": "创建第一条：目的 IP 192.168.99.0"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestSubnetMask",
+        "value": "255.255.255.0",
+        "desc": "创建第一条：目的掩码 255.255.255.0"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第一条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "192.168.99.0",
+        "desc": "第一条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第二条：打开路由表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_selectWan",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "创建第二条：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_GatewayIPAddress",
+        "value": "192.168.1.1",
+        "desc": "创建第二条：网关地址 192.168.1.1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPAddress",
+        "value": "192.168.100.0",
+        "desc": "创建第二条：目的 IP 192.168.100.0"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestSubnetMask",
+        "value": "255.255.255.0",
+        "desc": "创建第二条：目的掩码 255.255.255.0"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第二条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "192.168.100.0",
+        "desc": "第二条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_staticRouteList tr.el-table__row:has-text(\"192.168.99.0\") .el-checkbox",
+        "desc": "批量删除：勾选第一条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_staticRouteList tr.el-table__row:has-text(\"192.168.100.0\") .el-checkbox",
+        "desc": "批量删除：勾选第二条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Delete",
+        "desc": "批量删除：点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "批量删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "批量删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "192.168.99.0",
+        "desc": "批量删除：第一条无残留"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "192.168.100.0",
+        "desc": "批量删除：第二条无残留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-009_batch_del",
+        "desc": "截图批量删除后页面"
+      }
+    ]
+  }
+]

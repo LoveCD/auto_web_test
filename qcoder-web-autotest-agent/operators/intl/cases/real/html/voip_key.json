@@ -1,0 +1,52 @@
+[
+  {
+    "id": "INTL-VOIP-001",
+    "title": "VoIP 服务器类型页面可访问，支持 SIP 协议",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:voip"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_voipSettings_L2",
+        "l3": "fhId_voipKey_L3",
+        "desc": "导航到 VoIP 服务器类型"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "voipKey",
+        "desc": "URL 含 voipKey"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ServerType",
+        "desc": "服务器类型选择可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ServerType",
+        "option_text": "SIP",
+        "desc": "服务器类型含 SIP"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-VOIP-001_key",
+        "desc": "截图 VoIP 服务器类型页"
+      }
+    ]
+  }
+]

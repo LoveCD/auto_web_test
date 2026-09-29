@@ -1,0 +1,51 @@
+[
+  {
+    "id": "INTL-SYS-003",
+    "title": "配置文件页面可访问，备份与恢复入口可见",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:system"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_deviceManagement_L2",
+        "l3": "fhId_configFile_L3",
+        "desc": "导航到配置文件"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "configFile",
+        "desc": "URL 含 configFile"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ConfigFileBackup",
+        "desc": "备份配置按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_UpdateFile",
+        "desc": "恢复配置上传控件可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_removeFile",
+        "desc": "移除文件按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-003_config",
+        "desc": "截图配置文件页"
+      }
+    ]
+  }
+]

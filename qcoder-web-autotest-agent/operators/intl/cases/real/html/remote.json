@@ -1,0 +1,424 @@
+[
+  {
+    "id": "INTL-REMOTE-001",
+    "title": "TR-069 ACS 服务器页面可访问，配置项完整",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:remote"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_remoteManagement_L2",
+        "l3": "fhId_acsServer_L3",
+        "desc": "导航到 ACS 服务器"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "acsServer",
+        "desc": "URL 含 acsServer"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69Enable",
+        "desc": "启用 TR-069 单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69Disable",
+        "desc": "禁用 TR-069 单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69URL",
+        "desc": "ACS URL 输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69Username",
+        "desc": "ACS 用户名输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69Pwd",
+        "desc": "ACS 密码输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69ConPath",
+        "desc": "连接请求路径输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69ConPort",
+        "desc": "连接请求端口输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69ReqUsr",
+        "desc": "连接请求用户名输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69ReqPwd",
+        "desc": "连接请求密码输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69InformEnable",
+        "desc": "Inform 上报单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TR69InformInterval",
+        "desc": "上报间隔输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onEnableApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-REMOTE-001_acs",
+        "desc": "截图 ACS 服务器页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-REMOTE-002",
+    "title": "ACS URL 格式非法被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:remote"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_remoteManagement_L2",
+        "l3": "fhId_acsServer_L3",
+        "desc": "导航到 ACS 服务器"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_TR69URL",
+        "value": "001",
+        "desc": "输入格式非法的 ACS URL"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid URL",
+        "desc": "非法 URL 被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-REMOTE-002_url",
+        "desc": "截图 ACS URL 校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-REMOTE-003",
+    "title": "ACS 连接请求端口超过 65535 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:remote"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_remoteManagement_L2",
+        "l3": "fhId_acsServer_L3",
+        "desc": "导航到 ACS 服务器"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_TR69ConPort",
+        "value": "65536",
+        "desc": "输入超过上限的连接请求端口"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 65535",
+        "desc": "越界端口被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-REMOTE-003_port",
+        "desc": "截图 ACS 端口校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-REMOTE-004",
+    "title": "ACS 上报间隔为 0 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:remote"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_remoteManagement_L2",
+        "l3": "fhId_acsServer_L3",
+        "desc": "导航到 ACS 服务器"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_TR69InformInterval",
+        "value": "0",
+        "desc": "输入上报间隔 0"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 2147483647",
+        "desc": "越界上报间隔被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-REMOTE-004_interval",
+        "desc": "截图 ACS 上报间隔校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-REMOTE-005",
+    "title": "ACS URL 超过 255 字符被校验拦截（边界）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:remote"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_remoteManagement_L2",
+        "l3": "fhId_acsServer_L3",
+        "desc": "导航到 ACS 服务器"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_TR69URL",
+        "value": "http://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com",
+        "desc": "输入超过 255 字符的 ACS URL"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 1-255 characters",
+        "desc": "超长 URL 被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-REMOTE-005_url_long",
+        "desc": "截图 ACS URL 长度校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-REMOTE-006",
+    "title": "TR-069 连接请求端口配置回读一致性（保存后/重进页面回读一致并恢复）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:remote",
+      "专项:persist"
+    ],
+    "precondition": "设备已上电，可正常登录；TR-069 已启用（配置表单可编辑）。注意：该页 Apply 会先跑表单校验，URL 为必填（1-255 字符）——URL 为空时 validate() 直接 return，端口改动不会提交（真机实测无任何提交请求）。故用例会确保 ACS URL 非空（若为空则填入占位 URL http://acs.test.local:7547/ 并保留）；执行后连接请求端口被置为 7547（TR-069 标准端口，作为后续用例基线，可重复执行）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_remoteManagement_L2",
+        "l3": "fhId_acsServer_L3",
+        "desc": "导航到 ACS 服务器设置"
+      },
+      {
+        "action": "real.skip_if_filled",
+        "selector": "#fhId_TR69URL",
+        "steps": 1,
+        "desc": "ACS URL 已有值则跳过下一步占位填充"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_TR69URL",
+        "value": "http://acs.test.local:7547/",
+        "desc": "确保 ACS URL 非空（该页 Apply 的表单校验要求 URL 必填，否则端口改动无法提交）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_TR69ConPort",
+        "value": "8080",
+        "desc": "连接请求端口改为 8080"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击应用"
+      },
+      {
+        "action": "real.wait",
+        "ms": 2500,
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_TR69ConPort",
+        "value": "8080",
+        "desc": "保存后回读：连接请求端口显示 8080"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_remoteManagement_L2",
+        "l3": "fhId_acsServer_L3",
+        "desc": "重新进入 ACS 服务器页面（刷新回读）"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_TR69ConPort",
+        "value": "8080",
+        "desc": "重进页面回读：连接请求端口仍为 8080，配置已持久化"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_TR69ConPort",
+        "value": "7547",
+        "desc": "恢复基线：连接请求端口改回 7547"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "再次应用"
+      },
+      {
+        "action": "real.wait",
+        "ms": 2500,
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_TR69ConPort",
+        "value": "7547",
+        "desc": "恢复确认：连接请求端口显示 7547"
+      }
+    ]
+  }
+]

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "INTL-FW-011",
+    "title": "HTTPS 管理页面可访问，支持启用/禁用",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_https_L2",
+        "l3": "fhId_https_L3",
+        "desc": "导航到 HTTPS 管理"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "https",
+        "desc": "URL 含 https"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_enable",
+        "desc": "启用 HTTPS 可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_disable",
+        "desc": "禁用 HTTPS 可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onEnableApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-011_https",
+        "desc": "截图 HTTPS 管理页"
+      }
+    ]
+  }
+]

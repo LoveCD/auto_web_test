@@ -1,0 +1,55 @@
+[
+  {
+    "id": "INTL-APP-107",
+    "title": "UPnP 页面可访问，启用开关与接口选择显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_upnp_L2",
+        "desc": "导航到 UPnP"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "upnp",
+        "desc": "URL 含 upnp"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Disable",
+        "desc": "禁用选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_UpnpInterface",
+        "desc": "接口选择下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onEnableApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-107_upnp",
+        "desc": "截图 UPnP 页"
+      }
+    ]
+  }
+]

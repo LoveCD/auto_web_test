@@ -1,0 +1,41 @@
+[
+  {
+    "id": "INTL-STATUS-109",
+    "title": "WiFi 用户列表页面可访问，在线用户表格显示（带 WiFi 设备）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:status"
+    ],
+    "precondition": "设备已上电且带 WiFi（wifi=1 或 wifi5=1），可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_wifiStatus_L2",
+        "l3": "fhId_wifiList_L3",
+        "desc": "导航到 WiFi 用户列表"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiList",
+        "desc": "URL 含 wifiList"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_wifiUserList",
+        "desc": "WiFi 用户列表表格可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-STATUS-109_wifiuser",
+        "desc": "截图 WiFi 用户列表页"
+      }
+    ]
+  }
+]

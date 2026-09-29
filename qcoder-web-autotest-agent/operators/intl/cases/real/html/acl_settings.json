@@ -1,0 +1,777 @@
+[
+  {
+    "id": "INTL-FW-006",
+    "title": "ACL 设置页面可访问，方向与协议选项完整",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_aclSettings_L3",
+        "desc": "导航到 ACL 设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "aclSettings",
+        "desc": "URL 含 aclSettings"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_enable",
+        "desc": "启用 ACL 可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_disable",
+        "desc": "禁用 ACL 可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开 ACL 表单"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_StartIp",
+        "desc": "起始 IP 输入出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_EndIp",
+        "desc": "结束 IP 输入出现"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Direction",
+        "option_text": "WAN",
+        "desc": "方向含 WAN"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Direction",
+        "option_text": "LAN",
+        "desc": "方向含 LAN"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Protocol",
+        "option_text": "HTTP",
+        "desc": "协议含 HTTP"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Protocol",
+        "option_text": "Telnet",
+        "desc": "协议含 Telnet"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-006_acl",
+        "desc": "截图 ACL 设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-029",
+    "title": "ACL 总开关启用/禁用切换与回读",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:persist"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_aclSettings_L3",
+        "desc": "导航到 ACL 设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "aclSettings",
+        "desc": "URL 含 aclSettings"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_firewall_disable",
+        "desc": "切换：选择 Disable"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onEnableApply",
+        "desc": "切换：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_checkbox_checked",
+        "selector": "#fhId_firewall_disable",
+        "on": true,
+        "desc": "回读：Disable 已选中"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_firewall_enable",
+        "desc": "恢复：选择 Enable"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onEnableApply",
+        "desc": "恢复：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_checkbox_checked",
+        "selector": "#fhId_firewall_enable",
+        "on": true,
+        "desc": "回读：Enable 已选中（恢复基线）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-029_enable_toggle",
+        "desc": "截图总开关切换完成状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-030",
+    "title": "ACL 规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_aclSettings_L3",
+        "desc": "导航到 ACL 设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "aclSettings",
+        "desc": "URL 含 aclSettings"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_RuleEnable",
+        "option_text": "Yes",
+        "desc": "新增：规则启用选 Yes"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_StartIp",
+        "value": "1.1.1.1",
+        "desc": "新增：起始 IP 1.1.1.1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_EndIp",
+        "value": "1.1.1.2",
+        "desc": "新增：结束 IP 1.1.1.2"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Direction",
+        "option_text": "WAN",
+        "desc": "新增：方向选 WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "ALL",
+        "desc": "新增：协议选 ALL"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "1.1.1.1--1.1.1.2",
+        "desc": "回读：列表出现新增规则 IP 范围"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=1.1.1.1--1.1.1.2",
+        "desc": "修改：点击规则行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_StartIp",
+        "value": "1.1.1.3",
+        "desc": "修改：起始 IP 改为 1.1.1.3"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_EndIp",
+        "value": "1.1.1.4",
+        "desc": "修改：结束 IP 同步改为 1.1.1.4（保证 start<=end，设备对 start>end 会正确拦截）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "1.1.1.3--1.1.1.4",
+        "desc": "修改生效：列表回读新 IP 范围"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=1.1.1.3--1.1.1.4",
+        "desc": "非法修改：再次打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_StartIp",
+        "value": "999.1.1.1",
+        "desc": "非法修改：起始 IP 填越界地址"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "非法修改：点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address",
+        "desc": "非法值被前端拦截（真机提示带句点，故此处按前缀匹配）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "1.1.1.3--1.1.1.4",
+        "desc": "原值不变：列表仍显示原 IP 范围"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "关闭编辑表单（不应用非法修改）"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "1.1.1.3--1.1.1.4",
+        "desc": "删除：勾选规则行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure you want to delete the selected rule?",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "1.1.1.3",
+        "desc": "删除后无残留：规则已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-030_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-031",
+    "title": "ACL 规则批量删除（勾选多条后删除）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_aclSettings_L3",
+        "desc": "导航到 ACL 设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第一条：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_RuleEnable",
+        "option_text": "Yes",
+        "desc": "创建第一条：规则启用选 Yes"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_StartIp",
+        "value": "3.3.3.1",
+        "desc": "创建第一条：起始 IP 3.3.3.1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_EndIp",
+        "value": "3.3.3.2",
+        "desc": "创建第一条：结束 IP 3.3.3.2"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Direction",
+        "option_text": "WAN",
+        "desc": "创建第一条：方向选 WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "ALL",
+        "desc": "创建第一条：协议选 ALL"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第一条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "3.3.3.1--3.3.3.2",
+        "desc": "第一条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第二条：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_RuleEnable",
+        "option_text": "Yes",
+        "desc": "创建第二条：规则启用选 Yes"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_StartIp",
+        "value": "3.3.3.3",
+        "desc": "创建第二条：起始 IP 3.3.3.3"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_EndIp",
+        "value": "3.3.3.4",
+        "desc": "创建第二条：结束 IP 3.3.3.4"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Direction",
+        "option_text": "WAN",
+        "desc": "创建第二条：方向选 WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "ALL",
+        "desc": "创建第二条：协议选 ALL"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第二条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "3.3.3.3--3.3.3.4",
+        "desc": "第二条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_ACLLists tr.el-table__row:has-text(\"3.3.3.1--3.3.3.2\") .el-checkbox",
+        "desc": "批量删除：勾选第一条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_ACLLists tr.el-table__row:has-text(\"3.3.3.3--3.3.3.4\") .el-checkbox",
+        "desc": "批量删除：勾选第二条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Delete",
+        "desc": "批量删除：点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure you want to delete the selected rule?",
+        "desc": "批量删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "批量删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "3.3.3.1",
+        "desc": "批量删除：第一条无残留"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "3.3.3.3",
+        "desc": "批量删除：第二条无残留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-031_batch_del",
+        "desc": "截图批量删除后页面"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-032",
+    "title": "ACL 起始 IP 大于结束 IP 被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_aclSettings_L3",
+        "desc": "导航到 ACL 设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_StartIp",
+        "value": "192.168.1.200",
+        "desc": "起始 IP 填 192.168.1.200"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_EndIp",
+        "value": "192.168.1.100",
+        "desc": "结束 IP 填 192.168.1.100（小于起始）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "End IP should be greater than or equal to the start IP.",
+        "desc": "起始大于结束被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-032_iprange",
+        "desc": "截图源 IP 范围校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-033",
+    "title": "ACL 非法 IPv4 地址被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_aclSettings_L3",
+        "desc": "导航到 ACL 设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_StartIp",
+        "value": "999.1.1.1",
+        "desc": "起始 IP 填越界地址 999.1.1.1"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address!",
+        "desc": "非法 IP 被前端拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-033_ip_invalid",
+        "desc": "截图非法 IP 校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-034",
+    "title": "ACL 起始与结束 IP 同时为空可正常创建规则（合法行为）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电；管理员可登录；ACL 列表出厂基线为 1 条源 IP 为空的通配规则",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_aclSettings_L3",
+        "desc": "导航到 ACL 设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_StartIp",
+        "value": "",
+        "desc": "起始 IP 置空"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_EndIp",
+        "value": "",
+        "desc": "结束 IP 置空"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Direction",
+        "option_text": "WAN",
+        "desc": "方向选 WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "ALL",
+        "desc": "协议选 ALL"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "起始/结束 IP 同时为空，点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_element_count",
+        "selector": "#fhId_ACLLists tr.el-table__row",
+        "gt": 1,
+        "desc": "回读：IP 为空的规则创建成功，列表条数大于出厂基线 1 条"
+      },
+      {
+        "action": "real.delete_row_at",
+        "index": -1,
+        "if_count_gt": 1,
+        "desc": "清理：删除本次 Apply 追加的末行规则（仅当列表多于出厂基线 1 条时执行，防止误删出厂规则）"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure you want to delete the selected rule?",
+        "desc": "清理：删除确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "清理：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_element_count",
+        "selector": "#fhId_ACLLists tr.el-table__row",
+        "equals": 1,
+        "desc": "回读：列表恢复出厂基线 1 条，无残留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-034_empty_ip_ok",
+        "desc": "截图 IP 同时为空创建规则结果"
+      }
+    ]
+  }
+]

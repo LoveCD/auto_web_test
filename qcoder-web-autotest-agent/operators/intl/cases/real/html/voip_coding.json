@@ -1,0 +1,41 @@
+[
+  {
+    "id": "INTL-VOIP-005",
+    "title": "VoIP 编解码设置页面可访问",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:voip"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_voipSettings_L2",
+        "l3": "fhId_voipCoding_L3",
+        "desc": "导航到 VoIP 编解码设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "voipCoding",
+        "desc": "URL 含 voipCoding"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-VOIP-005_coding",
+        "desc": "截图 VoIP 编解码设置页"
+      }
+    ]
+  }
+]

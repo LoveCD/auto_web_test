@@ -1,0 +1,51 @@
+[
+  {
+    "id": "INTL-FW-005",
+    "title": "端口扫描防护页面可访问，支持启用/禁用",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_portScan_L3",
+        "desc": "导航到端口扫描防护"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "portScan",
+        "desc": "URL 含 portScan"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_anti_port_scan_enable",
+        "desc": "启用防护单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_anti_port_scan_disable",
+        "desc": "禁用防护单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onEnableApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-005_portscan",
+        "desc": "截图端口扫描防护页"
+      }
+    ]
+  }
+]

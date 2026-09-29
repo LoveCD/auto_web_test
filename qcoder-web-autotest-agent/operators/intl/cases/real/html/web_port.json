@@ -1,0 +1,119 @@
+[
+  {
+    "id": "INTL-SYS-011",
+    "title": "Web 管理端口页面可访问（不修改端口）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:system"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_webPort_L2",
+        "l3": "fhId_webPort_L3",
+        "desc": "导航到 Web 端口"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "webPort",
+        "desc": "URL 含 webPort"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_WebServicePort",
+        "desc": "当前 Web 服务端口输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_WebServicePortModify",
+        "desc": "修改端口输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-011_webport",
+        "desc": "截图 Web 端口页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SYS-012",
+    "title": "Web 端口修改范围校验（1024-65535 或 80，不应用）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:system"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_webPort_L2",
+        "l3": "fhId_webPort_L3",
+        "desc": "导航到 Web 端口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_WebServicePortModify",
+        "value": "1023",
+        "desc": "修改端口填 1023，小于 1024"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1000,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1024 and 65535 or 80.",
+        "desc": "报端口范围错误提示"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_WebServicePortModify",
+        "value": "65536",
+        "desc": "修改端口填 65536，超出上限"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1000,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1024 and 65535 or 80.",
+        "desc": "报端口范围错误提示"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "取消关闭，不应用修改"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-012_webporterr",
+        "desc": "截图 Web 端口校验错误"
+      }
+    ]
+  }
+]

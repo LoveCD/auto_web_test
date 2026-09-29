@@ -1,0 +1,820 @@
+[
+  {
+    "id": "INTL-LAN-001",
+    "title": "LAN 设置页面可访问，DHCP 服务选项完整",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "lanSettings",
+        "desc": "URL 含 lanSettings"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPInterfaceIPAddress",
+        "desc": "LAN IP 输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPInterfaceSubnetMask",
+        "desc": "子网掩码输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DHCPServerEnable",
+        "desc": "DHCP 服务器下拉可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Server",
+        "desc": "DHCP 服务含 Server"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Disable",
+        "desc": "DHCP 服务含 Disable"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPV4MinAddress",
+        "desc": "DHCP 起始地址可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPV4MaxAddress",
+        "desc": "DHCP 结束地址可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DHCPHours",
+        "desc": "DHCP 租约小时输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DHCPMinutes",
+        "desc": "DHCP 租约分钟输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-001_settings",
+        "desc": "截图 LAN 设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-002",
+    "title": "LAN IP 输入非法 IPv4 被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPInterfaceIPAddress",
+        "value": "192.168.1",
+        "desc": "输入不完整 IPv4"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address",
+        "desc": "非法 LAN IP 被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-002_ip_invalid",
+        "desc": "截图 LAN IP 非法校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-003",
+    "title": "LAN IP 末段为 0 或 255 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPInterfaceIPAddress",
+        "value": "192.168.1.0",
+        "desc": "输入末段为 0 的 LAN IP"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "The last bit of IPv4 address cannot be 0 or 255",
+        "desc": "末段 0 被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPInterfaceIPAddress",
+        "value": "192.168.1.255",
+        "desc": "输入末段为 255 的 LAN IP"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "The last bit of IPv4 address cannot be 0 or 255",
+        "desc": "末段 255 被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-003_ip_last",
+        "desc": "截图 LAN IP 末段校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-004",
+    "title": "子网掩码输入非法值被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPInterfaceSubnetMask",
+        "value": "255.255.0.1",
+        "desc": "输入非法子网掩码"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid subnet mask",
+        "desc": "非法掩码被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-004_mask",
+        "desc": "截图掩码校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-006",
+    "title": "DHCP 服务关闭后地址池与租约字段隐藏（联动）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Disable",
+        "desc": "切换 DHCP 服务为 Disable"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_IPV4MinAddress",
+        "desc": "DHCP 起始地址隐藏"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_IPV4MaxAddress",
+        "desc": "DHCP 结束地址隐藏"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_DHCPHours",
+        "desc": "DHCP 租约时间隐藏"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Server",
+        "desc": "切回 DHCP 服务为 Server"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPV4MinAddress",
+        "desc": "DHCP 起始地址恢复显示"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DHCPHours",
+        "desc": "DHCP 租约时间恢复显示"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-006_dhcp_toggle",
+        "desc": "截图 DHCP 服务联动"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-007",
+    "title": "DHCP 起始地址末段为 0 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Server",
+        "desc": "确保 DHCP 服务为 Server"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPV4MinAddress",
+        "value": "0",
+        "desc": "输入起始地址末段 0"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 254",
+        "desc": "越界起始地址被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-007_dhcp_start",
+        "desc": "截图 DHCP 起始地址校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-008",
+    "title": "DHCP 结束地址小于起始地址被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Server",
+        "desc": "确保 DHCP 服务为 Server"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPV4MinAddress",
+        "value": "200",
+        "desc": "起始地址填 200"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPV4MaxAddress",
+        "value": "50",
+        "desc": "结束地址填 50（小于起始）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "DHCP end IP cannot be smaller than DHCP start IP",
+        "desc": "结束小于起始被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-008_dhcp_range",
+        "desc": "截图 DHCP 地址范围校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-009",
+    "title": "DHCP 租约小时超过 99 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录；非 FTTR 设备（租约上限 99 小时）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Server",
+        "desc": "确保 DHCP 服务为 Server"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DHCPHours",
+        "value": "100",
+        "desc": "输入超过上限的租约小时"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 0 and 99",
+        "desc": "越界租约小时被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-009_hour",
+        "desc": "截图 DHCP 租约小时校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-010",
+    "title": "DHCP 租约分钟超过 59 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Server",
+        "desc": "确保 DHCP 服务为 Server"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DHCPMinutes",
+        "value": "60",
+        "desc": "输入超过上限的租约分钟"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 0 and 59",
+        "desc": "越界租约分钟被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-010_minute",
+        "desc": "截图 DHCP 租约分钟校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-011",
+    "title": "DHCP 租约总时长超过 99 小时被校验拦截（边界）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan"
+    ],
+    "precondition": "设备已上电，可正常登录；非 FTTR 设备（租约上限 99 小时）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Server",
+        "desc": "确保 DHCP 服务为 Server"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DHCPHours",
+        "value": "99",
+        "desc": "租约小时填上限 99"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DHCPMinutes",
+        "value": "59",
+        "desc": "租约分钟填 59（总时长超限）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "DHCP lease time cannot be more than 99 hours",
+        "desc": "租约总时长超限被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-011_lease_total",
+        "desc": "截图 DHCP 租约总时长校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-015",
+    "title": "LAN DHCP 租约时长配置回读一致性（保存后/重进页面回读一致并恢复）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:lan",
+      "专项:persist"
+    ],
+    "precondition": "设备已上电，可正常登录；执行后 DHCP 租约将被置为 24 小时 0 分（恢复基线，可重复执行）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "导航到 LAN 设置"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DHCPServerEnable",
+        "option_text": "Server",
+        "desc": "前置：DHCP 服务选择 Server"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DHCPHours",
+        "value": "2",
+        "desc": "租约小时改为 2"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DHCPMinutes",
+        "value": "30",
+        "desc": "租约分钟改为 30"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击应用"
+      },
+      {
+        "action": "real.wait",
+        "ms": 2500,
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_DHCPHours",
+        "value": "2",
+        "desc": "保存后回读：租约小时显示 2"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_DHCPMinutes",
+        "value": "30",
+        "desc": "保存后回读：租约分钟显示 30"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "desc": "展开 LAN 设置菜单"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_lanSettings_L3",
+        "desc": "重新进入 LAN 设置页面（刷新回读）"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_DHCPHours",
+        "value": "2",
+        "desc": "重进页面回读：租约小时仍为 2，配置已持久化"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_DHCPMinutes",
+        "value": "30",
+        "desc": "重进页面回读：租约分钟仍为 30，配置已持久化"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DHCPHours",
+        "value": "24",
+        "desc": "恢复基线：租约小时改回 24"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DHCPMinutes",
+        "value": "0",
+        "desc": "恢复基线：租约分钟改回 0"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "再次应用"
+      },
+      {
+        "action": "real.wait",
+        "ms": 2500,
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_DHCPHours",
+        "value": "24",
+        "desc": "恢复确认：租约小时显示 24"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_DHCPMinutes",
+        "value": "0",
+        "desc": "恢复确认：租约分钟显示 0"
+      }
+    ]
+  }
+]

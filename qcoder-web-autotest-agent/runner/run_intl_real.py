@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""INTL 国际版真机 E2E 测试执行器
-目标设备: http://192.168.1.1 (HG6163FC1 国际版)
-架构: login.html 独立登录页 + main.html#/... SPA (ElementUI)
+"""INTL 国际版真机 E2E 测试执行器 —— 新 UI（SPA）专用
+目标设备: HG6142HT / HG6163FC1 等国际版网关（login.html 独立登录页 + main.html#/... SPA，ElementUI）
+用例目录: operators/intl/cases/real/new_ui/（24 套件）
 
 用法:
   python runner/run_intl_real.py --suite login|wan|status|reboot|all [--scheme <协议>] [--headful] [--out DIR]
   --scheme 支持自然语言描述是否走 HTTPS/HTTP，如 "https加密访问"、"http明文"、"自动探测"；
            默认 auto：自动探测设备可达协议（HTTPS 优先，自签证书自动忽略校验）。
+
+老 UI（HTML 多页版）用例请使用独立执行器: runner/run_intl_real_html.py
 """
 import argparse
 import json
@@ -747,71 +749,49 @@ def main():
     # 访问协议：支持自然语言描述（"https加密"/"http明文"/"自动探测"），默认 auto=HTTPS 优先自动探测
     ap.add_argument("--scheme", default="auto",
                     help='访问协议，支持自然语言: "https加密"/"http明文"/"自动探测"，默认 auto')
-    # --variant html: 国际老 UI（HTML 多页版）真机用例 operators/intl/cases/real/html/
-    #                 （login/mobile/reboot/security/status/wan 共 6 套件）
-    ap.add_argument("--variant", default="new_ui", choices=["new_ui", "html"],
-                    help="new_ui=SPA 新 UI（默认）；html=国际老 UI 多页版")
     args = ap.parse_args()
 
-    if args.variant == "html":
-        cases_dir = os.path.join(ROOT, "operators", "intl", "cases", "real", "html")
-        default_out = os.path.join(ROOT, "reports", "intl_real_html")
-        suites = {
-            "login": "login.json",
-            "wan": "wan.json",
-            "status": "status.json",
-            "reboot": "reboot.json",
-            "security": "security.json",
-            "mobile": "mobile.json",
-        }
-    else:
-        # new_ui（SPA 新 UI）套件已从 real/ 迁移到 real/new_ui/（24 套件）
-        cases_dir = os.path.join(ROOT, "operators", "intl", "cases", "real", "new_ui")
-        default_out = os.path.join(ROOT, "reports", "intl_real")
-        suites = {
-            "login": "login.json",
-            "wan": "wan.json",
-            "status": "status.json",
-            "reboot": "reboot.json",
-            "security": "security.json",
-            "wifi": "wifi.json",
-            "lan": "lan.json",
-            "nat": "nat.json",
-            "firewall": "firewall.json",
-            "account": "account.json",
-            "remote": "remote.json",
-            "voip": "voip.json",
-            "auth": "auth.json",
-            "ddos": "ddos.json",
-            "web": "web.json",
-            "vpn": "vpn.json",
-            "ddns": "ddns.json",
-            "media": "media.json",
-            "upnp": "upnp.json",
-            "ntp": "ntp.json",
-            "diag": "diag.json",
-            "log": "log.json",
-            "topology": "topology.json",
-            "help": "help.json",
-        }
+    # new_ui（SPA 新 UI）套件在 operators/intl/cases/real/new_ui/（24 套件）
+    cases_dir = os.path.join(ROOT, "operators", "intl", "cases", "real", "new_ui")
+    default_out = os.path.join(ROOT, "reports", "intl_real")
+    suites = {
+        "login": "login.json",
+        "wan": "wan.json",
+        "status": "status.json",
+        "reboot": "reboot.json",
+        "security": "security.json",
+        "wifi": "wifi.json",
+        "lan": "lan.json",
+        "nat": "nat.json",
+        "firewall": "firewall.json",
+        "account": "account.json",
+        "remote": "remote.json",
+        "voip": "voip.json",
+        "auth": "auth.json",
+        "ddos": "ddos.json",
+        "web": "web.json",
+        "vpn": "vpn.json",
+        "ddns": "ddns.json",
+        "media": "media.json",
+        "upnp": "upnp.json",
+        "ntp": "ntp.json",
+        "diag": "diag.json",
+        "log": "log.json",
+        "topology": "topology.json",
+        "help": "help.json",
+    }
     resolve_base_url(args.scheme)
     args.out = args.out or default_out
     if args.suite == "all":
-        if args.variant == "html":
-            # 副作用隔离：security（连续 3 次错误密码触发账号锁定约 1 分钟）放最后，
-            # 避免锁定波及其后套件登录；wan CRUD 有创建/删除动作放中段；其余只读/无副作用。
-            files = ["status.json", "wan.json", "mobile.json",
-                     "reboot.json", "login.json", "security.json"]
-        else:
-            # 隔离易产生副作用的套件，避免级联失败：
-            #  - login.json 的 LOGIN-008 触发账号锁定（1 分钟），会波及其后所有套件登录
-            #  - lan.json 修改 DHCP 租约/DNS 触发设备网络重启，会波及其后所有套件
-            # 故将 login.json 与 lan.json 置于全量回归最后，使其副作用不影响其它套件。
-            files = ["status.json", "wan.json", "reboot.json",
-                     "wifi.json", "nat.json", "firewall.json", "account.json",
-                     "remote.json", "voip.json", "auth.json", "ddos.json", "web.json",
-                     "vpn.json", "ddns.json", "media.json", "upnp.json", "ntp.json",
-                     "diag.json", "log.json", "topology.json", "help.json", "lan.json", "login.json"]
+        # 隔离易产生副作用的套件，避免级联失败：
+        #  - login.json 的 LOGIN-008 触发账号锁定（1 分钟），会波及其后所有套件登录
+        #  - lan.json 修改 DHCP 租约/DNS 触发设备网络重启，会波及其后所有套件
+        # 故将 login.json 与 lan.json 置于全量回归最后，使其副作用不影响其它套件。
+        files = ["status.json", "wan.json", "reboot.json",
+                 "wifi.json", "nat.json", "firewall.json", "account.json",
+                 "remote.json", "voip.json", "auth.json", "ddos.json", "web.json",
+                 "vpn.json", "ddns.json", "media.json", "upnp.json", "ntp.json",
+                 "diag.json", "log.json", "topology.json", "help.json", "lan.json", "login.json"]
     else:
         files = [suites[args.suite]]
 

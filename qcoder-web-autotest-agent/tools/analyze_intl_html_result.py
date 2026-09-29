@@ -44,7 +44,8 @@ def main():
         run_id = dirs[0]
     d = json.load(open(os.path.join(RESULT_DIR, run_id, "result.json"), encoding="utf-8"))
     print(f"run_id: {run_id}")
-    print(f"total={d['total']} pass={d['pass']} fail={d['fail']} rate={d['pass_rate']}% "
+    print(f"total={d['total']} pass={d['pass']} fail={d['fail']} skip={d.get('skip', 0)} "
+          f"rate={d['pass_rate']}% "
           f"duration_s={d['duration_s']} ({d['duration_s']/60:.1f} min)")
     print(f"start={d['start'][:19]} end={d['end'][:19]}")
 
@@ -52,17 +53,19 @@ def main():
     stats = {}
     for c in d["cases"]:
         k = c["id"].split("-")[1] if "-" in c["id"] else "?"
-        s = stats.setdefault(k, {"total": 0, "pass": 0, "dur": 0.0})
+        s = stats.setdefault(k, {"total": 0, "pass": 0, "skip": 0, "dur": 0.0})
         s["total"] += 1
         s["pass"] += c["status"] == "PASS"
+        s["skip"] += c["status"] == "SKIP"
         s["dur"] += c.get("duration_s") or 0
     for k, s in sorted(stats.items()):
-        print(f"  {k:<8} total={s['total']:<3} pass={s['pass']:<3} fail={s['total']-s['pass']:<3} dur={s['dur']:.1f}s")
+        print(f"  {k:<8} total={s['total']:<3} pass={s['pass']:<3} "
+              f"skip={s['skip']:<3} fail={s['total']-s['pass']-s['skip']:<3} dur={s['dur']:.1f}s")
 
     print("\n== 失败分类 ==")
     cat = {}
     for c in d["cases"]:
-        if c["status"] == "PASS":
+        if c["status"] in ("PASS", "SKIP"):
             continue
         k = classify(c.get("error") or "")
         cat[k] = cat.get(k, 0) + 1
@@ -71,7 +74,7 @@ def main():
 
     print("\n== 失败用例明细 ==")
     for c in d["cases"]:
-        if c["status"] == "PASS":
+        if c["status"] in ("PASS", "SKIP"):
             continue
         err = (c.get("error") or "").split("\n")[0]
         step_desc = ""

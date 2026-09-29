@@ -1,0 +1,614 @@
+[
+  {
+    "id": "INTL-APP-105",
+    "title": "端口映射页面可访问，添加规则后表单显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_portMapping_L2",
+        "desc": "导航到端口映射"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "portMapping",
+        "desc": "URL 含 portMapping"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_portMappingList",
+        "desc": "端口映射规则列表可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_wanSelect",
+        "desc": "WAN 接口下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PortMappingDescription",
+        "desc": "规则描述输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Protocol",
+        "desc": "协议下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RemoteHost",
+        "desc": "远端主机输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ExternalPort",
+        "desc": "外部端口输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_InternalClient",
+        "desc": "内部主机输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_InternalPort",
+        "desc": "内部端口输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enabled",
+        "desc": "启用状态下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-105_portmapping",
+        "desc": "截图端口映射添加表单"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-106",
+    "title": "端口映射必填与端口范围校验",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_portMapping_L2",
+        "desc": "导航到端口映射"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPort",
+        "value": "0",
+        "desc": "外部端口填 0，小于下限"
+      },
+      {
+        "action": "real.wait",
+        "desc": "等待校验提示",
+        "ms": "1000"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 65535.",
+        "desc": "提示端口范围错误"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalPort",
+        "value": "65536",
+        "desc": "内部端口填 65536，超过上限"
+      },
+      {
+        "action": "real.wait",
+        "desc": "等待校验提示",
+        "ms": "1000"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 65535.",
+        "desc": "再次提示端口范围错误"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-106_portmapping_err",
+        "desc": "截图端口映射校验错误"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-114",
+    "title": "端口映射规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:application",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；依赖 INTL-WAN-012 预置的 INTERNET_R_VID_99 WAN 接口（需先执行 wan 套件）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_portMapping_L2",
+        "desc": "导航到端口映射"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "portMapping",
+        "desc": "URL 含 portMapping"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开添加表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_wanSelect",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "新增：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PortMappingDescription",
+        "value": "PortMappingTest001",
+        "desc": "新增：输入规则描述"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "TCP",
+        "desc": "新增：协议选 TCP"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPort",
+        "value": "8080",
+        "desc": "新增：外部端口 8080"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPortEndRange",
+        "value": "8080",
+        "desc": "新增：外部端口结束框 8080（单端口起止相同）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalClient",
+        "value": "192.168.1.100",
+        "desc": "新增：内部主机 192.168.1.100"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalPort",
+        "value": "80",
+        "desc": "新增：内部端口 80"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalPortEndRange",
+        "value": "80",
+        "desc": "新增：内部端口结束框 80（单端口起止相同）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enabled",
+        "option_text": "Enable",
+        "desc": "新增：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "PortMappingTest001",
+        "desc": "回读：列表出现新增规则描述"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=PortMappingTest001",
+        "desc": "修改：点击规则行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPort",
+        "value": "8081",
+        "desc": "修改：外部端口改为 8081"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPortEndRange",
+        "value": "8081",
+        "desc": "修改：外部端口结束框同步 8081"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "8081",
+        "desc": "修改生效：列表回读外部端口 8081"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=PortMappingTest001",
+        "desc": "非法修改：再次打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPort",
+        "value": "0",
+        "desc": "非法修改：外部端口填 0（越界）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "非法修改：点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 65535.",
+        "desc": "非法值被前端拦截"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "8081",
+        "desc": "原值不变：列表仍显示 8081"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "关闭编辑表单（不应用非法修改）"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "PortMappingTest001",
+        "desc": "删除：勾选规则行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "PortMappingTest001",
+        "desc": "删除后无残留：规则已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-114_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-115",
+    "title": "端口映射规则批量删除（勾选多条后删除）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:application",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；依赖 INTL-WAN-012 预置的 INTERNET_R_VID_99 WAN 接口（需先执行 wan 套件）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_portMapping_L2",
+        "desc": "导航到端口映射"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第一条：打开添加表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_wanSelect",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "创建第一条：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PortMappingDescription",
+        "value": "BatchDel001",
+        "desc": "创建第一条：输入规则描述"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "TCP",
+        "desc": "创建第一条：协议选 TCP"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPort",
+        "value": "8090",
+        "desc": "创建第一条：外部端口 8090"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPortEndRange",
+        "value": "8090",
+        "desc": "创建第一条：外部端口结束框 8090（单端口起止相同）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalClient",
+        "value": "192.168.1.101",
+        "desc": "创建第一条：内部主机 192.168.1.101"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalPort",
+        "value": "81",
+        "desc": "创建第一条：内部端口 81"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalPortEndRange",
+        "value": "81",
+        "desc": "创建第一条：内部端口结束框 81（单端口起止相同）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enabled",
+        "option_text": "Enable",
+        "desc": "创建第一条：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第一条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "BatchDel001",
+        "desc": "第一条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第二条：打开添加表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_wanSelect",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "创建第二条：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PortMappingDescription",
+        "value": "BatchDel002",
+        "desc": "创建第二条：输入规则描述"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "TCP",
+        "desc": "创建第二条：协议选 TCP"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPort",
+        "value": "8091",
+        "desc": "创建第二条：外部端口 8091"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_ExternalPortEndRange",
+        "value": "8091",
+        "desc": "创建第二条：外部端口结束框 8091（单端口起止相同）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalClient",
+        "value": "192.168.1.102",
+        "desc": "创建第二条：内部主机 192.168.1.102"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalPort",
+        "value": "82",
+        "desc": "创建第二条：内部端口 82"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_InternalPortEndRange",
+        "value": "82",
+        "desc": "创建第二条：内部端口结束框 82（单端口起止相同）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enabled",
+        "option_text": "Enable",
+        "desc": "创建第二条：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第二条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "BatchDel002",
+        "desc": "第二条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_portMappingList tr.el-table__row:has-text(\"BatchDel001\") .el-checkbox",
+        "desc": "批量删除：勾选第一条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_portMappingList tr.el-table__row:has-text(\"BatchDel002\") .el-checkbox",
+        "desc": "批量删除：勾选第二条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Delete",
+        "desc": "批量删除：点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "批量删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "批量删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "BatchDel001",
+        "desc": "批量删除：第一条无残留"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "BatchDel002",
+        "desc": "批量删除：第二条无残留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-115_batch_del",
+        "desc": "截图批量删除后页面"
+      }
+    ]
+  }
+]

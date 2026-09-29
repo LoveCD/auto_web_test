@@ -7,7 +7,7 @@
     "password": "#loginpp",
     "submit": "#login_btn",
     "cancel": "#login_cancel",
-    "error_hint": ".login_error_hint"
+    "error_hint": "#login_error_hint"
   },
   "main": {
     "app_container": "#app",

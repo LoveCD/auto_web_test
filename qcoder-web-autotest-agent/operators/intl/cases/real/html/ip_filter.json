@@ -1,0 +1,595 @@
+[
+  {
+    "id": "INTL-FW-002",
+    "title": "IP 过滤页面可访问，规则表单选项完整（CRUD-Create）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_ipFilter_L3",
+        "desc": "导航到 IP 过滤"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "ipFilter",
+        "desc": "URL 含 ipFilter"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_white",
+        "desc": "白名单模式可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_black",
+        "desc": "黑名单模式可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开规则表单"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SourceIPStart",
+        "desc": "源 IP 起始输入出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SourcePortStart",
+        "desc": "源端口起始输入出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DestIPStart",
+        "desc": "目的 IP 起始输入出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DestPortStart",
+        "desc": "目的端口起始输入出现"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Protocol",
+        "option_text": "TCP",
+        "desc": "协议含 TCP"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Protocol",
+        "option_text": "UDP",
+        "desc": "协议含 UDP"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Protocol",
+        "option_text": "ICMP",
+        "desc": "协议含 ICMP"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Protocol",
+        "option_text": "ALL",
+        "desc": "协议含 ALL"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-002_ipfilter",
+        "desc": "截图 IP 过滤页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-014",
+    "title": "IP 过滤源端口 0 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_ipFilter_L3",
+        "desc": "导航到 IP 过滤"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourcePortStart",
+        "value": "0",
+        "desc": "输入源端口 0"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 65535",
+        "desc": "越界源端口被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-014_port0",
+        "desc": "截图源端口边界校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-015",
+    "title": "IP 过滤起始 IP 大于结束 IP 被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_ipFilter_L3",
+        "desc": "导航到 IP 过滤"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourceIPStart",
+        "value": "192.168.1.200",
+        "desc": "源 IP 起始填 192.168.1.200"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourceIPEnd",
+        "value": "192.168.1.100",
+        "desc": "源 IP 结束填 192.168.1.100（小于起始）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "End IP should be greater than or equal to the start IP",
+        "desc": "起始大于结束被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-015_iprange",
+        "desc": "截图源 IP 范围校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-017",
+    "title": "IP 过滤规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_ipFilter_L3",
+        "desc": "导航到 IP 过滤"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "ipFilter",
+        "desc": "URL 含 ipFilter"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Direction",
+        "option_text": "Wan->Lan",
+        "desc": "新增：方向选 Wan->Lan"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourceIPStart",
+        "value": "1.1.1.1",
+        "desc": "新增：源 IP 起始 1.1.1.1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourcePortStart",
+        "value": "1000",
+        "desc": "新增：源端口起始 1000"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPStart",
+        "value": "2.2.2.2",
+        "desc": "新增：目的 IP 起始 2.2.2.2"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestPortStart",
+        "value": "2000",
+        "desc": "新增：目的端口起始 2000"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "TCP",
+        "desc": "新增：协议选 TCP"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "1.1.1.1",
+        "desc": "回读：列表出现新增规则源 IP"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=1.1.1.1",
+        "desc": "修改：点击规则行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourceIPStart",
+        "value": "1.1.1.2",
+        "desc": "修改：源 IP 改为 1.1.1.2"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "1.1.1.2",
+        "desc": "修改生效：列表回读新源 IP"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=1.1.1.2",
+        "desc": "非法修改：再次打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourceIPStart",
+        "value": "999.1.1.1",
+        "desc": "非法修改：源 IP 填越界地址"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "非法修改：点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address",
+        "desc": "非法值被前端拦截"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "1.1.1.2",
+        "desc": "原值不变：列表仍显示原源 IP"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "关闭编辑表单（不应用非法修改）"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "1.1.1.2",
+        "desc": "删除：勾选规则行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "1.1.1.2",
+        "desc": "删除后无残留：规则已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-017_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-018",
+    "title": "IP 过滤规则批量删除（勾选多条后删除）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_ipFilter_L3",
+        "desc": "导航到 IP 过滤"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第一条：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Direction",
+        "option_text": "Wan->Lan",
+        "desc": "创建第一条：方向选 Wan->Lan"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourceIPStart",
+        "value": "3.3.3.1",
+        "desc": "创建第一条：源 IP 起始 3.3.3.1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourcePortStart",
+        "value": "1000",
+        "desc": "创建第一条：源端口起始 1000"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPStart",
+        "value": "4.4.4.1",
+        "desc": "创建第一条：目的 IP 起始 4.4.4.1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestPortStart",
+        "value": "2000",
+        "desc": "创建第一条：目的端口起始 2000"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "TCP",
+        "desc": "创建第一条：协议选 TCP"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第一条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "3.3.3.1",
+        "desc": "第一条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第二条：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Direction",
+        "option_text": "Wan->Lan",
+        "desc": "创建第二条：方向选 Wan->Lan"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourceIPStart",
+        "value": "3.3.3.2",
+        "desc": "创建第二条：源 IP 起始 3.3.3.2"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SourcePortStart",
+        "value": "1000",
+        "desc": "创建第二条：源端口起始 1000"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestIPStart",
+        "value": "4.4.4.2",
+        "desc": "创建第二条：目的 IP 起始 4.4.4.2"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DestPortStart",
+        "value": "2000",
+        "desc": "创建第二条：目的端口起始 2000"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Protocol",
+        "option_text": "TCP",
+        "desc": "创建第二条：协议选 TCP"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第二条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "3.3.3.2",
+        "desc": "第二条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPFilterLists tr.el-table__row:has-text(\"3.3.3.1\") .el-checkbox",
+        "desc": "批量删除：勾选第一条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_IPFilterLists tr.el-table__row:has-text(\"3.3.3.2\") .el-checkbox",
+        "desc": "批量删除：勾选第二条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Delete",
+        "desc": "批量删除：点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "批量删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "批量删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "3.3.3.1",
+        "desc": "批量删除：第一条无残留"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "3.3.3.2",
+        "desc": "批量删除：第二条无残留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-018_batch_del",
+        "desc": "截图批量删除后页面"
+      }
+    ]
+  }
+]

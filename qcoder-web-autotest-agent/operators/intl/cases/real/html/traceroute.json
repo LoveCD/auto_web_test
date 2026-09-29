@@ -1,0 +1,67 @@
+[
+  {
+    "id": "INTL-APP-113",
+    "title": "Traceroute 诊断页面可访问，必填项未选时提示",
+    "priority": "P2",
+    "tags": [
+      "suite:smoke",
+      "type:negative",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_diagnose_L2",
+        "l3": "fhId_traceroute_L3",
+        "desc": "导航到 Traceroute 诊断"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "traceroute",
+        "desc": "URL 含 traceroute"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Host",
+        "desc": "目的地址输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Interface",
+        "desc": "接口下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPVersion",
+        "desc": "IP 版本下拉可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Diagnose",
+        "desc": "不选接口直接点击诊断"
+      },
+      {
+        "action": "real.wait",
+        "desc": "等待校验提示",
+        "ms": "1000"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please select a interface.",
+        "desc": "提示先选择接口"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-113_traceroute_err",
+        "desc": "截图 Traceroute 必填校验"
+      }
+    ]
+  }
+]

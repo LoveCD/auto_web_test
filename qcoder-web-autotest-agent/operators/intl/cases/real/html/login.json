@@ -258,7 +258,7 @@
       "suite:regression",
       "type:negative",
       "module:login",
-      "专项:auth"
+      "专项:security"
     ],
     "precondition": "设备已上电；前置步骤先登录再显式退出，确保设备端（按 IP 维持的）会话已失效、处于退出状态",
     "steps": [

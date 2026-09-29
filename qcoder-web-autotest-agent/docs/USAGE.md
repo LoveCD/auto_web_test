@@ -100,26 +100,33 @@ python runner/run_suite.py --operator cm  --env mock --suite mock_smoke  # CM �
 
 退出码：`0` 全部通过，`1` 存在失败（可直接接入 CI 门禁）。
 
-## 2.5 INTL 真机链路（run_intl_real.py 独立执行器）
+## 2.5 INTL 真机链路（新老 UI 双执行器）
 
-INTL 国际版真机不走 `run_suite.py`，使用独立执行器 `runner/run_intl_real.py`
+INTL 国际版真机不走 `run_suite.py`，按 UI 形态使用两个独立执行器
 （每用例独立 context、内置 HTTPS 自签证书忽略、`QCT_INTL_*` 凭据从 `.env` 注入）：
 
+- `runner/run_intl_real.py` —— 新 UI（SPA，24 套件 109 条），结果落 `reports/intl_real/`
+- `runner/run_intl_real_html.py` —— 老 UI（HTML 多页版，17 模块 67 文件 201 条），结果落 `reports/intl_real_html/`
+
 ```bash
-# 单套件执行（login|wan|status|reboot|... 或 all）
+# 新 UI：单套件执行（login|wan|status|reboot|... 或 all）
 python runner/run_intl_real.py --suite status --scheme auto
 
+# 老 UI：单套件执行（wan|wifi|voip|security|... 或 all，17 模块）
+python runner/run_intl_real_html.py --suite security --scheme auto
+
 # 关键参数
-#   --suite     套件名（status/login/wan/reboot/security/...）或 all
-#   --variant   new_ui=SPA 新 UI（默认，用例在 operators/intl/cases/real/new_ui/）
-#               html=国际老 UI 多页版（operators/intl/cases/real/html/，6 套件 39 条）
+#   --suite     套件名或 all
 #   --scheme    访问协议，支持自然语言："https加密"/"http明文"/"自动探测"
 #               默认 auto=HTTPS 优先探测（自签证书自动忽略校验），失败回退 HTTP
 #   --headful   有头调试模式
+#   --out       自定义结果目录（默认 reports/intl_real/ 或 reports/intl_real_html/）
 ```
 
-结果输出 `reports/intl_real/<run_id>/result.json`（new_ui 变体；
-html 变体输出到 `reports/intl_real_html/`），含每条用例耗时 `duration_s`。
+结果输出 `reports/intl_real/<run_id>/result.json`（新 UI）或
+`reports/intl_real_html/<run_id>/result.json`（老 UI），含每条用例耗时 `duration_s`。
+
+老 UI 特有机制：菜单/页面不存在时用例置 SKIP 不判失败（报告与通过率按执行数计算）；teardown 强制退出登录（设备为服务端会话，context 关闭不清认证，越权用例依赖此清理）；WAN 删除按行文本定位（delete_wan_row(row_text)）；固件上传用例需在 `.env` 配置 `QCT_INTL_FW_FILE_OVERSIZE`/`QCT_INTL_FW_FILE_INVALID`。
 
 ### 单套件报告生成（gen_intl_word.py）与归档 SOP
 
@@ -127,13 +134,16 @@ html 变体输出到 `reports/intl_real_html/`），含每条用例耗时 `durat
 # ⚠️ --suite 必须在首次生成时就带上：漏带会生成"全部套件"版报告，需删除重生成
 python tools/gen_intl_word.py --variant new_ui --result <run_id> --suite status
 # 产出 docs/case-docs/用例文档-INTL-REAL-<ts>.docx + 测试报告-INTL-REAL-<ts>.docx
-# （html 变体加 --variant html，此时 security 套件正常纳入统计）
+# --variant 选择报告数据源目录：new_ui=reports/intl_real/（默认）、html=reports/intl_real_html/
+# 老 UI 执行结果加 --variant html（此时 security 套件正常纳入统计）
 ```
 
 单套件回归标准流程（3 个执行动作，已验证）：
 
-1. `python runner/run_intl_real.py --suite <s> --scheme auto` —— 真机执行（~1 分钟）
-2. `python tools/gen_intl_word.py --variant new_ui --result <run_id> --suite <s>` —— 生成报告
+1. `python runner/run_intl_real.py --suite <s> --scheme auto`（新 UI）/
+   `python runner/run_intl_real_html.py --suite <s> --scheme auto`（老 UI）—— 真机执行（~1 分钟）
+2. `python tools/gen_intl_word.py --variant new_ui --result <run_id> --suite <s>`
+   （老 UI 报告用 `--variant html`）—— 生成报告
 3. 脱敏扫描 + 按模板归档：解包 docx 扫描 CM/INTL 两套真机密码字面量
    （取值见工程根 `.env` 的 `QCT_CM_*`/`QCT_INTL_*` 变量，**任何密码不得写入仓库文档**），
    命中即泄露；CLEAN 后复制到 workspace 根并按惯例命名：

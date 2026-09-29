@@ -1,0 +1,61 @@
+[
+  {
+    "id": "INTL-NET-105",
+    "title": "OLT 认证页面可访问，认证参数输入框显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:network"
+    ],
+    "precondition": "设备已上电且为 PON 上行（WanInterface=dev.pon.1），可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_authentication_L2",
+        "l3": "fhId_OLTAuthentication_L3",
+        "desc": "导航到 OLT 认证"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "OLTAuthentication",
+        "desc": "URL 含 OLTAuthentication"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_UserName",
+        "desc": "认证用户名输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_UserId",
+        "desc": "认证用户 ID 输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "认证参数应用按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Password",
+        "desc": "认证密码输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply2",
+        "desc": "认证密码应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-NET-105_olt_auth",
+        "desc": "截图 OLT 认证页"
+      }
+    ]
+  }
+]

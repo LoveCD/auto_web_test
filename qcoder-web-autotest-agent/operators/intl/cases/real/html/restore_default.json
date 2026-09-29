@@ -1,0 +1,64 @@
+[
+  {
+    "id": "INTL-SYS-001",
+    "title": "恢复出厂页面可访问，取消确认框不执行恢复",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:system"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_deviceManagement_L2",
+        "l3": "fhId_restoreDefault_L3",
+        "desc": "导航到恢复出厂"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "restoreDefault",
+        "desc": "URL 含 restoreDefault"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Restore",
+        "desc": "Restore 按钮可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Restore",
+        "desc": "点击 Restore 按钮"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "desc": "确认对话框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": false,
+        "desc": "点击 Cancel 取消，避免执行恢复出厂"
+      },
+      {
+        "action": "real.assert_confirm_hidden",
+        "desc": "确认框关闭"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "restoreDefault",
+        "desc": "仍停留在恢复出厂页面"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-001_restore",
+        "desc": "截图恢复出厂页"
+      }
+    ]
+  }
+]

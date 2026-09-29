@@ -1,0 +1,90 @@
+[
+  {
+    "id": "INTL-ROUTE-001",
+    "title": "默认路由页面可访问，IPv4 默认路由配置完整",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:route"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_defaultRoute_L3",
+        "desc": "导航到默认路由"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "defaultRoute",
+        "desc": "URL 含 defaultRoute"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DefaultConnectionService",
+        "desc": "默认路由启用勾选可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_selectWan",
+        "desc": "WAN 选择可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onEnableApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-001_default",
+        "desc": "截图默认路由页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-ROUTE-003",
+    "title": "默认路由启用勾选可交互且不产生副作用",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:route"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_routeSettings_L2",
+        "l3": "fhId_defaultRoute_L3",
+        "desc": "导航到默认路由"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_DefaultConnectionService",
+        "desc": "勾选默认路由启用"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_DefaultConnectionService",
+        "desc": "取消勾选恢复原状（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-ROUTE-003_toggle",
+        "desc": "截图默认路由勾选交互"
+      }
+    ]
+  }
+]

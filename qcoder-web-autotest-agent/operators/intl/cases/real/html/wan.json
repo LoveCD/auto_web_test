@@ -11,26 +11,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -68,26 +50,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -135,26 +99,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -194,26 +140,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -295,26 +223,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -388,33 +298,15 @@
       "suite:regression",
       "type:boundary",
       "type:negative",
-      "type:required",
+      "type:boundary",
       "module:wan",
       "专项:crud"
     ],
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -992,7 +884,7 @@
       },
       {
         "action": "real.screenshot",
-        "name": "wan_validation",
+        "name": "INTL-WAN-006_validation",
         "desc": "用例成果截图"
       }
     ]
@@ -1011,26 +903,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -1427,7 +1301,7 @@
       },
       {
         "action": "real.screenshot",
-        "name": "wan_ipv6_validation",
+        "name": "INTL-WAN-007_ipv6_validation",
         "desc": "用例成果截图"
       }
     ]
@@ -1440,33 +1314,15 @@
       "suite:regression",
       "type:boundary",
       "type:negative",
-      "type:required",
+      "type:boundary",
       "module:wan",
       "专项:crud"
     ],
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -1875,7 +1731,7 @@
       {
         "action": "real.screenshot",
         "desc": "用例成果截图",
-        "name": "wan_pppoe_validation"
+        "name": "INTL-WAN-008_pppoe_validation"
       }
     ]
   },
@@ -1885,33 +1741,15 @@
     "priority": "P1",
     "tags": [
       "suite:regression",
-      "type:security",
+      "专项:security",
       "module:wan",
       "专项:crud"
     ],
     "precondition": "设备已上电，可正常登录；设备为密码防回显模式（非 pwd_enable_flag=1 直显设备）",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -2043,26 +1881,8 @@
     "precondition": "设备已上电，可正常登录（用例前置自动创建临时 WAN 保证列表非空）",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -2216,26 +2036,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -2395,26 +2197,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -2574,26 +2358,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -2747,26 +2513,8 @@
     "precondition": "设备已上电，可正常登录",
     "steps": [
       {
-        "action": "real.navigate",
-        "path": "/login.html",
-        "desc": "访问登录页"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#user_name",
-        "value": "${QCT_INTL_ADMIN_USER}",
-        "desc": "输入用户名"
-      },
-      {
-        "action": "real.fill",
-        "selector": "#loginpp",
-        "value": "${QCT_INTL_ADMIN_PASS}",
-        "desc": "输入密码"
-      },
-      {
-        "action": "real.click",
-        "selector": "#login_btn",
-        "desc": "登录"
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
       },
       {
         "action": "real.click_menu",
@@ -2815,7 +2563,7 @@
       },
       {
         "action": "real.click",
-        "selector": "tr:has-text(\"INTERNET_B_VID_102\") >> nth=0",
+        "selector": "text=INTERNET_B_VID_102",
         "desc": "查询：点击列表项查看详情"
       },
       {
@@ -2886,6 +2634,101 @@
         "action": "real.screenshot",
         "name": "INTL-WAN-CRUD-003_done",
         "desc": "截图删除后页面"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WAN-012",
+    "title": "预置 VLAN 99 Internet 路由 WAN（保留不删除，供 INTL-APP-116/117 依赖）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wan",
+      "专项:persist"
+    ],
+    "precondition": "设备已上电，可正常登录；用例可重复执行（重跑前自动清理旧 VLAN 99 WAN）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "desc": "导航到宽带设置"
+      },
+      {
+        "action": "real.delete_wan_row_if_exists",
+        "row_text": "INTERNET_R_VID_99",
+        "desc": "幂等清理：如上次运行已保留 INTERNET_R_VID_99，先删除避免 VLAN 重复校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "预置：点击 Add New WAN"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ServiceList",
+        "option_text": "INTERNET",
+        "desc": "预置：选择服务类型 INTERNET"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "预置：选择连接模式 Route"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_iporppp",
+        "option_text": "IPoE",
+        "desc": "预置：选择 IP 封装 IPoE"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_AddressingType",
+        "option_text": "DHCP",
+        "desc": "预置：选择寻址类型 DHCP"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_VLANID",
+        "value": "99",
+        "desc": "预置：输入 VLAN ID 99"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MTU",
+        "value": "1500",
+        "desc": "预置：输入 MTU 1500"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "预置：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "容错：关闭保存结果弹窗（避免模态遮罩拦截后续断言）"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "INTERNET_R_VID_99",
+        "desc": "回读：列表出现 INTERNET_R_VID_99（VLAN 99 Internet 路由 WAN 创建成功）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WAN-012_vlan99_preset",
+        "desc": "截图预置结果（本用例刻意不删除该 WAN，供 INTL-APP-116/117 绑定使用）"
       }
     ]
   }

@@ -1,0 +1,40 @@
+[
+  {
+    "id": "INTL-STATUS-101",
+    "title": "WAN 状态页面可访问，连接信息表格显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:status"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_wanStatus_L2",
+        "desc": "导航到 WAN 状态"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wanStatus",
+        "desc": "URL 含 wanStatus"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_wanStatusInfo",
+        "desc": "WAN 连接信息表格可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-STATUS-101_wan",
+        "desc": "截图 WAN 状态页"
+      }
+    ]
+  }
+]

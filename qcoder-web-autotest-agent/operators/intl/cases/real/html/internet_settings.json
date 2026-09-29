@@ -1,0 +1,153 @@
+[
+  {
+    "id": "INTL-NET-101",
+    "title": "Internet 设置页面可访问，WAN 列表与操作按钮显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:network"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "l3": "fhId_internetSettings_L3",
+        "desc": "导航到 Internet 设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "internetSettings",
+        "desc": "URL 含 internetSettings"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_wanDataTable",
+        "desc": "WAN 连接列表表格可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Add",
+        "desc": "新增按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Delete",
+        "desc": "删除按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-NET-101_internet",
+        "desc": "截图 Internet 设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-NET-102",
+    "title": "Internet 设置连接类型与服务类型选项完整",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:network"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_broadBandSettings_L2",
+        "l3": "fhId_internetSettings_L3",
+        "desc": "导航到 Internet 设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开 WAN 新增表单（连接类型/封装类型/服务类型下拉在表单内）"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1500,
+        "desc": "等待表单渲染"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_connectMode",
+        "desc": "连接类型下拉可见"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "切换连接类型为 Route"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_connectMode",
+        "option_text": "Route",
+        "desc": "连接类型含 Route"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_connectMode",
+        "option_text": "Bridge",
+        "desc": "连接类型含 Bridge"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_iporppp",
+        "desc": "封装类型下拉可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_iporppp",
+        "option_text": "IPoE",
+        "desc": "封装类型含 IPoE"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_iporppp",
+        "option_text": "PPPoE",
+        "desc": "封装类型含 PPPoE"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ServiceList",
+        "desc": "服务类型下拉可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ServiceList",
+        "option_text": "INTERNET",
+        "desc": "服务类型含 INTERNET"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ServiceList",
+        "option_text": "TR069",
+        "desc": "服务类型含 TR069"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ServiceList",
+        "option_text": "IPTV",
+        "desc": "服务类型含 IPTV"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-NET-102_internet_options",
+        "desc": "截图连接类型与服务类型选项"
+      }
+    ]
+  }
+]

@@ -1,0 +1,196 @@
+[
+  {
+    "id": "INTL-WIFI-011",
+    "title": "Band Steering 页面可访问，RSSI 阈值输入完整",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录；设备支持 Band Steering",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_bandSteering_L3",
+        "desc": "导航到 Band Steering"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "bandSteering",
+        "desc": "URL 含 bandSteering"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用开关可见"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "开启 Band Steering（幂等设为目标态，已是开启则不动）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RSSIThreshold",
+        "desc": "2.4G RSSI 阈值输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RSSIThreshold5G",
+        "desc": "5G RSSI 阈值输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-011_bandsteer",
+        "desc": "截图 Band Steering 页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-019",
+    "title": "Band Steering RSSI 阈值小于 -100 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录；设备支持 Band Steering",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_bandSteering_L3",
+        "desc": "导航到 Band Steering"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用开关可见"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "开启 Band Steering（幂等设为目标态，已是开启则不动）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RSSIThreshold",
+        "value": "-101",
+        "desc": "输入低于下限的 RSSI 阈值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between -100 and 0",
+        "desc": "越界 RSSI 阈值被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-019_rssi_low",
+        "desc": "截图 RSSI 下限校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-020",
+    "title": "Band Steering 5G RSSI 阈值大于 0 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录；设备支持 Band Steering",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_bandSteering_L3",
+        "desc": "导航到 Band Steering"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用开关可见"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "开启 Band Steering（幂等设为目标态，已是开启则不动）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RSSIThreshold5G",
+        "value": "1",
+        "desc": "输入高于上限的 5G RSSI 阈值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between -100 and 0",
+        "desc": "越界 5G RSSI 阈值被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-020_rssi5g_high",
+        "desc": "截图 5G RSSI 上限校验"
+      }
+    ]
+  }
+]

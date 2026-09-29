@@ -1,6 +1,6 @@
 ---
 name: qcoder-web-autotest
-description: 运营商网关 Web UI 自动化测试工具（WorkBuddy/QCoder 双端适配）。适用于烽火 FTTR 等网关设备管理界面的端到端测试，支持 CM（中国移动）/INTL（国际）双运营商、真机 Playwright（--env real）与离线 Mock（--env mock）双环境、中文自然语言一键生成可执行测试用例（如"测试wan连接页面vlan绑定功能"、"测试wifi基础设置功能支持320MHZ频段设置"）、全菜单遍历截图、回归/冒烟套件执行与报告输出。INTL 国际版真机使用独立执行器 run_intl_real.py（--suite 单套件 / --variant new_ui|html / --scheme HTTPS|HTTP 自动探测），Word 报告用 gen_intl_word.py（--result <run_id> --suite <套件名>，--suite 必须首次生成时带上）。当用户提出测试网关/路由器 Web 界面、运行 smoke/regression/navigation 套件、跑 INTL 真机单套件回归并出报告、用自然语言生成 Web 测试用例、真机 UI 验证、Mock 离线测试、或要求封装/使用本测试工具时触发。
+description: 运营商网关 Web UI 自动化测试工具（WorkBuddy/QCoder 双端适配）。适用于烽火 FTTR 等网关设备管理界面的端到端测试，支持 CM（中国移动）/INTL（国际）双运营商、真机 Playwright（--env real）与离线 Mock（--env mock）双环境、中文自然语言一键生成可执行测试用例（如"测试wan连接页面vlan绑定功能"、"测试wifi基础设置功能支持320MHZ频段设置"）、全菜单遍历截图、回归/冒烟套件执行与报告输出。当用户提出测试网关/路由器 Web 界面、运行 smoke/regression/navigation 套件、用自然语言生成 Web 测试用例、真机 UI 验证、Mock 离线测试、或要求封装/使用本测试工具时触发。
 license: Internal
 disable: false
 ---
@@ -42,10 +42,7 @@ qcoder-web-autotest-agent/
 ├── keywords/
 │   ├── real_keywords.py        # 真机会话：导航/登录/元素级动作/断言/dialog 捕获
 │   └── assert_keywords.py      # Mock 旧断言引擎
-├── runner/
-│   ├── run_suite.py            # 执行器：加载 profile/suite → 逐 case 执行 → 报告
-│   └── run_intl_real.py        # INTL 真机独立执行器（--suite/--variant/--scheme）
-├── tools/gen_intl_word.py      # INTL 真机 Word 报告生成（--result <run_id> --suite）
+├── runner/run_suite.py         # 执行器：加载 profile/suite → 逐 case 执行 → 报告
 ├── generator/
 │   ├── page_index.py           # UI 源码索引器（setItemId → fhId_xxx）
 │   ├── generate_case.py        # NL 用例生成器（含 gap 检测）
@@ -93,31 +90,6 @@ run_suite.py 的 `real.screenshot` 步骤会把截图路径写入 `result.detail
 
 ⚠️ 连续 3 次密码错误设备锁定 1 分钟；涉及配置修改的用例只做只读断言，不点"保存设置"。
 
-## 环境与账号（INTL 真机）与执行器差异
-
-```text
-设备地址   ${QCT_INTL_BASE_URL}（默认 http://192.168.1.1）
-管理员     ${QCT_INTL_ADMIN_USER} / ${QCT_INTL_ADMIN_PASS}
-普通用户   ${QCT_INTL_USER_USER} / ${QCT_INTL_USER_PASS}
-登录       main.html#/ SPA（新 UI）或 login.html（老 UI html 变体）；错误提示 div.login_error_hint
-```
-
-INTL 真机与 CM 链路的关键差异（改用例前必读）：
-
-1. **独立执行器** `runner/run_intl_real.py`：每用例独立 browser context（状态隔离）；
-   `--scheme auto` 默认 HTTPS 优先（自签证书已自动忽略校验，chromium 加
-   `--ignore-certificate-errors`），失败回退 HTTP。
-2. **双变体**：`--variant new_ui`（SPA 新 UI，24 套件 109 条，security 锁定套件报告自动排除）
-   / `--variant html`（老 UI 多页版，6 套件 39 条，security 正常纳入统计）。
-3. **Element UI 弹窗**：确认框是 `.el-message-box`（`$confirm` DOM 弹窗），Playwright dialog
-   事件不触发，须用 `assert_confirm_visible`/`click_confirm`。
-4. **回归顺序**：login/lan 套件置末尾执行，防登录态副作用级联。
-5. **Word 报告**：`tools/gen_intl_word.py --variant <v> --result <run_id> --suite <s>`；
-   `--suite` **必须首次生成时就带上**（漏带产出全量版报告，需删除重生成）；
-   归档前 docx 解包脱敏扫描（扫描 CM/INTL 两套真机密码字面量，取值见工程根
-   `.env` 的 `QCT_CM_*`/`QCT_INTL_*` 变量，**密码不得写入任何入库文件**），
-   CLEAN 后按 `测试报告-INTL-REAL-<SUITE>-<型号>-<ts>.docx` 命名归档 workspace 根。
-
 ## 命令速查（在项目根目录执行）
 
 ```bash
@@ -139,16 +111,6 @@ python runner/run_suite.py --operator cm --env real --suite generated/gen_wifi_3
 python mock_web_ui/server.py                            # 终端 1：起 Mock（127.0.0.1:8899）
 python runner/run_suite.py --operator intl --env mock --suite smoke
 python runner/run_suite.py --operator cm  --env mock --suite mock_smoke
-
-# ---- 5. INTL 真机单套件回归（独立链路，一步一条）----
-# 凭据走 .env 的 QCT_INTL_*；新 UI 用例在 operators/intl/cases/real/new_ui/
-python runner/run_intl_real.py --suite status --scheme auto          # 单套件（HTTPS 自动探测）
-python tools/gen_intl_word.py --variant new_ui --result <run_id> --suite status
-# ⚠️ gen_intl_word 的 --suite 必须首次生成时就带上，漏带会生成全量版报告需删掉重来
-# 产出 docs/case-docs/用例文档-INTL-REAL-<ts>.docx + 测试报告-INTL-REAL-<ts>.docx
-# 归档：脱敏扫描（docx 解包扫 CM/INTL 两套密码）→ 复制 workspace 根
-# → 测试报告-INTL-REAL-<SUITE>-HG6142HT-<ts>.docx / 用例文档-INTL-REAL-<SUITE>-<ts>.docx
-# 老 UI 设备用 --variant html（operators/intl/cases/real/html/，6 套件 39 条）
 
 # 可选参数：--headed（有头调试）/ --browser firefox / --url http://x.x.x.x（覆盖 base_url）
 # 退出码：0 全通过，1 有失败（可接 CI 门禁）
@@ -246,6 +208,17 @@ python -m generator.generate_case --operator cm --query "测试wifi基础设置�
 - INTL：`operators/intl/cases/band_steering.json`（套件名 `band_steering`，3 条）
 - 执行：`python runner/run_suite.py --operator cm --env real --suite wifi_band_steering`
 
+### INTL 老 UI 执行器（run_intl_real_html.py）补充动作（2026-09-16）
+
+同一页面在不同局方/机型上能力不同时，优先用「条件跳过」动作把环境受限降级为 SKIP，而不是让它 FAIL：
+
+- `real.set_switch(selector, on)` —— 幂等设置 el-switch（已是目标态则不动，切换后复读校验）。适合无线开关这类「用例要求先处于某状态」的前置，避免单纯 `click` 的切换语义让同一用例时对时错
+- `real.skip_if_disabled(selector, steps)` —— 控件置灰时跳过后续 steps 步（如 Domain 仅 FTTR_MAIN/FTTR_SUB/COMMON/SFU/AP_COMMON 五类局方可编辑）
+- `real.skip_if_option_absent(selector, option_text, steps)` —— 下拉无该选项时跳过后续 steps 步（如机型不支持 11ax 制式）
+  ⚠️ 必须放在 `select_option` **之前**：`select_option` 遇选项缺失抛的是超时（判 FAIL），不是 SKIP
+- 下拉当前值/开关状态这类读值断言用 `real.evaluate` 自带脚本：`#fhId_X` 的 id 可能挂在组件根 div 上，`assert_input_value` 只对原生 `<input>` 生效。脚本内 `throw new Error(...)` 判 FAIL、`return true` 判 PASS
+- 需要跨整页导航/重新登录保存的中间值写 `localStorage`（`window.*` 在整页导航后会丢）
+
 ## 报告与截图
 
 每次运行生成 `reports/{时间戳}_{operator}_{env}_{suite}/`：`result.json`（用例/步骤级）、
@@ -268,3 +241,18 @@ python -m generator.generate_case --operator cm --query "测试wifi基础设置�
 | 菜单 id 找不到 | 真机菜单与源码有差异，先跑 navigation 拿真实 `fhId_*` 菜单树 |
 | NEG 用例误判 | 负向用例必须 `"auto_login": false`，否则框架会先自动登录 |
 | Mock 端口占用 | 改 `mock_web_ui/server.py` 端口并同步 profile.json |
+| INTL 老 UI 登录被填入 `${QCT_INTL_ADMIN_USER}` 字面量 | `run_intl_real_html.py` 的 `_inject` 曾只替换旧 `${INTL_*}` 命名，与用例实际 `${QCT_INTL_*}` 不一致；2026-09-10 已改为 `core.config.resolve_env_value` 通用解析。若复现请检查该函数 |
+| `real.click` 报 strict mode violation（多元素命中） | 用例中不要手写"展开下拉"的 click/wait 步骤（如 `.el-select .el-input__inner`），`select_option` 自带展开逻辑；删除冗余步骤即可（INTL-WAN-006 已修复） |
+| INTL 真机报告设备型号与实际不符 | `tools/gen_intl_word.py` 的 `DEVICE["model"]` 已按 `--variant` 区分（html=HG6163FC1，new_ui=HG6142HT）；换设备时以状态页 `#fhId_ModelName` 实测为准 |
+| 负向校验断言必失败（提示不出现） | 老 UI 的表单校验提示（`.el-form-item__error` 等）在 **blur（失焦）时**才触发，`fill` 后直接断言拿不到；执行器 `fill` 已改为失焦收尾（2026-09-10）。若新用例仍失败，确认断言前有失焦动作 |
+| WAN 接口/服务下拉 `select_option` 失败 | 设备未开通 WAN 业务（ONU O1、WAN List 空）时下拉无可选项，属**环境受限**；执行器会抛 `PreconditionBlocked` 判 SKIP，不要改成 FAIL |
+| `assert_unauthorized`（接口级 401/403 断言）必失败 | HG6163FC1 数据接口走加密 RPC（FHNCAPIS），前端路由拦截后根本不发请求，被动监听采不到 401/403；接口级鉴权断言在本固件不可行，用例已删除该步，仅保留菜单/路由两级断言 |
+| CRUD 用例在真机留下残留数据 | 清理段约定：`desc` 以「清理」开头的步骤起到用例结尾恒会执行（无论成败）；删行用 `real.delete_wan_row`（按行文本）或 `real.delete_row_at`（按行号，支持 `if_count_gt` 行数保护防误删出厂规则）。回归后务必全页面扫残留 |
+| ~~已知固件缺陷~~（2026-09-10 已推翻，勿再上报） | ① ~~INTL-SEC-006 未登录直连受保护路由不跳登录~~ → 实为**设备残留活动会话放行**（见下方"会话残留"条），用例已加"登录→正确登出"前置后 PASS；② ~~INTL-FW-034 ACL 必填项为空无校验~~ → 实为**起始/结束 IP 可同时为空属合法行为**，用例已改为正向断言创建成功。当前全量回归 **0 真实缺陷** |
+| 未授权类用例（跳登录页/拦截）在真机 FAIL，手动测却正常 | 设备在**存在活动会话期间会对新客户端放行受保护页**（零 cookie 全新上下文照样拿到 sessionid、数据接口 200）。回归时上游 system/其它套件登录后的**服务端会话残留**是主因。修法：用例开头加 `real.login` + `real.logout`（确保服务端会话真正注销，URL 回 login.html）再测拦截。注意 `real.logout` 的 fallback 只跳 login.html、**不注销服务端会话**，依赖会话状态的用例必须走真实登出流程 |
+| 跨套件依赖预置数据（如绑定 WAN 的用例） | 绑定 WAN 接口的用例（DDNS APP-116/117、NAT APP-118/119、端口映射 APP-114/115、静态路由 ROUTE-008/009）统一绑定 **INTL-WAN-012 预置的 `INTERNET_R_VID_99`**（VLAN 99 Internet 路由，刻意不删除），以解耦出厂 `INTERNET` WAN 被 wan 套件 CRUD 改动后的连带失败。全量顺序天然满足（wan 在 app_rest/route 之前）；**单独跑下游套件前须先跑 wan 套件**，否则下拉无选项会 `PreconditionBlocked` SKIP |
+| 预置/清理类动作重跑失败（VLAN 重复校验拦截） | 保留不删除的预置数据在重跑时必须先清理旧条目。用 `real.delete_wan_row_if_exists`（存在才删 + 内部处理确认框，不存在静默跳过）。**坑**：执行器把动作返回 `False` 判为断言失败，"跳过"分支必须 `return True` |
+| 端口隔离用例（原 INTL-FW-012）已删除 | HG6163FC1 老 UI **无端口隔离页面**，该用例每次只能 SKIP。2026-09-11 按维护要求删除：删除 `cases/real/html/port_isolation.json`、从 `core/intl_suite_order.py` 的 `SUITES["firewall"]` 移除该文件、从 `gen_intl_word.py` 页面标题表移除 `port_isolation` 项。若后续机型具备该页面再按需重建 |
+| 报告测试项顺序 ≠ 实际执行顺序 | 顺序唯一来源是 `core/intl_suite_order.py`（`SUITES` / `ALL_FILES` / `LOCKOUT_IDS`），**runner 与 tools/gen_intl_word.py 同源引用**。2026-09-11 前两处各写一份（执行器=副作用隔离序、报告=sorted(glob) 文件名字典序），导致 66 个页面中 65 个位置错位。**改执行顺序只改这一个模块**，报告顺序自动跟随；新增/删除用例文件时必须同步登记该模块，否则新页面会退化为按字典序排到最后 |
+| 页面用例改了设备配置却没还原 | 会点 Apply 的用例必须自带「清理：」段还原：开局 `real.evaluate` 把原值存进 `localStorage`，末尾按原值回填并重新 Apply（或开关幂等回位）。参考 `wifi_basic.json` 的 INTL-WIFI-035/038/040/041/044/048/051。不改配置的观测型用例用 `#fhId_onDelete`（实为 Cancel，丢弃未保存修改）收尾即可。清理段失败会把用例判 FAIL——这是故意的，防残留静默 |
+| wifiBasic 用例集已从 3 条扩到 22 条 | `cases/real/html/wifi_basic.json` = 既有 3 条（001/002/013）+ 新增 19 条（`INTL-WIFI-033`~`051`，对应 `web_v3/docs/测试用例-wifiBasic-通用版.md` 的 GEN-001~022，ID 对照见该文档附录 C）。**2026-09-16 落成时测试机不在本机网段（本机在 192.168.88.0/24），尚未真机验证**；首次接入设备后重点核对这四个来源静态分析的锚点：`#fhId_RegulatoryDomain`、全制式文案 `802.11 b/g/n`、校验文案 `Please select an option.`、`#fhId_onDelete`（Cancel） |

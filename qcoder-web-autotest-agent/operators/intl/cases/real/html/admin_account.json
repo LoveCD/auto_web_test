@@ -1,0 +1,177 @@
+[
+  {
+    "id": "INTL-SYS-010",
+    "title": "管理员账号页面可访问，密码修改表单完整",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:system",
+      "专项:security"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_accountManagement_L2",
+        "l3": "fhId_adminAccount_L3",
+        "desc": "导航到管理员账号"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "adminAccount",
+        "desc": "URL 含 adminAccount"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_user",
+        "desc": "用户名输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Org_pd",
+        "desc": "原密码输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_New_pd",
+        "desc": "新密码输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_confirm_pd",
+        "desc": "确认密码输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onCancel",
+        "desc": "取消按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-010_admin",
+        "desc": "截图管理员账号页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SYS-014",
+    "title": "管理员账号新密码长度不足 8 位报错（不应用修改）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:system",
+      "专项:security"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_accountManagement_L2",
+        "l3": "fhId_adminAccount_L3",
+        "desc": "导航到管理员账号"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_New_pd",
+        "value": "abcdefg",
+        "desc": "新密码填 7 位 abcdefg"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1000,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 8-32 characters.",
+        "desc": "报长度错误提示"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "取消关闭，不应用修改"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-014_pwdlen",
+        "desc": "截图密码长度校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SYS-015",
+    "title": "管理员账号两次新密码输入不一致报错（不应用修改）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:system",
+      "专项:security"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_accountManagement_L2",
+        "l3": "fhId_adminAccount_L3",
+        "desc": "导航到管理员账号"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_New_pd",
+        "value": "Abcdefg1",
+        "desc": "新密码填 Abcdefg1"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_confirm_pd",
+        "value": "Abcdefg2",
+        "desc": "确认密码填 Abcdefg2，不一致"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1000,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter the same value again.",
+        "desc": "报两次密码不一致提示"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "取消关闭，不应用修改"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-015_pwdconf",
+        "desc": "截图密码不一致校验"
+      }
+    ]
+  }
+]

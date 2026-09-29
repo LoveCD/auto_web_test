@@ -1,0 +1,2228 @@
+[
+  {
+    "id": "INTL-WIFI-003",
+    "title": "Wi-Fi 基本设置页面可访问（5G）",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录；设备支持 5G 频段",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "工作模式下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Channel",
+        "desc": "信道下拉可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a",
+        "desc": "5G 工作模式含 802.11 a"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n",
+        "desc": "5G 工作模式含 802.11 a/n"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "desc": "5G 工作模式含 802.11 a/n/ac"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-003_basic5g",
+        "desc": "截图 5G 基本设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-031",
+    "title": "Wi-Fi 基本设置 5G 工作模式与频宽选项枚举",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 5G 基本设置"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a",
+        "desc": "工作模式含 802.11 a"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n",
+        "desc": "工作模式含 802.11 a/n"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "desc": "工作模式含 802.11 a/n/ac"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz",
+        "desc": "频宽含 20MHz"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "40MHz",
+        "desc": "频宽含 40MHz"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz/40MHz",
+        "desc": "频宽含 20MHz/40MHz"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-002_basic_options_5g",
+        "desc": "截图工作模式选项"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-032",
+    "title": "Wi-Fi 基本设置 5G 自动/手动信道切换",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录；设备支持 5G 频段",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用开关可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "工作模式下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "desc": "频宽下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Channel",
+        "desc": "信道下拉可见"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 36",
+        "desc": "选择手动信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "Auto Selected",
+        "desc": "切回自动信道"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_GuardInterval",
+        "desc": "保护间隔勾选可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-013_channel_switch_5g",
+        "desc": "截图5G 信道模式切换"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-052",
+    "title": "5G 基本设置页面可访问与基础控件就绪",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:positive",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应通用用例 TC-WB5-GEN-001。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "基础控件就绪：射频开关可见"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "断言网络模式已回读设备值且非空"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_RegulatoryDomain",
+        "desc": "断言监管域已回读设备值且非空"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "desc": "断言频宽已回读设备值且非空"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_Channel",
+        "desc": "断言信道已回读设备值且非空"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_GuardInterval",
+        "desc": "断言保护间隔已回读设备值且非空"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "网络模式下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RegulatoryDomain",
+        "desc": "监管域下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "desc": "频宽下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Channel",
+        "desc": "信道下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_GuardInterval",
+        "desc": "保护间隔下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onDelete",
+        "desc": "Cancel 按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-052_ready",
+        "desc": "截图 5G 基础页初始状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-053",
+    "title": "5G 基本设置初始值回读与设备真实值一致",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-002。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o2",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录各控件显示值（制式/频宽/信道/保护间隔/监管域）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新渲染"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o2",
+        "fields": [
+          "std",
+          "bw",
+          "ch",
+          "gi",
+          "dom"
+        ],
+        "desc": "断言重进后各控件值与首次记录一致（设备真实值，无前端缓存）",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-053_readback",
+        "desc": "截图重进后的回读值"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-054",
+    "title": "5G 网络模式选项枚举正确",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-003；ax 项缺属 wifi5_cap 环境受限（SKIP）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o54",
+        "fields": {
+          "std": "#fhId_OperatingStandards"
+        },
+        "desc": "记录原网络模式"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a",
+        "desc": "网络模式含 802.11 a"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n",
+        "desc": "网络模式含 802.11 a/n"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "desc": "网络模式含 802.11 a/n/ac"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 ax",
+        "steps": 3,
+        "desc": "机型无 802.11 ax 制式则跳过 ax 分支（wifi5_cap 环境受限）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 ax",
+        "desc": "网络模式切为 802.11 ax"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_OperatingStandards",
+        "value": "802.11 ax",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言网络模式已选中 802.11 ax"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-054_std_opts",
+        "desc": "截图网络模式选项枚举"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o54",
+        "fields": [
+          "std"
+        ],
+        "desc": "清理：断言网络模式已恢复为设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-055",
+    "title": "5G 频宽与保护间隔选项枚举正确",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-004；条件项（80/160MHz）缺失属局方/制式分支，不判失败。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_option_set",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "contains": [
+          "20MHz",
+          "40MHz",
+          "20MHz/40MHz"
+        ],
+        "desc": "展开频宽下拉：必有 20MHz / 40MHz / 20MHz/40MHz(Auto)；80/160MHz 依制式与局方为条件项"
+      },
+      {
+        "action": "real.click_blank",
+        "desc": "收起频宽下拉面板"
+      },
+      {
+        "action": "real.assert_option_set_cond",
+        "selector": "#fhId_GuardInterval",
+        "by_selector": "#fhId_OperatingStandards",
+        "cases": [
+          {
+            "pattern": "(?i)(ax|be)",
+            "contains": [
+              "0.8us",
+              "1.6us",
+              "3.2us",
+              "Auto"
+            ]
+          },
+          {
+            "contains": [
+              "0.4us",
+              "0.8us",
+              "Auto"
+            ]
+          }
+        ],
+        "desc": "保护间隔选项集随当前制式校验（含 ax/be: 0.8/1.6/3.2us/Auto；否则 0.4/0.8us/Auto）"
+      },
+      {
+        "action": "real.click_blank",
+        "desc": "收起保护间隔下拉面板"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-055_bw_gi",
+        "desc": "截图频宽与保护间隔枚举"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-056",
+    "title": "5G 关闭射频保存并回读",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:mutation",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-005；本条不自带恢复（恢复由 INTL-WIFI-057 幂等承接），两 条须成对执行。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": false,
+        "desc": "射频开关置为关闭（幂等）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": false,
+        "desc": "断言保存后射频为关"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "重新进入页面（回读设备值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": false,
+        "desc": "断言重进后射频仍为关（保存已生效）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-056_radio_off",
+        "desc": "截图 5G 射频关闭"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-057",
+    "title": "5G 开启射频恢复",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:restore",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-006；与 INTL-WIFI-056 成对。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "恢复：射频开关置为开启（幂等：承接上条或独立执行均安全）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "断言保存后射频为开"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "重新进入页面（回读设备值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "断言重进后射频仍为开（保存已生效）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-057_radio_on",
+        "desc": "截图 5G 射频恢复开启"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-058",
+    "title": "5G 制式 a 强制频宽 20MHz 且下拉禁用",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-007（R1）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o7",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth"
+        },
+        "desc": "记录原制式/频宽"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a",
+        "desc": "网络模式切为 802.11 a"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待制式联动生效"
+      },
+      {
+        "action": "real.assert_disabled",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "disabled": true,
+        "desc": "断言 a 制式下频宽下拉禁用（仅 20MHz 可选）"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "value": "20MHz",
+        "desc": "断言 a 制式下频宽自动置 20MHz"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-058_std_a_bw",
+        "desc": "截图 a 制式下频宽锁定 20MHz"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o7",
+        "fields": [
+          "std",
+          "bw"
+        ],
+        "desc": "清理：断言制式/频宽已恢复为设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-059",
+    "title": "5G 制式 a,n 下 80MHz 回退 Auto",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-008；MY_TM 回退目标为 20MHz，不在本版。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o8",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel"
+        },
+        "desc": "记录原制式/频宽/信道"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "steps": 5,
+        "desc": "机型无 a/n/ac 制式则整条跳过（无法构造 80MHz 前置）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "80MHz",
+        "desc": "频宽先选 80MHz（当前制式含 ac/ax 时合法）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n",
+        "desc": "网络模式改为 802.11 a/n"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待联动生效"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "value": "20MHz/40MHz",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言频宽自动回退 20MHz/40MHz（value=Auto）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-059_80m_fallback",
+        "desc": "截图 80MHz 回退 Auto"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o8",
+        "fields": [
+          "std",
+          "bw",
+          "ch"
+        ],
+        "desc": "清理：断言制式/频宽/信道恢复设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-060",
+    "title": "5G 制式 a,n,ac 下 160MHz 回退 Auto",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-009；MEX_TP 系/TH_AIS 保留 160 不回退，不适用本条。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o9",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth"
+        },
+        "desc": "记录原制式/频宽"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "steps": 5,
+        "desc": "机型无 a/n/ac 制式则整条跳过"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "desc": "制式从含 ax 改为 802.11 a/n/ac（当前频宽 160MHz）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待联动生效"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "value": "20MHz/40MHz",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言频宽自动回退 20MHz/40MHz"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-060_160m_fallback",
+        "desc": "截图 160MHz 回退 Auto"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o9",
+        "fields": [
+          "std",
+          "bw"
+        ],
+        "desc": "清理：断言制式/频宽恢复设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-061",
+    "title": "5G 非 ax/be 制式下高保护间隔回退 Auto",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-010（R2，value 维度：1600nsec→Auto）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o10",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "gi": "#fhId_GuardInterval"
+        },
+        "desc": "记录原制式/保护间隔"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 ax",
+        "steps": 5,
+        "desc": "机型无 ax 制式则跳过（1.6us 仅 ax/be 制式可选，无法构造前置）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "1.6us",
+        "desc": "保护间隔先置 1.6us（ax 制式下合法）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "desc": "制式改为 802.11 a/n/ac（不含 ax/be）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待联动生效"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_GuardInterval",
+        "value": "Auto",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言保护间隔自动回退 Auto（R2）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-061_gi_fallback",
+        "desc": "截图高保护间隔回退 Auto"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o10",
+        "fields": [
+          "std",
+          "gi"
+        ],
+        "desc": "清理：断言制式/保护间隔恢复设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-062",
+    "title": "5G ax 制式下 0.4us 回退 Auto",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-011（R2）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o11",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "gi": "#fhId_GuardInterval"
+        },
+        "desc": "记录原制式/保护间隔"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 ax",
+        "steps": 7,
+        "desc": "机型无 ax 制式则跳过（0.4us→ax 的回退构造不成立）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "desc": "先切 a/n/ac（保护间隔选项集变为 0.4/0.8us/Auto）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "0.4us",
+        "desc": "保护间隔置 0.4us"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 ax",
+        "desc": "制式切回 802.11 ax"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待联动生效"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_GuardInterval",
+        "value": "Auto",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言保护间隔自动回退 Auto"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "1.6us",
+        "desc": "ax 制式下选项集含 1.6us"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-062_gi_040_fallback",
+        "desc": "截图 0.4us 回退 Auto"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o11",
+        "fields": [
+          "std",
+          "gi"
+        ],
+        "desc": "清理：断言制式/保护间隔恢复设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-063",
+    "title": "5G 频宽切换后信道列表刷新且合法值保留",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:interaction",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-012（R4）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o12",
+        "fields": {
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel"
+        },
+        "desc": "记录原频宽/信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 36",
+        "desc": "手动选信道 36"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "80MHz",
+        "desc": "频宽切到 80MHz（触发信道列表重查）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待列表刷新"
+      },
+      {
+        "action": "real.assert_option_set",
+        "selector": "#fhId_Channel",
+        "contains": [
+          "Auto Selected"
+        ],
+        "desc": "断言新信道列表含 Auto Selected 首项"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_Channel",
+        "value": "channel 36",
+        "desc": "断言频宽切换后 channel 36 仍在新列表、被保留选中"
+      },
+      {
+        "action": "real.click_blank",
+        "desc": "收起信道下拉面板"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz/40MHz",
+        "desc": "频宽切回 Auto(20MHz/40MHz)"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待列表刷新"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_Channel",
+        "value": "channel 36",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言切回原频宽后手动信道仍保留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-063_ch_keep",
+        "desc": "截图信道列表刷新与保留"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o12",
+        "fields": [
+          "bw",
+          "ch"
+        ],
+        "desc": "清理：断言频宽/信道恢复设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-064",
+    "title": "5G 手动信道保存回读（AutoChannelEnable 派生）",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:mutation",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-013。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o13",
+        "fields": {
+          "ch": "#fhId_Channel"
+        },
+        "desc": "记录原信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 36",
+        "desc": "选择手动信道 36"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "重进页面回读"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_Channel",
+        "value": "channel 36",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言回读为手动信道 36（设备侧 AutoChannelEnable 派生为 0，无控件，N3）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-064_ch_save",
+        "desc": "截图手动信道保存回读"
+      },
+      {
+        "action": "real.select_option_dynamic",
+        "selector": "#fhId_Channel",
+        "key": "wb5o13",
+        "field": "ch",
+        "desc": "清理：按记录值恢复原信道"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：点击 Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o13",
+        "fields": [
+          "ch"
+        ],
+        "desc": "清理：断言信道已恢复原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-065",
+    "title": "5G 换 Domain 后信道按新列表保留或回退 Auto",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-014；断言为条件式（列表含则保留/不含则回退），两分支均属设计行为。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o14",
+        "fields": {
+          "ch": "#fhId_Channel",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录原信道/监管域"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 36",
+        "desc": "手动选信道 36 并保存（使其成为设备当前值）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_RegulatoryDomain",
+        "option_text": "EGYPT",
+        "desc": "监管域改为 EGYPT（不 Apply，观察前端联动）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待信道列表按新 Domain 重查"
+      },
+      {
+        "action": "real.assert_field_value_if_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 36",
+        "if_present": "channel 36",
+        "if_absent": "Auto Selected",
+        "desc": "条件断言：信道 36 在新列表则保留、不在则回退 Auto Selected（R4，N5）"
+      },
+      {
+        "action": "real.click_blank",
+        "desc": "收起信道下拉面板"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-065_domain_fallback",
+        "desc": "截图换 Domain 后信道回退/保留"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o14",
+        "fields": [
+          "dom"
+        ],
+        "desc": "清理：断言监管域恢复设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      },
+      {
+        "action": "real.select_option_dynamic",
+        "selector": "#fhId_Channel",
+        "key": "wb5o14",
+        "field": "ch",
+        "desc": "清理：按记录值恢复原信道"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o14",
+        "fields": [
+          "ch"
+        ],
+        "desc": "清理：断言信道已恢复原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-066",
+    "title": "5G Cancel 恢复设备当前值",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:button"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-015；Cancel 按钮 DOM id 为 fhId_onDelete（命名误导，N2）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o15",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval"
+        },
+        "desc": "记录制式/频宽/信道/保护间隔原值"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 a/n/ac",
+        "desc": "修改制式为 a/n/ac（不保存）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "80MHz",
+        "desc": "修改频宽为 80MHz（不保存）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "0.8us",
+        "desc": "修改保护间隔为 0.8us（不保存）"
+      },
+      {
+        "action": "real.assert_changed",
+        "name": "wb5o15",
+        "desc": "确认页面值已被修改（与记录值不同）",
+        "fields": [
+          "std",
+          "bw",
+          "gi"
+        ]
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-066_modified",
+        "desc": "截图 Cancel 前的修改态"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o15",
+        "fields": [
+          "std",
+          "bw",
+          "ch",
+          "gi"
+        ],
+        "desc": "清理：断言 Cancel 后全部字段恢复设备当前值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-067",
+    "title": "5G 监管域（Domain）选项枚举正确",
+    "priority": "P2",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-016（附表 A）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_option_set",
+        "selector": "#fhId_RegulatoryDomain",
+        "count": 33,
+        "contains": [
+          "ETSI",
+          "FCC",
+          "CHINA",
+          "UNITED STATES",
+          "THAILAND"
+        ],
+        "desc": "展开监管域下拉：共 33 项且含 ETSI/FCC/CHINA/UNITED STATES/THAILAND"
+      },
+      {
+        "action": "real.click_blank",
+        "desc": "收起监管域下拉面板"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-067_domain_opts",
+        "desc": "截图监管域枚举"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-068",
+    "title": "5G 监管域可编辑性按局方正确",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-017；非 COMMON 局方本条为 SKIP（只读态）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.skip_if_disabled",
+        "selector": "#fhId_RegulatoryDomain",
+        "steps": 2,
+        "desc": "监管域禁用（非 COMMON 系局方）则跳过可编辑断言，只验证只读展示"
+      },
+      {
+        "action": "real.assert_disabled",
+        "selector": "#fhId_RegulatoryDomain",
+        "disabled": false,
+        "desc": "断言监管域可编辑（COMMON 系局方）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-068_domain_editable",
+        "desc": "截图监管域可编辑态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-069",
+    "title": "5G 必填字段缺值时 Apply 被拦截",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:negative"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-018；正常回读态无法构造空值，本条在真机上预期 SKIP（防御性）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.skip_if_filled",
+        "selector": "#fhId_OperatingStandards",
+        "steps": 4,
+        "desc": "正常回读态 required 字段必有值（环境无法构造空值）→ 跳过，防御性用例"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "required 字段为空时点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_field_error",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "断言网络模式出现必填校验错误提示（option_tip），且无 set 请求发出"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的提示框"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-069_required",
+        "desc": "截图必填校验提示"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-070",
+    "title": "5G Apply 保存成功并自动刷新回读（审计日志人工核对）",
+    "priority": "P2",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-019；审计日志（\"set 5g wireless basic configurauration.\"）入口随局方变化，未自动化，执行后人工在日志页核对。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o19",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth"
+        },
+        "desc": "记录当前制式/频宽"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "不改值直接 Apply（同值重下发）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o19",
+        "fields": [
+          "std",
+          "bw"
+        ],
+        "desc": "断言保存后页面自动重拉数据且值不变",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-070_apply_refresh",
+        "desc": "截图保存后自动刷新"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-071",
+    "title": "5G 修改保存后重进/刷新回读一致",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:mutation",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-020。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o20",
+        "fields": {
+          "gi": "#fhId_GuardInterval"
+        },
+        "desc": "记录原保护间隔"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "0.8us",
+        "desc": "修改保护间隔为 0.8us（各制式下均合法）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "重进页面回读（第 1 次）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重拉参数"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_GuardInterval",
+        "value": "0.8us",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言回读为 0.8us"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "重进页面回读（第 2 次）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重拉参数"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_GuardInterval",
+        "value": "0.8us",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言再次回读仍为 0.8us（无跳变）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-071_persist",
+        "desc": "截图持久化回读"
+      },
+      {
+        "action": "real.select_option_dynamic",
+        "selector": "#fhId_GuardInterval",
+        "key": "wb5o20",
+        "field": "gi",
+        "desc": "清理：按记录值恢复原保护间隔"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o20",
+        "fields": [
+          "gi"
+        ],
+        "desc": "清理：断言保护间隔已恢复原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-072",
+    "title": "5G 幂等保存（同值连续两次 Apply 无副作用）",
+    "priority": "P2",
+    "tags": [
+      "module:wifi",
+      "type:boundary"
+    ],
+    "precondition": "设备已上电，可正常登录；非 TH_AIS 局方（该局方本路由挂载对偶组件）；非 Mesh 只读态。 对应 TC-WB5-GEN-021。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_5g_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 5G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic_5g",
+        "desc": "URL 含 wifiBasic_5g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wb5o21",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel"
+        },
+        "desc": "记录当前值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "第 1 次不改值直接 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "第 2 次不改值直接 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wb5o21",
+        "fields": [
+          "std",
+          "bw",
+          "ch"
+        ],
+        "desc": "断言两次同值保存后回读不变、无异常",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-072_idempotent",
+        "desc": "截图幂等保存"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-073",
+    "title": "5G 基本设置未登录访问拦截",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:security"
+    ],
+    "precondition": "设备已上电；先\"登录→正确登出\"清理服务端会话。对应 TC-WB5-GEN-022。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.logout",
+        "desc": "清理：正确登出，销毁服务端会话（会话残留会导致设备放行新客户端，产生误判）"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/network/wifiSettings/wifiBasic_5g",
+        "desc": "未登录直接访问 5G 基本设置页"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待重定向"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "login.html",
+        "desc": "断言被重定向到登录页"
+      },
+      {
+        "action": "real.assert_absent",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "断言页面数据未渲染（未登录不应出现 5G 基本设置字段）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-073_unauth",
+        "desc": "截图未登录重定向"
+      }
+    ]
+  }
+]

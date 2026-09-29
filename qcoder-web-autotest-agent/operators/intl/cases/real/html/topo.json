@@ -1,0 +1,40 @@
+[
+  {
+    "id": "INTL-STATUS-110",
+    "title": "网络拓扑页面可访问，刷新入口显示（Mesh 使能设备）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:status"
+    ],
+    "precondition": "设备已上电且 Mesh 使能、带 WiFi，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_topo_L2",
+        "desc": "导航到网络拓扑"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "topo",
+        "desc": "URL 含 topo"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_refresh",
+        "desc": "刷新按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-STATUS-110_topo",
+        "desc": "截图网络拓扑页"
+      }
+    ]
+  }
+]

@@ -1,0 +1,137 @@
+[
+  {
+    "id": "INTL-VOIP-002",
+    "title": "VoIP 基本设置页面可访问，服务器参数完整",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:voip"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_voipSettings_L2",
+        "l3": "fhId_voipBasic_L3",
+        "desc": "导航到 VoIP 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "voipBasic",
+        "desc": "URL 含 voipBasic"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_AuthUserName1",
+        "desc": "VoIP 用户名(端口1)输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DirectoryNumber1",
+        "desc": "VoIP 号码(端口1)输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RegistrarServer",
+        "desc": "注册服务器输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RegistrarServerPort",
+        "desc": "注册服务器端口可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ProxyServer",
+        "desc": "代理服务器输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ProxyServerPort",
+        "desc": "代理服务器端口可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OutboundProxy",
+        "desc": "出局代理输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OutboundProxyPort",
+        "desc": "出局代理端口可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-VOIP-002_basic",
+        "desc": "截图 VoIP 基本设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-VOIP-006",
+    "title": "VoIP 注册服务器端口小于 1025 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:voip"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_voipSettings_L2",
+        "l3": "fhId_voipBasic_L3",
+        "desc": "导航到 VoIP 基本设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RegistrarServerPort",
+        "value": "1024",
+        "desc": "输入小于下限的注册服务器端口"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1025 and 65535",
+        "desc": "越界端口被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-VOIP-006_port",
+        "desc": "截图注册端口校验"
+      }
+    ]
+  }
+]

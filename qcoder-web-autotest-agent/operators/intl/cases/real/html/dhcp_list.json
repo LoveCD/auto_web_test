@@ -1,0 +1,41 @@
+[
+  {
+    "id": "INTL-STATUS-104",
+    "title": "DHCP 租约列表页面可访问，用户信息表格显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:status"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_lanStatus_L2",
+        "l3": "fhId_dhcpList_L3",
+        "desc": "导航到 DHCP 租约列表"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "dhcpList",
+        "desc": "URL 含 dhcpList"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_dhcpUserInfo",
+        "desc": "DHCP 用户信息表格可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-STATUS-104_dhcp",
+        "desc": "截图 DHCP 租约列表页"
+      }
+    ]
+  }
+]

@@ -1,0 +1,115 @@
+[
+  {
+    "id": "INTL-APP-109",
+    "title": "DMZ 页面可访问，添加规则后表单显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_dmz_L2",
+        "desc": "导航到 DMZ"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "dmz",
+        "desc": "URL 含 dmz"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DMZLists",
+        "desc": "DMZ 规则列表表格可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DMZEnable",
+        "desc": "启用状态下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_wanSelect",
+        "desc": "WAN 接口下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DMZHostIP",
+        "desc": "DMZ 主机 IP 输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-109_dmz",
+        "desc": "截图 DMZ 添加表单"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-110",
+    "title": "DMZ 主机 IP 非法输入校验",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_dmz_L2",
+        "desc": "导航到 DMZ"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DMZHostIP",
+        "value": "999.1.1.1",
+        "desc": "DMZ 主机 IP 填非法地址"
+      },
+      {
+        "action": "real.wait",
+        "desc": "等待校验提示",
+        "ms": "1000"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address.",
+        "desc": "提示 IPv4 地址非法"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-110_dmz_err",
+        "desc": "截图 DMZ IP 校验错误"
+      }
+    ]
+  }
+]

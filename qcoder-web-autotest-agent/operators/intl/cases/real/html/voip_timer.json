@@ -1,0 +1,117 @@
+[
+  {
+    "id": "INTL-VOIP-004",
+    "title": "VoIP 定时器页面可访问，定时器参数完整",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:voip"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_voipSettings_L2",
+        "l3": "fhId_voipTimer_L3",
+        "desc": "导航到 VoIP 定时器"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "voipTimer",
+        "desc": "URL 含 voipTimer"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RegisterExpires",
+        "desc": "注册有效期输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_InterDigitTimerShort",
+        "desc": "短位间定时器输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_NoAnswerTimer",
+        "desc": "无应答定时器输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RegisterRetryInterval",
+        "desc": "注册重试间隔输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-VOIP-004_timer",
+        "desc": "截图 VoIP 定时器页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-VOIP-007",
+    "title": "VoIP 注册有效期小于 120 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:voip"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_voipSettings_L2",
+        "l3": "fhId_voipTimer_L3",
+        "desc": "导航到 VoIP 定时器"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RegisterExpires",
+        "value": "119",
+        "desc": "输入小于下限的注册有效期"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 120 and 65535",
+        "desc": "越界注册有效期被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-VOIP-007_expires",
+        "desc": "截图注册有效期校验"
+      }
+    ]
+  }
+]

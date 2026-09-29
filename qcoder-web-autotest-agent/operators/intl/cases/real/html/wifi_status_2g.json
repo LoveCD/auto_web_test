@@ -1,0 +1,41 @@
+[
+  {
+    "id": "INTL-STATUS-107",
+    "title": "WiFi 状态（2.4G）页面可访问，射频统计显示（带 WiFi 设备）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:status"
+    ],
+    "precondition": "设备已上电且带 2.4G WiFi（wifi=1），可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_wifiStatus_L2",
+        "l3": "fhId_wifiStatus_2g_L3",
+        "desc": "导航到 WiFi 状态 2.4G"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiStatus",
+        "desc": "URL 含 wifiStatus"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_wifiInfo",
+        "desc": "WiFi 状态信息可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-STATUS-107_wifi2g",
+        "desc": "截图 WiFi 状态 2.4G 页"
+      }
+    ]
+  }
+]

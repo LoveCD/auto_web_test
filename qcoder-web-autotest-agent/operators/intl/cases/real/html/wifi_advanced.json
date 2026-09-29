@@ -1,0 +1,2998 @@
+[
+  {
+    "id": "INTL-WIFI-004",
+    "title": "Wi-Fi 高级设置页面可访问（2.4G）",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_selSSID",
+        "desc": "SSID 选择下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Disable",
+        "desc": "禁用单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SSID",
+        "desc": "SSID 显示字段可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ModeEnabled",
+        "desc": "认证模式可见"
+      },
+      {
+        "action": "real.assert_radio_one_of",
+        "selector": "#fhId_WPAAlgorithms",
+        "desc": "加密类型可见（AES/TKIPAES 单选组存在且恰选其一）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PreSharedKey",
+        "desc": "预共享密钥输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RekeyingInterval",
+        "desc": "密钥更新周期输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-004_adv2g",
+        "desc": "截图 2.4G 高级设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-005",
+    "title": "SSID 超过 32 字符被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SSID",
+        "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456123",
+        "desc": "输入 36 字符超长 SSID"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 1-32 characters",
+        "desc": "超长 SSID 被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-005_ssid_long",
+        "desc": "截图 SSID 超长校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-006",
+    "title": "SSID 输入中文字符被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SSID",
+        "value": "测试中文SSID",
+        "desc": "输入含中文的 SSID"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please do not enter Chinese character",
+        "desc": "含中文 SSID 被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-006_ssid_cn",
+        "desc": "截图 SSID 中文校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-007",
+    "title": "预共享密钥少于 8 位被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录；认证模式非 OpenSystem（默认 WPA2）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PreSharedKey",
+        "value": "1234567",
+        "desc": "输入 7 位短密钥"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 8-63 characters",
+        "desc": "过短密钥被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-007_key_short",
+        "desc": "截图密钥长度校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-014",
+    "title": "密钥更新周期小于 0 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "-1",
+        "desc": "输入负数密钥更新周期"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 0 and 86400",
+        "desc": "负数周期被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-014_rekey_neg",
+        "desc": "截图密钥周期负数校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-015",
+    "title": "密钥更新周期超过 86400 被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "86401",
+        "desc": "输入超过上限的密钥更新周期"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 0 and 86400",
+        "desc": "超上限周期被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-015_rekey_max",
+        "desc": "截图密钥周期上限校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-021",
+    "title": "访客网络不适用：验证 2.4G 高级页 SSID 广播勾选可交互",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "desc": "点击 SSID 广播勾选（不应用）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "desc": "恢复勾选状态"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-021_broadcast",
+        "desc": "截图 SSID 广播勾选交互"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-022",
+    "title": "Wi-Fi 2.4G 密钥更新周期配置回读一致性（保存后/重进页面回读一致并恢复）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi",
+      "专项:persist"
+    ],
+    "precondition": "设备已上电，可正常登录；2.4G 表单可编辑（未处于 mesh 联动禁用）；执行后密钥更新周期将被置为 3600（恢复基线，可重复执行）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "7200",
+        "desc": "密钥更新周期改为 7200"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击应用"
+      },
+      {
+        "action": "real.wait",
+        "ms": 2500,
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "7200",
+        "desc": "保存后回读：密钥更新周期显示 7200"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入 Wi-Fi 高级设置页面（刷新回读）"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "7200",
+        "desc": "重进页面回读：密钥更新周期仍为 7200，配置已持久化"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "3600",
+        "desc": "恢复基线：密钥更新周期改回 3600"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "再次应用"
+      },
+      {
+        "action": "real.wait",
+        "ms": 2500,
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "3600",
+        "desc": "恢复确认：密钥更新周期显示 3600"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-030",
+    "title": "预共享密钥超过 63 位被校验拦截（边界）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录；认证模式非 OpenSystem",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 Wi-Fi 高级设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PreSharedKey",
+        "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789ab",
+        "desc": "输入 64 位超长密钥"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 8-63 characters",
+        "desc": "超长密钥被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-016_key_long_2g",
+        "desc": "截图 5G 密钥长度校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-074",
+    "title": "2.4G 高级配置页可访问与 SSID 列表就绪",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:positive",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应通用用例 GEN-001；SSID 列表为空时整页不渲染（N5），预期 SKIP。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.select_option_first",
+        "selector": "#fhId_selSSID",
+        "desc": "展开 SSID 下拉并显式选中第一项（下拉文案随设备配置变化——双频合一开关会改变列表，故不写死文案）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待选中项表单重填"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_selSSID",
+        "desc": "SSID 下拉已选中首项（取值非空）"
+      },
+      {
+        "action": "real.assert_field_number",
+        "selector": "#fhId_selSSID",
+        "integer": true,
+        "desc": "SSID 下拉选中项为纯数字（非法取值拦截）"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_SSID",
+        "desc": "SSID 名称非空"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_ModeEnabled",
+        "desc": "安全模式非空"
+      },
+      {
+        "action": "real.assert_radio_one_of",
+        "labels": [
+          "Enable",
+          "Disable"
+        ],
+        "desc": "射频单选 Enable/Disable 恰好选中其一（哪一项被选取决于该 SSID 射频是否打开，故不写死）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SSID",
+        "desc": "SSID 名称输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_ModeEnabled",
+        "desc": "安全模式下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "desc": "隐藏广播复选框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Cancel",
+        "desc": "Cancel 按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g1_ready",
+        "desc": "截图 2.4G 高级页初始状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-075",
+    "title": "2.4G 高级配置初始值回读与设备真实值一致",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-002；密钥仅比对长度，不记录明文。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认当前路由 hash 以 wifiAdvanced 结尾（排除同名前缀的其他页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad22",
+        "fields": {
+          "ssid": "#fhId_SSID",
+          "mode": "#fhId_ModeEnabled",
+          "rekey": "#fhId_RekeyingInterval",
+          "adv": "#fhId_SSIDAdvertisementEnabled",
+          "keylen": "#fhId_PreSharedKey"
+        },
+        "desc": "记录当前 SSID 各字段：名称、网络模式、密钥更新周期、SSID 广播开关、密钥显示长度（密钥只记长度，不记明文）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad22",
+        "fields": [
+          "ssid",
+          "mode",
+          "rekey",
+          "adv"
+        ],
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "重新进入页面后回读，断言各字段与首次记录一致（异步重拉数据，最多轮询 12 秒）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g2_readback",
+        "desc": "截图 2.4G 高级页回读"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-076",
+    "title": "2.4G SSID 切换后表单完整重填",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-003（R3）；未保存修改随切换丢弃属设计行为。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.select_option_first",
+        "selector": "#fhId_selSSID",
+        "desc": "展开 SSID 下拉并显式选中第一项（下拉文案随设备配置变化——双频合一开关会改变列表，故不写死文案）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待选中项表单重填"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad23a",
+        "fields": {
+          "sel": "#fhId_selSSID",
+          "ssid": "#fhId_SSID",
+          "mode": "#fhId_ModeEnabled",
+          "rekey": "#fhId_RekeyingInterval"
+        },
+        "desc": "记录当前选中 SSID 的字段值（含 SSID 编号，供切回时动态恢复）"
+      },
+      {
+        "action": "real.select_option_diff",
+        "selector": "#fhId_selSSID",
+        "desc": "切换到与当前不同的另一个 SSID（文案随设备配置变化，运行时动态取）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待表单重填"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad23b",
+        "fields": {
+          "ssid": "#fhId_SSID",
+          "mode": "#fhId_ModeEnabled",
+          "rekey": "#fhId_RekeyingInterval"
+        },
+        "desc": "记录 SSID-2 的字段值"
+      },
+      {
+        "action": "real.assert_snapshot_diff",
+        "name_a": "wad23a",
+        "name_b": "wad23b",
+        "fields": [
+          "ssid",
+          "mode",
+          "rekey"
+        ],
+        "desc": "断言 SSID-2 与 SSID-1 至少一项字段不同（切换确实生效）"
+      },
+      {
+        "action": "real.select_option_dynamic",
+        "selector": "#fhId_selSSID",
+        "key": "wad23a",
+        "field": "sel",
+        "desc": "切回步骤中记录的 SSID 编号（运行期才知道，动态恢复）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待表单重填"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad23a",
+        "fields": [
+          "ssid",
+          "mode",
+          "rekey"
+        ],
+        "desc": "断言切回后字段与 SSID-1 记录一致，无残留",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g3_switch",
+        "desc": "截图 2.4G SSID 切换"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-077",
+    "title": "2.4G 安全模式选项枚举正确",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-004；WPA3/企业模式缺失按 wifi*_cap/局方分支 SKIP。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "OpenSystem",
+        "desc": "安全模式含 OpenSystem(None)"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA2-PSK",
+        "desc": "安全模式含 WPA2-PSK"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA-PSK/WPA2-PSK",
+        "desc": "安全模式含 WPA-PSK/WPA2-PSK"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA2-PSK/WPA3-SAE",
+        "steps": 1,
+        "desc": "无 WPA3 过渡模式（wifi*_cap==0 环境受限）"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA2-PSK/WPA3-SAE",
+        "desc": "wifi*_cap!=0 时含 WPA2-PSK/WPA3-SAE"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA3-SAE",
+        "steps": 1,
+        "desc": "无 WPA3-SAE（wifi*_cap==0 环境受限）"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA3-SAE",
+        "desc": "wifi*_cap!=0 时含 WPA3-SAE"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA2-Enterprise",
+        "steps": 1,
+        "desc": "无企业模式（仅 MEX_TP 系/IDN_TELKOM，属局方分支）"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA2-Enterprise",
+        "desc": "企业局方含 WPA2-Enterprise"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g4_mode_opts",
+        "desc": "截图 2.4G 安全模式枚举"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-078",
+    "title": "2.4G SSID 名称合法修改并回读",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:mutation",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-005。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad25",
+        "fields": {
+          "ssid": "#fhId_SSID"
+        },
+        "desc": "记录原 SSID 名称"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SSID",
+        "value": "INTL_TEST_2G_SSID",
+        "desc": "改 SSID 为合法值 INTL_TEST_2G_SSID（fill 内置 blur 触发校验，N1）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_SSID",
+        "value": "INTL_TEST_2G_SSID",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言重进回读为新名称（轮询等待 12s，值变为 INTL_TEST_2G_SSID）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g5_rename",
+        "desc": "截图 2.4G SSID 重命名回读"
+      },
+      {
+        "action": "real.restore",
+        "name": "wad25",
+        "desc": "清理：按记录值恢复原 SSID 名称",
+        "fields": [
+          "ssid"
+        ]
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "清理：等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad25",
+        "fields": [
+          "ssid"
+        ],
+        "desc": "清理：断言 SSID 已恢复原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-079",
+    "title": "2.4G SSID 名称非法值拦截",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:negative"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-006（校验文案以既有真机用例实测为准）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad26",
+        "fields": {
+          "ssid": "#fhId_SSID"
+        },
+        "desc": "记录原 SSID 名称"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SSID",
+        "value": "",
+        "desc": "输入空串"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 1-32 characters",
+        "desc": "空串被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SSID",
+        "value": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "desc": "输入 33 字符超长 SSID"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 1-32 characters",
+        "desc": "33 字符被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SSID",
+        "value": "测试SSID",
+        "desc": "输入含中文 SSID"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please do not enter Chinese character",
+        "desc": "中文 SSID 被校验拦截（enter_noch_char）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g6_ssid_invalid",
+        "desc": "截图 2.4G SSID 非法值拦截"
+      },
+      {
+        "action": "real.restore",
+        "name": "wad26",
+        "desc": "清理：恢复原 SSID 名称显示值",
+        "fields": [
+          "ssid"
+        ]
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "清理：等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad26",
+        "fields": [
+          "ssid"
+        ],
+        "desc": "清理：断言 SSID 已恢复原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-080",
+    "title": "2.4G 隐藏广播开关语义与回读",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:mutation",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-007（N3 取值反转）；执行期间 SSID 短暂隐藏/恢复广播。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad27",
+        "fields": {
+          "adv": "#fhId_SSIDAdvertisementEnabled"
+        },
+        "desc": "记录原隐藏状态（true-label 语义反转：勾选=隐藏，N3）"
+      },
+      {
+        "action": "real.click_checkbox",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "on": true,
+        "desc": "勾选隐藏广播（幂等）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_checkbox_checked",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "on": true,
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言重进后隐藏已勾选（设备 SSIDAdvertisementEnabled=0，不广播）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g7_hidden",
+        "desc": "截图 2.4G 隐藏广播开启"
+      },
+      {
+        "action": "real.click_checkbox",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "on": false,
+        "desc": "取消勾选隐藏广播（幂等）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_checkbox_checked",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "on": false,
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言重进后隐藏已取消（SSIDAdvertisementEnabled=1，恢复广播）"
+      },
+      {
+        "action": "real.click_checkbox",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "state_from": "wad27",
+        "field": "adv",
+        "desc": "清理：按记录值恢复原隐藏状态"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad27",
+        "fields": [
+          "adv"
+        ],
+        "desc": "清理：断言隐藏状态已恢复原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-081",
+    "title": "2.4G WPA-WPA2-Personal 自动置 TKIPAES、其余置 AES",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-008（R1）；豁免局方（MEX_TP/SFU_MEX_TP/IDN_TELKOM）不联动，不适用本条。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad28",
+        "fields": {
+          "mode": "#fhId_ModeEnabled"
+        },
+        "desc": "记录原安全模式"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA-PSK/WPA2-PSK",
+        "desc": "安全模式选 WPA-PSK/WPA2-PSK"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1200",
+        "desc": "等待联动生效"
+      },
+      {
+        "action": "real.assert_radio_checked",
+        "label": "TKIPAES",
+        "checked": true,
+        "desc": "断言 WPA Algorithms 自动变为 TKIPAES"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "WPA2-PSK",
+        "desc": "安全模式改回 WPA2-PSK"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1200",
+        "desc": "等待联动生效"
+      },
+      {
+        "action": "real.assert_radio_checked",
+        "label": "AES",
+        "checked": true,
+        "desc": "断言其他模式算法自动置 AES（R1）"
+      },
+      {
+        "action": "real.assert_radio_checked",
+        "label": "TKIPAES",
+        "checked": false,
+        "desc": "断言其他模式下 TKIPAES 未选中（R1）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g8_alg_link",
+        "desc": "截图 2.4G 算法联动"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad28",
+        "fields": [
+          "mode"
+        ],
+        "desc": "清理：断言安全模式已恢复设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-082",
+    "title": "2.4G None 模式区块显隐",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:interaction"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-009（R2）；不保存 None（取消加密风险大）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad29",
+        "fields": {
+          "mode": "#fhId_ModeEnabled"
+        },
+        "desc": "记录原安全模式"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "OpenSystem",
+        "steps": 8,
+        "desc": "无 OpenSystem 选项则跳过"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_ModeEnabled",
+        "option_text": "OpenSystem",
+        "desc": "安全模式选 OpenSystem(None)"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1200",
+        "desc": "等待区块显隐生效"
+      },
+      {
+        "action": "real.assert_present",
+        "selector": "#fhId_EncryptType",
+        "desc": "None 模式下 Encrypt Type 区块可见"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_EncryptType",
+        "value": "None",
+        "desc": "Encrypt Type 固定为 None"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_PreSharedKey",
+        "desc": "None 模式下 Passphrase 区块应隐藏"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_RekeyingInterval",
+        "desc": "None 模式下 Rekeying 区块应隐藏"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_RadiusServerIPAddr",
+        "desc": "None 模式下 RADIUS 区块应隐藏"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g9_none",
+        "desc": "截图 2.4G None 模式显隐"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad29",
+        "fields": [
+          "mode"
+        ],
+        "desc": "清理：断言安全模式已恢复（None 不保存，避免取消加密）",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-084",
+    "title": "2.4G 密钥长度边界 8/63 通过",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:mutation",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-011（N7/N8：改密即生效会导致无线终端断连，择机执行）；恢复失败视为用例 FAIL。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_field_not_contains",
+        "selector": "#fhId_ModeEnabled",
+        "texts": [
+          "None",
+          "Enterprise"
+        ],
+        "desc": "前置：当前须为个人模式（非 None/Enterprise），否则密钥用例无意义"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad211",
+        "fields": {
+          "key": "#fhId_PreSharedKey",
+          "keylen": "#fhId_PreSharedKey"
+        },
+        "desc": "记录原密钥（key=明文仅内存、供清理回填；keylen=长度、供断言；明文不入日志）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PreSharedKey",
+        "value": "Passw0rd",
+        "desc": "输入 8 字符边界密钥"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_field_length",
+        "selector": "#fhId_PreSharedKey",
+        "length": 8,
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言回读密钥长度为 8（不读明文）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g11_key8",
+        "desc": "截图 2.4G 8 字符密钥回读"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PreSharedKey",
+        "value": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "desc": "输入 63 字符边界密钥"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_field_length",
+        "selector": "#fhId_PreSharedKey",
+        "length": 63,
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言回读密钥长度为 63"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g11_key63",
+        "desc": "截图 2.4G 63 字符密钥回读"
+      },
+      {
+        "action": "real.restore",
+        "name": "wad211",
+        "fields": [
+          "key"
+        ],
+        "desc": "清理：按记录值恢复原密钥"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "清理：等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad211",
+        "fields": [
+          "keylen"
+        ],
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言密钥已恢复原长度"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-085",
+    "title": "2.4G 密钥非法值拦截",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:negative"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-012（边界正向由 GEN-011 覆盖）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad212",
+        "fields": {
+          "key": "#fhId_PreSharedKey",
+          "keylen": "#fhId_PreSharedKey"
+        },
+        "desc": "记录原密钥（key=明文仅内存、供清理回填；keylen=长度、供断言；明文不入日志）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PreSharedKey",
+        "value": "Passw0r",
+        "desc": "输入 7 字符过短密钥"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 8-63 characters",
+        "desc": "过短密钥被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PreSharedKey",
+        "value": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "desc": "输入 64 字符超长密钥"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 8-63 characters",
+        "desc": "超长密钥被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PreSharedKey",
+        "value": "中文密钥1234",
+        "desc": "输入含中文密钥（≥8 字符，避开长度规则先命中）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please do not enter Chinese character.",
+        "desc": "中文密钥被校验拦截"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g12_key_invalid",
+        "desc": "截图 2.4G 密钥非法值拦截"
+      },
+      {
+        "action": "real.restore",
+        "name": "wad212",
+        "fields": [
+          "key"
+        ],
+        "desc": "清理：按记录值恢复原密钥显示值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "清理：等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "清理：Cancel 丢弃（非法值从未保存成功）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重拉参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad212",
+        "fields": [
+          "keylen"
+        ],
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言密钥显示已恢复原长度"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-086",
+    "title": "2.4G WPA Algorithms 可编辑性与取值",
+    "priority": "P2",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-013；不修改保存（TKIP 兼容性风险）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_radio_one_of",
+        "selector": "#fhId_WPAAlgorithms",
+        "desc": "断言算法单选组存在且当前值为 AES/TKIPAES（恰选其一）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g13_alg",
+        "desc": "截图 2.4G 算法单选组"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-087",
+    "title": "2.4G RekeyingInterval 边界 0/86400 通过",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:mutation"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-014。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad214",
+        "fields": {
+          "rekey": "#fhId_RekeyingInterval"
+        },
+        "desc": "记录原密钥更新周期"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "0",
+        "desc": "输入下边界 0"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "0",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言回读为 0"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g14_rekey0",
+        "desc": "截图 2.4G 周期 0 回读"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "86400",
+        "desc": "输入上边界 86400"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "86400",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言回读为 86400"
+      },
+      {
+        "action": "real.restore",
+        "name": "wad214",
+        "desc": "清理：按记录值恢复原周期",
+        "fields": [
+          "rekey"
+        ]
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "清理：等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad214",
+        "fields": [
+          "rekey"
+        ],
+        "desc": "清理：断言周期已恢复原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-088",
+    "title": "2.4G RekeyingInterval 非法值拦截",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:negative"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-015。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad215",
+        "fields": {
+          "rekey": "#fhId_RekeyingInterval"
+        },
+        "desc": "记录原周期"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "-1",
+        "desc": "输入 -1"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 0 and 86400",
+        "desc": "负数周期被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "86401",
+        "desc": "输入 86401"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 0 and 86400",
+        "desc": "超上限周期被校验拦截"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "abc",
+        "desc": "输入非数字 abc"
+      },
+      {
+        "action": "real.wait",
+        "ms": "800",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 0 and 86400",
+        "desc": "非数字被校验拦截（rekey_tip）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g15_rekey_invalid",
+        "desc": "截图 2.4G 周期非法值拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad215",
+        "fields": [
+          "rekey"
+        ],
+        "desc": "清理：断言周期显示恢复设备原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-091",
+    "title": "2.4G 完整配置保存回读",
+    "priority": "P0",
+    "tags": [
+      "module:wifi",
+      "type:mutation",
+      "suite:smoke"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-018；改密即生效会断连终端（N8），择机执行。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad218",
+        "fields": {
+          "ssid": "#fhId_SSID",
+          "adv": "#fhId_SSIDAdvertisementEnabled",
+          "rekey": "#fhId_RekeyingInterval",
+          "key": "#fhId_PreSharedKey"
+        },
+        "desc": "记录全字段原值（名称/隐藏/密钥/周期；保持个人模式不变，算法 COMMON 只读不改）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SSID",
+        "value": "INTL_TEST_2G_SSID",
+        "desc": "修改 SSID 名称"
+      },
+      {
+        "action": "real.click_checkbox",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "on": true,
+        "desc": "勾选隐藏广播"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PreSharedKey",
+        "value": "TestKey1234",
+        "desc": "修改密钥（11 字符合法值）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "7200",
+        "desc": "修改重认证间隔 7200"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_SSID",
+        "value": "INTL_TEST_2G_SSID",
+        "desc": "断言 SSID 名称保存生效"
+      },
+      {
+        "action": "real.assert_checkbox_checked",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "on": true,
+        "desc": "断言隐藏广播保存生效"
+      },
+      {
+        "action": "real.assert_field_length",
+        "selector": "#fhId_PreSharedKey",
+        "length": 11,
+        "desc": "断言密钥保存生效（长度 11，不读明文）"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "7200",
+        "desc": "断言重认证间隔保存生效"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g18_full",
+        "desc": "截图 2.4G 完整配置保存回读"
+      },
+      {
+        "action": "real.restore",
+        "name": "wad218",
+        "desc": "清理：恢复原 SSID 名称",
+        "fields": [
+          "ssid"
+        ]
+      },
+      {
+        "action": "real.click_checkbox",
+        "selector": "#fhId_SSIDAdvertisementEnabled",
+        "state_from": "wad218",
+        "field": "adv",
+        "desc": "清理：按记录值恢复原隐藏状态"
+      },
+      {
+        "action": "real.restore",
+        "name": "wad218",
+        "desc": "清理：恢复原密钥",
+        "fields": [
+          "key"
+        ]
+      },
+      {
+        "action": "real.restore",
+        "name": "wad218",
+        "desc": "清理：恢复原周期",
+        "fields": [
+          "rekey"
+        ]
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "清理：等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad218",
+        "fields": [
+          "ssid",
+          "adv",
+          "rekey"
+        ],
+        "desc": "清理：断言全部字段恢复原值（密钥按原长度复验）",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-092",
+    "title": "2.4G Cancel 恢复设备当前值",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:button"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-019；Cancel 按钮 DOM id 为 fhId_Cancel（N2，与基础页 fhId_onDelete 不同）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad219",
+        "fields": {
+          "ssid": "#fhId_SSID",
+          "rekey": "#fhId_RekeyingInterval"
+        },
+        "desc": "记录名称/周期原值"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_SSID",
+        "value": "CANCEL_DISCARD",
+        "desc": "修改 SSID 名称（不保存）"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "1111",
+        "desc": "修改周期（不保存）"
+      },
+      {
+        "action": "real.assert_changed",
+        "name": "wad219",
+        "desc": "确认页面值已修改",
+        "fields": [
+          "ssid",
+          "rekey"
+        ]
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g19_modified",
+        "desc": "截图 2.4G Cancel 前修改态"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Cancel",
+        "desc": "清理：点击 Cancel 丢弃未保存修改，恢复设备当前值"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad219",
+        "fields": [
+          "ssid",
+          "rekey"
+        ],
+        "desc": "清理：断言 Cancel 后字段恢复设备当前值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-093",
+    "title": "2.4G 重登后持久化",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:mutation"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-020（§11.1 持久化）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad220",
+        "fields": {
+          "rekey": "#fhId_RekeyingInterval"
+        },
+        "desc": "记录原周期"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "14400",
+        "desc": "修改周期为 14400"
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.logout",
+        "desc": "登出"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_field_value_wait",
+        "selector": "#fhId_RekeyingInterval",
+        "value": "14400",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言重登后周期仍为 14400（配置持久化，未回退）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g20_relogin",
+        "desc": "截图 2.4G 重登后回读"
+      },
+      {
+        "action": "real.restore",
+        "name": "wad220",
+        "desc": "清理：按记录值恢复原周期",
+        "fields": [
+          "rekey"
+        ]
+      },
+      {
+        "action": "real.wait",
+        "ms": "500",
+        "desc": "清理：等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "清理：Apply 保存恢复"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "清理：等待保存生效"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "清理：关闭提示框"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad220",
+        "fields": [
+          "rekey"
+        ],
+        "desc": "清理：断言周期已恢复原值",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-094",
+    "title": "2.4G 未登录访问拦截",
+    "priority": "P1",
+    "tags": [
+      "module:wifi",
+      "type:security"
+    ],
+    "precondition": "先\"登录→正确登出\"清理服务端会话。对应 GEN-021。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.logout",
+        "desc": "清理：正确登出，销毁服务端会话（本页含密钥，未登录泄露属高危）"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/network/wifiSettings/wifiAdvanced",
+        "desc": "未登录直接访问 2.4G 高级配置页"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待重定向"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "login.html",
+        "desc": "断言被重定向到登录页"
+      },
+      {
+        "action": "real.assert_absent",
+        "selector": "#fhId_selSSID",
+        "desc": "未登录不应渲染 SSID 选择控件"
+      },
+      {
+        "action": "real.assert_absent",
+        "selector": "#fhId_SSID",
+        "desc": "未登录不应渲染 SSID 数据"
+      },
+      {
+        "action": "real.assert_absent",
+        "selector": "#fhId_PreSharedKey",
+        "desc": "未登录不应渲染密钥数据"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g21_unauth",
+        "desc": "截图 2.4G 未登录重定向"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-095",
+    "title": "2.4G 保存触发审计日志（自动刷新部分自动验证）",
+    "priority": "P2",
+    "tags": [
+      "module:wifi",
+      "type:positive"
+    ],
+    "precondition": "设备已上电，可正常登录；非 Mesh 只读态；SSID 列表非空（列表为空时整页不渲染，预期 SKIP）。 对应 GEN-022；审计日志（\"set 2.4g wireless advanced configurauration\"）入口随局方变化未自动化，执行后人工在日志页核对（索引按显示编号↔节点索引换算，N4）。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 高级设置（2.4G）"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiAdvanced",
+        "desc": "URL 含 wifiAdvanced"
+      },
+      {
+        "action": "real.assert_hash",
+        "suffix": "wifiAdvanced",
+        "desc": "确认挂载的是 网络 > Wi-Fi 设置 > 高级设置（2.4G）（hash 精确匹配，排除同名前缀页面）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "wad222",
+        "fields": {
+          "ssid": "#fhId_SSID"
+        },
+        "desc": "记录当前 SSID 名称"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "不改值直接 Apply（同值重下发）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiAdvanced_L3",
+        "desc": "重新进入页面（重拉设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待重新拉取参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "wad222",
+        "fields": [
+          "ssid"
+        ],
+        "desc": "断言保存后页面自动重拉且值一致",
+        "timeout_ms": 12000,
+        "poll_ms": 500
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-074_g22_log",
+        "desc": "截图 2.4G 保存后回读"
+      }
+    ]
+  }
+]

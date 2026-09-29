@@ -1,0 +1,340 @@
+[
+  {
+    "id": "INTL-APP-108",
+    "title": "NAT 页面可访问，规则类型选项完整",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_nat_L2",
+        "l3": "fhId_nat_L3",
+        "desc": "导航到 NAT"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "nat",
+        "desc": "URL 含 nat"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_NatList",
+        "desc": "NAT 规则列表表格可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_wanSelect",
+        "desc": "WAN 接口下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Description",
+        "desc": "规则描述输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RuleType",
+        "desc": "规则类型下拉可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_RuleType",
+        "option_text": "One-to-One",
+        "desc": "规则类型含 One-to-One"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_RuleType",
+        "option_text": "Many-to-One",
+        "desc": "规则类型含 Many-to-One"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_RuleType",
+        "option_text": "Many-to-Many Overload",
+        "desc": "规则类型含 Many-to-Many Overload"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_RuleType",
+        "option_text": "Many-to-Many No Overload",
+        "desc": "规则类型含 Many-to-Many No Overload"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_RuleType",
+        "option_text": "Server",
+        "desc": "规则类型含 Server"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_LocalIPStart",
+        "desc": "本地起始 IP 输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_LocalIPEnd",
+        "desc": "本地结束 IP 输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PublicIPStart",
+        "desc": "公网起始 IP 输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PublicIPEnd",
+        "desc": "公网结束 IP 输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-108_nat",
+        "desc": "截图 NAT 添加表单"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-118",
+    "title": "NAT 规则本地 IP 非法被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:application",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；依赖 INTL-WAN-012 预置的 INTERNET_R_VID_99 WAN 接口（需先执行 wan 套件）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_nat_L2",
+        "l3": "fhId_nat_L3",
+        "desc": "导航到 NAT"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_wanSelect",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "选择 WAN 接口"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_RuleType",
+        "option_text": "Many-to-One",
+        "desc": "规则类型选 Many-to-One"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_LocalIPStart",
+        "value": "999.1.1.1",
+        "desc": "本地起始 IP 填越界地址"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid IPv4 address!",
+        "desc": "非法 IP 被前端拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-118_ip_invalid",
+        "desc": "截图 NAT 非法 IP 校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-119",
+    "title": "NAT 规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:application",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；依赖 INTL-WAN-012 预置的 INTERNET_R_VID_99 WAN 接口（需先执行 wan 套件）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_nat_L2",
+        "l3": "fhId_nat_L3",
+        "desc": "导航到 NAT"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "nat",
+        "desc": "URL 含 nat"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_wanSelect",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "新增：选择 WAN 接口"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_RuleType",
+        "option_text": "Many-to-One",
+        "desc": "新增：规则类型选 Many-to-One"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Description",
+        "value": "nat_crud_test",
+        "desc": "新增：输入规则描述"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_LocalIPStart",
+        "value": "192.168.1.100",
+        "desc": "新增：本地起始 IP 192.168.1.100"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_LocalIPEnd",
+        "value": "192.168.1.110",
+        "desc": "新增：本地结束 IP 192.168.1.110"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_PublicIPStart",
+        "value": "1.1.1.1",
+        "desc": "新增：公网起始 IP 1.1.1.1"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "nat_crud_test",
+        "desc": "回读：列表出现新增规则描述"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=nat_crud_test",
+        "desc": "修改：点击规则行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_Description",
+        "value": "nat_crud_test2",
+        "desc": "修改：描述改为 nat_crud_test2"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "nat_crud_test2",
+        "desc": "修改生效：列表回读新描述"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "nat_crud_test2",
+        "desc": "删除：勾选规则行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure you want to delete the selected rule?",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "nat_crud_test2",
+        "desc": "删除后无残留：规则已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-119_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  }
+]

@@ -1,0 +1,395 @@
+[
+  {
+    "id": "INTL-FW-004",
+    "title": "MAC 过滤页面可访问，支持白名单/黑名单模式",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_macFilter_L3",
+        "desc": "导航到 MAC 过滤"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "macFilter",
+        "desc": "URL 含 macFilter"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_enable",
+        "desc": "启用过滤可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_disable",
+        "desc": "禁用过滤可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_white",
+        "desc": "白名单模式可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_black",
+        "desc": "黑名单模式可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Add",
+        "desc": "添加按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_MACFilterLists",
+        "desc": "MAC 列表表格可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-004_macfilter",
+        "desc": "截图 MAC 过滤页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-019",
+    "title": "MAC 过滤规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；运营商非 CHL_MP（该运营商规则不可编辑）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_macFilter_L3",
+        "desc": "导航到 MAC 过滤"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "macFilter",
+        "desc": "URL 含 macFilter"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MAC",
+        "value": "AA:BB:CC:DD:EE:FF",
+        "desc": "新增：输入 MAC 地址"
+      },
+      {
+        "action": "real.select_time_range",
+        "selector": "#f",
+        "start": "00:00",
+        "end": "23:59",
+        "desc": "新增：时间范围 00:00 - 23:59"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enable",
+        "option_text": "Enable",
+        "desc": "新增：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "AA:BB:CC:DD:EE:FF",
+        "desc": "回读：列表出现新增 MAC 规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=AA:BB:CC:DD:EE:FF",
+        "desc": "修改：点击规则行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MAC",
+        "value": "AA:BB:CC:DD:EE:F1",
+        "desc": "修改：MAC 改为 AA:BB:CC:DD:EE:F1"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "AA:BB:CC:DD:EE:F1",
+        "desc": "修改生效：列表回读新 MAC"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=AA:BB:CC:DD:EE:F1",
+        "desc": "非法修改：再次打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MAC",
+        "value": "ZZ:ZZ:ZZ:ZZ:ZZ:ZZ",
+        "desc": "非法修改：MAC 填非法值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "非法修改：点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid MAC address",
+        "desc": "非法值被前端拦截"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "AA:BB:CC:DD:EE:F1",
+        "desc": "原值不变：列表仍显示原 MAC"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "关闭编辑表单（不应用非法修改）"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "AA:BB:CC:DD:EE:F1",
+        "desc": "删除：勾选规则行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "AA:BB:CC:DD:EE:F1",
+        "desc": "删除后无残留：规则已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-019_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-020",
+    "title": "MAC 过滤规则批量删除（勾选多条后删除）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；运营商非 CHL_MP（该运营商规则不可编辑）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_macFilter_L3",
+        "desc": "导航到 MAC 过滤"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第一条：打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MAC",
+        "value": "AA:BB:CC:DD:EE:F2",
+        "desc": "创建第一条：输入 MAC 地址"
+      },
+      {
+        "action": "real.select_time_range",
+        "selector": "#f",
+        "start": "00:00",
+        "end": "23:59",
+        "desc": "创建第一条：时间范围 00:00 - 23:59"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enable",
+        "option_text": "Enable",
+        "desc": "创建第一条：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第一条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "AA:BB:CC:DD:EE:F2",
+        "desc": "第一条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第二条：打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MAC",
+        "value": "AA:BB:CC:DD:EE:F3",
+        "desc": "创建第二条：输入 MAC 地址"
+      },
+      {
+        "action": "real.select_time_range",
+        "selector": "#f",
+        "start": "00:00",
+        "end": "23:59",
+        "desc": "创建第二条：时间范围 00:00 - 23:59"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enable",
+        "option_text": "Enable",
+        "desc": "创建第二条：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第二条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "AA:BB:CC:DD:EE:F3",
+        "desc": "第二条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_MACFilterLists tr.el-table__row:has-text(\"AA:BB:CC:DD:EE:F2\") .el-checkbox",
+        "desc": "批量删除：勾选第一条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_MACFilterLists tr.el-table__row:has-text(\"AA:BB:CC:DD:EE:F3\") .el-checkbox",
+        "desc": "批量删除：勾选第二条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Delete",
+        "desc": "批量删除：点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "批量删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "批量删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "AA:BB:CC:DD:EE:F2",
+        "desc": "批量删除：第一条无残留"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "AA:BB:CC:DD:EE:F3",
+        "desc": "批量删除：第二条无残留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-020_batch_del",
+        "desc": "截图批量删除后页面"
+      }
+    ]
+  }
+]

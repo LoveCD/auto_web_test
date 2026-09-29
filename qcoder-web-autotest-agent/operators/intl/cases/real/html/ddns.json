@@ -1,0 +1,578 @@
+[
+  {
+    "id": "INTL-APP-102",
+    "title": "DDNS 页面可访问，添加规则后表单显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_ddns_L2",
+        "desc": "导航到 DDNS"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "ddns",
+        "desc": "URL 含 ddns"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DDNSLists",
+        "desc": "DDNS 规则列表表格可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DDNSCfgEnabled",
+        "desc": "启用状态下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_wanSelect",
+        "desc": "WAN 接口下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DDNSUsername",
+        "desc": "用户名输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DDNSPassword",
+        "desc": "密码输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DDNSHostName",
+        "desc": "主机名输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_DDNSProvider",
+        "desc": "服务商下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-102_ddns",
+        "desc": "截图 DDNS 添加表单"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-103",
+    "title": "DDNS 添加规则必填校验，未选 WAN 时提示",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_ddns_L2",
+        "desc": "导航到 DDNS"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.skip_if_filled",
+        "selector": "#fhId_wanSelect",
+        "steps": 3,
+        "desc": "WAN 下拉已被预选（设备有 WAN 连接）则跳过后续 Apply/等待/断言"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "不填任何字段直接点应用"
+      },
+      {
+        "action": "real.wait",
+        "desc": "等待校验提示",
+        "ms": "1000"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please select a WAN.",
+        "desc": "提示先选择 WAN"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-103_ddns_wan_err",
+        "desc": "截图 DDNS 必填校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-104",
+    "title": "DDNS 服务商与启用状态选项完整",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_ddns_L2",
+        "desc": "导航到 DDNS"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击添加规则"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_DDNSProvider",
+        "option_text": "www.3322.org",
+        "desc": "服务商含 www.3322.org"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_DDNSProvider",
+        "option_text": "www.dyndns.org",
+        "desc": "服务商含 www.dyndns.org"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_DDNSProvider",
+        "option_text": "www.no-ip.com",
+        "desc": "服务商含 www.no-ip.com"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_DDNSCfgEnabled",
+        "desc": "点击启用状态下拉触发框展开选项面板"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用状态含 Enable"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Disable",
+        "desc": "启用状态含 Disable"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-104_ddns_options",
+        "desc": "截图 DDNS 选项"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-116",
+    "title": "DDNS 规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:application",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；依赖 INTL-WAN-012 预置的 INTERNET_R_VID_99 WAN 接口（需先执行 wan 套件）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_ddns_L2",
+        "desc": "导航到 DDNS"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "ddns",
+        "desc": "URL 含 ddns"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DDNSCfgEnabled",
+        "option_text": "Enable",
+        "desc": "新增：启用 DDNS"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_wanSelect",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "新增：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSUsername",
+        "value": "ddnstest001",
+        "desc": "新增：输入账号"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSPassword",
+        "value": "ddnstest123",
+        "desc": "新增：输入密码"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSHostName",
+        "value": "autotest001.3322.org",
+        "desc": "新增：输入主机名"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DDNSProvider",
+        "option_text": "www.3322.org",
+        "desc": "新增：选择服务商"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "autotest001.3322.org",
+        "desc": "回读：列表出现新增 DDNS 主机名"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=autotest001.3322.org",
+        "desc": "修改：点击规则行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSHostName",
+        "value": "autotest002.3322.org",
+        "desc": "修改：主机名改为 autotest002.3322.org"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "autotest002.3322.org",
+        "desc": "修改生效：列表回读新主机名"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=autotest002.3322.org",
+        "desc": "非法修改：再次打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSUsername",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "desc": "非法修改：账号填 33 个字符（超上限）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "非法修改：点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter 1-32 characters",
+        "desc": "超长值被前端拦截"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "autotest002.3322.org",
+        "desc": "原值不变：列表仍显示原主机名"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "关闭编辑表单（不应用非法修改）"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "autotest002.3322.org",
+        "desc": "删除：勾选规则行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "autotest002.3322.org",
+        "desc": "删除后无残留：规则已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-116_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-117",
+    "title": "DDNS 规则批量删除（勾选多条后删除）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:application",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；依赖 INTL-WAN-012 预置的 INTERNET_R_VID_99 WAN 接口（需先执行 wan 套件）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_ddns_L2",
+        "desc": "导航到 DDNS"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第一条：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DDNSCfgEnabled",
+        "option_text": "Enable",
+        "desc": "创建第一条：启用 DDNS"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_wanSelect",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "创建第一条：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSUsername",
+        "value": "ddnstest003",
+        "desc": "创建第一条：输入账号"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSPassword",
+        "value": "ddnstest123",
+        "desc": "创建第一条：输入密码"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSHostName",
+        "value": "autotest003.3322.org",
+        "desc": "创建第一条：输入主机名"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DDNSProvider",
+        "option_text": "www.3322.org",
+        "desc": "创建第一条：选择服务商"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第一条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "autotest003.3322.org",
+        "desc": "第一条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第二条：打开规则表单"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DDNSCfgEnabled",
+        "option_text": "Enable",
+        "desc": "创建第二条：启用 DDNS"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_wanSelect",
+        "option_text": "INTERNET_R_VID_99",
+        "desc": "创建第二条：选择 WAN 接口"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSUsername",
+        "value": "ddnstest004",
+        "desc": "创建第二条：输入账号"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSPassword",
+        "value": "ddnstest123",
+        "desc": "创建第二条：输入密码"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_DDNSHostName",
+        "value": "autotest004.3322.org",
+        "desc": "创建第二条：输入主机名"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_DDNSProvider",
+        "option_text": "www.3322.org",
+        "desc": "创建第二条：选择服务商"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第二条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "autotest004.3322.org",
+        "desc": "第二条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_DDNSLists tr.el-table__row:has-text(\"autotest003.3322.org\") .el-checkbox",
+        "desc": "批量删除：勾选第一条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_DDNSLists tr.el-table__row:has-text(\"autotest004.3322.org\") .el-checkbox",
+        "desc": "批量删除：勾选第二条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Delete",
+        "desc": "批量删除：点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "批量删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "批量删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "autotest003.3322.org",
+        "desc": "批量删除：第一条无残留"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "autotest004.3322.org",
+        "desc": "批量删除：第二条无残留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-117_batch_del",
+        "desc": "截图批量删除后页面"
+      }
+    ]
+  }
+]

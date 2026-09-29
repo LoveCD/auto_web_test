@@ -1,0 +1,462 @@
+[
+  {
+    "id": "INTL-FW-003",
+    "title": "URL 过滤页面可访问，支持白名单/黑名单与时间配置",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_urlFilter_L3",
+        "desc": "导航到 URL 过滤"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "urlFilter",
+        "desc": "URL 含 urlFilter"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_enable",
+        "desc": "启用过滤可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_disable",
+        "desc": "禁用过滤可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_white",
+        "desc": "白名单模式可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_black",
+        "desc": "黑名单模式可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Add",
+        "desc": "添加按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_URLFilterLists",
+        "desc": "URL 列表表格可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-003_urlfilter",
+        "desc": "截图 URL 过滤页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-016",
+    "title": "URL 过滤 URL 格式非法被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_urlFilter_L3",
+        "desc": "导航到 URL 过滤"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开 URL 表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_URL",
+        "value": "003",
+        "desc": "输入格式非法的 URL"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 触发校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid URL address",
+        "desc": "非法 URL 被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-016_url",
+        "desc": "截图 URL 格式校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-021",
+    "title": "URL 过滤规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_urlFilter_L3",
+        "desc": "导航到 URL 过滤"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "urlFilter",
+        "desc": "URL 含 urlFilter"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_URL",
+        "value": "www.autotest001.com",
+        "desc": "新增：输入过滤 URL"
+      },
+      {
+        "action": "real.select_time_range",
+        "selector": "#f",
+        "start": "00:00",
+        "end": "23:59",
+        "desc": "新增：时间范围 00:00 - 23:59"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enable",
+        "option_text": "Enable",
+        "desc": "新增：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "www.autotest001.com",
+        "desc": "回读：列表出现新增 URL 规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=www.autotest001.com",
+        "desc": "修改：点击规则行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_URL",
+        "value": "www.autotest002.com",
+        "desc": "修改：URL 改为 www.autotest002.com"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "www.autotest002.com",
+        "desc": "修改生效：列表回读新 URL"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=www.autotest002.com",
+        "desc": "非法修改：再次打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_URL",
+        "value": "003",
+        "desc": "非法修改：URL 填格式非法值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "非法修改：点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid URL address",
+        "desc": "非法值被前端拦截"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "www.autotest002.com",
+        "desc": "原值不变：列表仍显示原 URL"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "关闭编辑表单（不应用非法修改）"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "www.autotest002.com",
+        "desc": "删除：勾选规则行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "www.autotest002.com",
+        "desc": "删除后无残留：规则已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-021_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  },
+  {
+    "id": "INTL-FW-022",
+    "title": "URL 过滤规则批量删除（勾选多条后删除）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:firewall",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_urlFilter_L3",
+        "desc": "导航到 URL 过滤"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第一条：打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_URL",
+        "value": "www.autotest003.com",
+        "desc": "创建第一条：输入过滤 URL"
+      },
+      {
+        "action": "real.select_time_range",
+        "selector": "#f",
+        "start": "00:00",
+        "end": "23:59",
+        "desc": "创建第一条：时间范围 00:00 - 23:59"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enable",
+        "option_text": "Enable",
+        "desc": "创建第一条：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第一条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "www.autotest003.com",
+        "desc": "第一条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "创建第二条：打开规则表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_URL",
+        "value": "www.autotest004.com",
+        "desc": "创建第二条：输入过滤 URL"
+      },
+      {
+        "action": "real.select_time_range",
+        "selector": "#f",
+        "start": "00:00",
+        "end": "23:59",
+        "desc": "创建第二条：时间范围 00:00 - 23:59"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Enable",
+        "option_text": "Enable",
+        "desc": "创建第二条：启用规则"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "创建第二条：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "www.autotest004.com",
+        "desc": "第二条创建成功：列表出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_URLFilterLists tr.el-table__row:has-text(\"www.autotest003.com\") .el-checkbox",
+        "desc": "批量删除：勾选第一条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_URLFilterLists tr.el-table__row:has-text(\"www.autotest004.com\") .el-checkbox",
+        "desc": "批量删除：勾选第二条"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Delete",
+        "desc": "批量删除：点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure",
+        "desc": "批量删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "批量删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "www.autotest003.com",
+        "desc": "批量删除：第一条无残留"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "www.autotest004.com",
+        "desc": "批量删除：第二条无残留"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-022_batch_del",
+        "desc": "截图批量删除后页面"
+      }
+    ]
+  }
+]

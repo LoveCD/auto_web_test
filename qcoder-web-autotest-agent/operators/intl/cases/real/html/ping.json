@@ -1,0 +1,155 @@
+[
+  {
+    "id": "INTL-APP-111",
+    "title": "Ping 诊断页面可访问，必填项未选时提示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:negative",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_diagnose_L2",
+        "l3": "fhId_ping_L3",
+        "desc": "导航到 Ping 诊断"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "ping",
+        "desc": "URL 含 ping"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Interface",
+        "desc": "接口下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPVersion",
+        "desc": "IP 版本下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_NumberOfRepetitions",
+        "desc": "重复次数输入框可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Host",
+        "desc": "目的地址输入框可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Diagnose",
+        "desc": "不选接口直接点击诊断"
+      },
+      {
+        "action": "real.wait",
+        "desc": "等待校验提示",
+        "ms": "1000"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please select a interface.",
+        "desc": "提示先选择接口"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-111_ping_err",
+        "desc": "截图 Ping 必填校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-APP-112",
+    "title": "Ping 重复次数边界校验（1-10）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_diagnose_L2",
+        "l3": "fhId_ping_L3",
+        "desc": "导航到 Ping 诊断"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_NumberOfRepetitions",
+        "value": "0",
+        "desc": "重复次数填 0，小于下限"
+      },
+      {
+        "action": "real.wait",
+        "desc": "等待校验提示",
+        "ms": "1000"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Host",
+        "desc": "点击目的地址框使重复次数失焦触发校验（页面无 Apply）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 10.",
+        "desc": "提示重复次数范围错误"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_NumberOfRepetitions",
+        "value": "11",
+        "desc": "重复次数填 11，超过上限"
+      },
+      {
+        "action": "real.wait",
+        "desc": "等待校验提示",
+        "ms": "1000"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Host",
+        "desc": "点击目的地址框使重复次数失焦触发校验（页面无 Apply）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 10.",
+        "desc": "再次提示重复次数范围错误"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-112_ping_repeat_err",
+        "desc": "截图重复次数校验错误"
+      }
+    ]
+  }
+]

@@ -1,0 +1,369 @@
+[
+  {
+    "id": "INTL-LAN-005",
+    "title": "静态 IP 绑定页面可访问，Add 表单与操作按钮完整",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:lan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_staticIPSettings_L3",
+        "desc": "导航到静态 IP 绑定"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "staticIPSettings",
+        "desc": "URL 含 staticIPSettings"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Add",
+        "desc": "Add 按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Delete",
+        "desc": "Delete 按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_staticIPList",
+        "desc": "绑定列表表格可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开绑定表单"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPAddress",
+        "desc": "IP 地址输入框出现"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_MACAddress",
+        "desc": "MAC 地址输入框出现"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-005_staticip",
+        "desc": "截图静态 IP 绑定页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-012",
+    "title": "静态 IP 绑定 MAC 格式非法被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:lan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_staticIPSettings_L3",
+        "desc": "导航到静态 IP 绑定"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开绑定表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MACAddress",
+        "value": "00:11:22",
+        "desc": "输入格式不完整的 MAC 地址"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a valid MAC address",
+        "desc": "非法 MAC 被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-012_mac",
+        "desc": "截图 MAC 格式校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-013",
+    "title": "静态 IP 绑定 IP 不在 DHCP 地址池内被校验拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:lan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；DHCP 地址池非公网网段",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_staticIPSettings_L3",
+        "desc": "导航到静态 IP 绑定"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开绑定表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPAddress",
+        "value": "8.8.8.8",
+        "desc": "输入不在地址池内的 IP"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "This IP is not in IP pool",
+        "desc": "池外 IP 被校验拦截"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 关闭表单（不应用）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-013_ip_pool",
+        "desc": "截图 IP 地址池校验"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-014",
+    "title": "静态 IP 绑定表单 Cancel 关闭且不产生副作用",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:lan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_staticIPSettings_L3",
+        "desc": "导航到静态 IP 绑定"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "点击 Add 打开绑定表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPAddress",
+        "value": "192.168.1.222",
+        "desc": "输入绑定 IP"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MACAddress",
+        "value": "00:11:22:33:44:55",
+        "desc": "输入绑定 MAC"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onCancel",
+        "desc": "点击 Cancel 取消添加"
+      },
+      {
+        "action": "real.assert_hidden",
+        "selector": "#fhId_IPAddress",
+        "desc": "表单关闭，IP 输入框隐藏"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-014_cancel",
+        "desc": "截图 Cancel 关闭表单"
+      }
+    ]
+  },
+  {
+    "id": "INTL-LAN-016",
+    "title": "静态 IP 绑定规则新增/修改/删除完整链路（CRUD）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:lan",
+      "专项:crud"
+    ],
+    "precondition": "设备已上电，可正常登录；DHCP 地址池需覆盖 192.168.1.222 与 192.168.1.223",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_lanSettings_L2",
+        "l3": "fhId_staticIPSettings_L3",
+        "desc": "导航到静态 IP 绑定"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "staticIPSettings",
+        "desc": "URL 含 staticIPSettings"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Add",
+        "desc": "新增：打开绑定表单"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPAddress",
+        "value": "192.168.1.222",
+        "desc": "新增：IP 填 192.168.1.222"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_MACAddress",
+        "value": "00:11:22:33:44:66",
+        "desc": "新增：MAC 填 00:11:22:33:44:66"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "新增：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待保存完成"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "192.168.1.222",
+        "desc": "回读：列表出现新增绑定 IP"
+      },
+      {
+        "action": "real.click",
+        "selector": "text=192.168.1.222",
+        "desc": "修改：点击绑定行打开编辑"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待编辑表单加载"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_IPAddress",
+        "value": "192.168.1.223",
+        "desc": "修改：IP 改为 192.168.1.223"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "修改：点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待修改保存"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "192.168.1.223",
+        "desc": "修改生效：列表回读新 IP"
+      },
+      {
+        "action": "real.delete_wan_row",
+        "row_text": "192.168.1.223",
+        "desc": "删除：勾选绑定行并点击 Delete"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "Are you sure you want to delete the selected rule?",
+        "desc": "删除：确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": true,
+        "desc": "删除：确认删除"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待删除完成"
+      },
+      {
+        "action": "real.assert_text_not_contains",
+        "selector": "body",
+        "text": "192.168.1.223",
+        "desc": "删除后无残留：绑定已消失"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-LAN-016_crud_done",
+        "desc": "截图 CRUD 链路完成状态"
+      }
+    ]
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "INTL-STATUS-105",
+    "title": "光模块信息页面可访问，光功率参数显示（PON 设备）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:status"
+    ],
+    "precondition": "设备已上电且为 PON 上行（WanInterface=dev.pon.1），可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_status_L1",
+        "l2": "fhId_opticalInfo_L2",
+        "l3": "fhId_opticalInfo_L3",
+        "desc": "导航到光模块信息"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "opticalInfo",
+        "desc": "URL 含 opticalInfo"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_opticalInfo",
+        "desc": "光模块信息可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-STATUS-105_optical",
+        "desc": "截图光模块信息页"
+      }
+    ]
+  }
+]

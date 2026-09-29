@@ -1,0 +1,56 @@
+[
+  {
+    "id": "INTL-FW-001",
+    "title": "防火墙控制页面可访问，安全级别三档可选",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:firewall"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_security_L1",
+        "l2": "fhId_firewall_L2",
+        "l3": "fhId_firewallControl_L3",
+        "desc": "导航到防火墙控制"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "firewallControl",
+        "desc": "URL 含 firewallControl"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_high",
+        "desc": "高级别单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_medium",
+        "desc": "中级别单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_firewall_low",
+        "desc": "低级别单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onEnableApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-FW-001_control",
+        "desc": "截图防火墙控制页"
+      }
+    ]
+  }
+]

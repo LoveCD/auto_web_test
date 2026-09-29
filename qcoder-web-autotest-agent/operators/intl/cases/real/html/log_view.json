@@ -1,0 +1,64 @@
+[
+  {
+    "id": "INTL-SYS-009",
+    "title": "日志查看页面可访问，级别选项与应用按钮完整",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:system"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_log_L2",
+        "l3": "fhId_logView_L3",
+        "desc": "导航到日志查看"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "logView",
+        "desc": "URL 含 logView"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_LogViewLevel",
+        "desc": "日志级别选择可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_LogViewLevel",
+        "option_text": "Emergency",
+        "desc": "级别含 Emergency"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_LogViewLevel",
+        "option_text": "Warning",
+        "desc": "级别含 Warning"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_LogViewLevel",
+        "option_text": "Debugging",
+        "desc": "级别含 Debugging"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onSubmit",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-009_log",
+        "desc": "截图日志查看页"
+      }
+    ]
+  }
+]

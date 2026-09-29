@@ -1,0 +1,2379 @@
+[
+  {
+    "id": "INTL-WIFI-001",
+    "title": "Wi-Fi 基本设置页面可访问（2.4G）",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "射频开关可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "网络模式下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "desc": "频宽下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Channel",
+        "desc": "信道下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_GuardInterval",
+        "desc": "保护间隔下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "Apply 按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onDelete",
+        "desc": "Cancel 按钮可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Channel",
+        "option_text": "Auto Selected",
+        "desc": "信道下拉含自动信道选项 Auto Selected"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 1",
+        "desc": "信道下拉含手动信道选项 channel 1"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-001_basic2g",
+        "desc": "截图 2.4G 基础设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-033",
+    "title": "Wi-Fi 基本设置 2.4G 初始值回读与设备真实值一致",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录页面初始取值（网络模式/频宽/信道/保护间隔）"
+      },
+      {
+        "action": "real.assert_field_contains",
+        "selector": "#fhId_OperatingStandards",
+        "texts": ["802.11"],
+        "desc": "断言网络模式非空且已归一化为 802.11 x 形式"
+      },
+      {
+        "action": "real.assert_field_in",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "values": [
+          "20MHz",
+          "40MHz",
+          "20MHz/40MHz"
+        ],
+        "desc": "断言频宽非空且在 20/40/20MHz/40MHz 集合内"
+      },
+      {
+        "action": "real.assert_field_any_of",
+        "selector": "#fhId_Channel",
+        "equals": [
+          "Auto Selected"
+        ],
+        "prefix_number": [
+          "channel"
+        ],
+        "desc": "断言信道非空且为 Auto Selected 或 channel N"
+      },
+      {
+        "action": "real.assert_field_contains",
+        "selector": "#fhId_GuardInterval",
+        "texts": [
+          "us",
+          "Auto"
+        ],
+        "ignore_case": true,
+        "desc": "断言保护间隔非空且为 us 或 Auto"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新进入页面（触发重新拉取设备参数）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言重新进入页面后四项取值与初始值完全一致（页面无前端缓存，均以设备实际值为准）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-033_readback",
+        "desc": "截图初始值回读结果"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-002",
+    "title": "Wi-Fi 基本设置 2.4G 工作模式与频宽选项枚举",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 Wi-Fi 基本设置"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b",
+        "desc": "工作模式含 802.11 b"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 g",
+        "desc": "工作模式含 802.11 g"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b/g",
+        "desc": "工作模式含 802.11 b/g"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 n",
+        "desc": "工作模式含 802.11 n"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b/g/n",
+        "desc": "工作模式含 802.11 b/g/n"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz",
+        "desc": "频宽含 20MHz"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "40MHz",
+        "desc": "频宽含 40MHz"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz/40MHz",
+        "desc": "频宽含 20MHz/40MHz"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-002_basic_options",
+        "desc": "截图工作模式选项"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-034",
+    "title": "Wi-Fi 基本设置 2.4G 保护间隔选项随网络模式正确切换",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前网络模式等控件原值（供清理步骤比对，R10 取消丢弃）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b/g",
+        "desc": "网络模式切为不含 ax 的 b/g"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待制式联动生效"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "0.4us",
+        "desc": "非 ax 制式下保护间隔含 0.4us"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "0.8us",
+        "desc": "非 ax 制式下保护间隔含 0.8us"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "Auto",
+        "desc": "非 ax 制式下保护间隔含 Auto"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b/g/n/ax",
+        "steps": 5,
+        "desc": "机型无 11ax 制式则跳过后续 ax 分支断言（环境受限）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b/g/n/ax",
+        "desc": "网络模式切为含 ax 的 b/g/n/ax"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待制式联动生效"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "1.6us",
+        "desc": "含 ax 制式下保护间隔含 1.6us"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "3.2us",
+        "desc": "含 ax 制式下保护间隔含 3.2us"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "Auto",
+        "desc": "含 ax 制式下保护间隔含 Auto"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-034_gi_options",
+        "desc": "截图保护间隔选项"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言网络模式已恢复为原值（R10 取消丢弃）",
+        "fields": [
+          "std"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-035",
+    "title": "Wi-Fi 基本设置 2.4G 关闭射频保存成功并可恢复",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": false,
+        "desc": "射频开关置为关闭（幂等：已是关闭态则不重复切换）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": false,
+        "desc": "断言保存后射频为关闭态"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新进入页面（回读设备值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": false,
+        "desc": "断言重新进入页面后射频仍为关闭态（保存已生效）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-035_radio_off",
+        "desc": "截图射频关闭后的页面"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "清理：射频开关恢复为开启"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "清理：断言射频已恢复开启（环境还原）"
+      }
+    ],
+    "note": "关闭射频会影响已连接终端，建议在无业务时段执行。"
+  },
+  {
+    "id": "INTL-WIFI-036",
+    "title": "Wi-Fi 基本设置 2.4G 射频关闭时其余字段可编辑性观察",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": false,
+        "desc": "射频开关置为关闭"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": false,
+        "desc": "断言射频为关闭态"
+      },
+      {
+        "action": "real.probe_disabled",
+        "selectors": [
+          "#fhId_OperatingStandards",
+          "#fhId_OperatingChannelBandwidth",
+          "#fhId_Channel",
+          "#fhId_GuardInterval"
+        ],
+        "label": "closeState",
+        "desc": "记录关闭态下网络模式/频宽/信道/保护间隔的可编辑性（行为固化，不判缺陷）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-036_radio_off_editable",
+        "desc": "截图关闭态下各字段状态"
+      },
+      {
+        "action": "real.set_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "清理：射频恢复开启"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.assert_switch",
+        "selector": "#fhId_Enable",
+        "on": true,
+        "desc": "清理：断言射频已恢复开启"
+      }
+    ],
+    "note": "行为固化用例：源码未定义「关闭射频即禁用整表」的规则，本用例只记录现状，不作为缺陷判定依据。"
+  },
+  {
+    "id": "INTL-WIFI-037",
+    "title": "Wi-Fi 基本设置 2.4G 选用 b/g 系制式时频宽被强制 20MHz 并禁用",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前网络模式与频宽"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b",
+        "desc": "网络模式切为 802.11 b"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待联动生效"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "value": "20MHz",
+        "desc": "断言频宽已被强制为 20MHz（需求 R1）"
+      },
+      {
+        "action": "real.assert_disabled",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "disabled": true,
+        "desc": "断言频宽控件已禁用"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-037_bw_forced",
+        "desc": "截图频宽被强制为 20MHz"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言网络模式恢复为设备原值",
+        "fields": [
+          "std"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-038",
+    "title": "Wi-Fi 基本设置 2.4G 网络模式与频宽组合保存生效并回读",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前网络模式与频宽"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 n",
+        "desc": "网络模式选 802.11 n"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz/40MHz",
+        "desc": "频宽选 20MHz/40MHz（Auto）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新进入页面（回读设备值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_OperatingStandards",
+        "value": "802.11 n",
+        "desc": "断言网络模式回读为 802.11 n"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "value": "20MHz/40MHz",
+        "desc": "断言频宽回读为 20MHz/40MHz"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-038_saved",
+        "desc": "截图保存回读结果"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "std"
+        ],
+        "desc": "清理：网络模式恢复为设备原值"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "bw"
+        ],
+        "desc": "清理：频宽恢复为设备原值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "清理：重新进入页面确认已还原"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言网络模式已还原",
+        "fields": [
+          "std"
+        ]
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言频宽已还原",
+        "fields": [
+          "bw"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-039",
+    "title": "Wi-Fi 基本设置 2.4G 制式切换导致保护间隔自动修正",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前制式与保护间隔"
+      },
+      {
+        "action": "real.skip_if_option_absent",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b/g/n/ax",
+        "steps": 7,
+        "desc": "机型无 11ax 制式则跳过后续修正断言（环境受限）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b/g/n/ax",
+        "desc": "制式选含 ax 的组合"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1200",
+        "desc": "等待联动生效"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_GuardInterval",
+        "option_text": "1.6us",
+        "desc": "保护间隔选仅 ax 制式合法的 1.6us"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingStandards",
+        "option_text": "802.11 b/g",
+        "desc": "制式切回不含 ax 的组合"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待联动修正"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_GuardInterval",
+        "value": "Auto",
+        "desc": "断言保护间隔已自动修正为 Auto（需求 R2）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-039_gi_auto",
+        "desc": "截图保护间隔自动修正结果"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言保护间隔恢复为设备原值",
+        "fields": [
+          "gi"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-040",
+    "title": "Wi-Fi 基本设置 2.4G 手动指定信道保存生效并回读",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前频宽与信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz",
+        "desc": "频宽选 20MHz"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待信道列表刷新"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 1",
+        "desc": "信道手动选择 channel 1"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新进入页面（回读设备值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_Channel",
+        "value": "channel 1",
+        "desc": "断言重新进入页面后信道回读为 channel 1"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-040_channel_saved",
+        "desc": "截图手动信道保存回读结果"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "bw"
+        ],
+        "desc": "清理：频宽恢复为设备原值"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "ch"
+        ],
+        "desc": "清理：信道恢复为设备原值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-041",
+    "title": "Wi-Fi 基本设置 2.4G 选择自动信道后配置正确下发",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "Auto Selected",
+        "desc": "信道选择 Auto Selected（值 0）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.assert_absent",
+        "selector": "#fhId_AutoChannelEnable",
+        "desc": "断言页面不存在 AutoChannelEnable 独立控件（该字段由 Channel 派生）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新进入页面（回读设备值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_Channel",
+        "value": "Auto Selected",
+        "desc": "断言重新进入页面后信道仍为 Auto Selected（自动信道已下发）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-041_auto_channel",
+        "desc": "截图自动信道保存回读结果"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "ch"
+        ],
+        "desc": "清理：信道恢复为设备原值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-042",
+    "title": "Wi-Fi 基本设置 2.4G 频宽变化触发信道列表刷新与非法值回退",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前频宽与信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz/40MHz",
+        "desc": "频宽设为 20MHz/40MHz（Auto）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待信道列表刷新"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 1",
+        "desc": "先手动选中一个具体信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz",
+        "desc": "频宽改为 20MHz（触发信道列表重新拉取与非法值回退）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待信道列表刷新与取值修正"
+      },
+      {
+        "action": "real.assert_field_in_options",
+        "selector": "#fhId_Channel",
+        "desc": "断言频宽变化后信道取值仍在当前合法选项集内（不出现非法值）"
+      },
+      {
+        "action": "real.assert_field_in",
+        "selector": "#fhId_Channel",
+        "values": [
+          "channel 1",
+          "Auto Selected"
+        ],
+        "desc": "断言频宽变化后信道取值保持手动选中项或回退 Auto Selected"
+      },
+      {
+        "action": "real.assert_option_set",
+        "selector": "#fhId_Channel",
+        "contains": [
+          "Auto Selected"
+        ],
+        "min_count": 2,
+        "desc": "断言频宽变化后信道列表仍含 Auto Selected 与具体信道（至少 2 项）"
+      },
+      {
+        "action": "real.click_blank",
+        "desc": "真实鼠标点击空白处收起断言步骤展开的信道下拉（合成事件收不起，须真实点击；否则面板会拦截后续 Cancel）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-042_channel_refresh",
+        "desc": "截图频宽变化后的信道状态"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃未保存修改"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言频宽恢复为设备原值（轮询等待 Cancel 后异步重拉，最长 12s）",
+        "fields": [
+          "bw"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-013",
+    "title": "Wi-Fi 基本设置 2.4G 自动/手动信道切换",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 Wi-Fi 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用开关可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "工作模式下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "desc": "频宽下拉可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Channel",
+        "desc": "信道下拉可见"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 1",
+        "desc": "选择手动信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "Auto Selected",
+        "desc": "切回自动信道"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_GuardInterval",
+        "desc": "保护间隔勾选可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-013_channel_switch",
+        "desc": "截图信道模式切换"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-043",
+    "title": "Wi-Fi 基本设置 2.4G Domain 选项枚举与当前值回读一致",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RegulatoryDomain",
+        "desc": "Domain 下拉可见"
+      },
+      {
+        "action": "real.assert_option_set",
+        "selector": "#fhId_RegulatoryDomain",
+        "min_count": 10,
+        "desc": "断言 Domain 选项数量充足（≥10）、无空文案、无重复项"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_RegulatoryDomain",
+        "desc": "断言 Domain 当前值非空（已回读设备实际域）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-043_domain",
+        "desc": "截图 Domain 选项与当前值"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-044",
+    "title": "Wi-Fi 基本设置 2.4G Domain 可编辑性按局方规则生效",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_RegulatoryDomain",
+        "desc": "Domain 下拉可见"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前 Domain 取值（供恢复）"
+      },
+      {
+        "action": "real.skip_if_disabled",
+        "selector": "#fhId_RegulatoryDomain",
+        "steps": 9,
+        "desc": "Domain 为置灰态（非 COMMON 类局方）时跳过写入验证，判定 SKIP 而非失败"
+      },
+      {
+        "action": "real.select_option_diff",
+        "selector": "#fhId_RegulatoryDomain",
+        "desc": "选择一个与当前值不同的监管域"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiSaved",
+        "fields": {
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录保存的新 Domain 值（供重进后比对）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新进入页面（回读设备值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiSaved",
+        "fields": [
+          "dom"
+        ],
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言重新进入页面后 Domain 为保存的新值（修改生效）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-044_domain_saved",
+        "desc": "截图 Domain 保存回读结果"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "dom"
+        ],
+        "desc": "清理：Domain 恢复为设备原值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "清理：重新进入页面确认已还原"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "清理：断言 Domain 已还原为原值",
+        "fields": [
+          "dom"
+        ]
+      }
+    ],
+    "note": "Domain 仅 FTTR_MAIN_COMMON / FTTR_SUB_COMMON / COMMON / SFU_COMMON / AP_COMMON 局方可编辑，其余置灰。"
+  },
+  {
+    "id": "INTL-WIFI-045",
+    "title": "Wi-Fi 基本设置 2.4G 下拉必填项缺失时阻止提交并提示",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.clear_select",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "desc": "构造频宽「未选择」态（把表单 model 置空并触发 change，见需求 C1：校验在 change 时触发）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "必填项缺失时点击 Apply"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please select an option.",
+        "desc": "断言出现必填项校验提示 Please select an option.（未发起保存）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-045_required",
+        "desc": "截图必填校验结果"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "清理：点击 Cancel 丢弃构造的非法状态"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "清理：等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_field_nonempty",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "desc": "清理：断言频宽已从设备回读为非空值"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-046",
+    "title": "Wi-Fi 基本设置 2.4G 取消操作丢弃未保存修改",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前网络模式"
+      },
+      {
+        "action": "real.select_option_diff",
+        "selector": "#fhId_OperatingStandards",
+        "desc": "把网络模式改为一个不同值（不点击 Apply）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1000",
+        "desc": "等待界面取值变更"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onDelete",
+        "desc": "点击 Cancel（源码元素 id 为 fhId_onDelete，命名误导，非删除按钮）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2500",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言网络模式已恢复为修改前的设备值（未保存修改被丢弃）",
+        "fields": [
+          "std"
+        ]
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-046_cancel_discard",
+        "desc": "截图取消后的页面取值"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-047",
+    "title": "Wi-Fi 基本设置 2.4G 重复提交同值配置幂等且无异常",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "第 1 次点击 Apply（保持各字段为当前值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待第 1 次保存完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭第 1 次保存的结果提示框"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "第 2 次点击 Apply（保持各字段为当前值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待第 2 次保存完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭第 2 次保存的结果提示框"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "第 3 次点击 Apply（保持各字段为当前值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待第 3 次保存完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭第 3 次保存的结果提示框"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "断言页面未跳转、未崩溃"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "断言 Apply 按钮仍可用（页面正常）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-047_idempotent",
+        "desc": "截图重复提交后的页面"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-048",
+    "title": "Wi-Fi 基本设置 2.4G 保存后刷新与重新登录值仍保持",
+    "priority": "P0",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前频宽（供恢复）"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz",
+        "desc": "频宽改为 20MHz"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新进入页面（等同刷新）后回读"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "value": "20MHz",
+        "desc": "断言重新进入页面后频宽为 20MHz"
+      },
+      {
+        "action": "real.logout",
+        "desc": "退出登录（注销设备端会话）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待回到登录页"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#user_name",
+        "value": "${QCT_INTL_ADMIN_USER}",
+        "desc": "重新登录：输入用户名"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#loginpp",
+        "value": "${QCT_INTL_ADMIN_PASS}",
+        "desc": "重新登录：输入密码"
+      },
+      {
+        "action": "real.click",
+        "selector": "#login_btn",
+        "desc": "重新登录"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新登录后再次进入 2.4G 基本设置页"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面拉取设备参数"
+      },
+      {
+        "action": "real.assert_field_value",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "value": "20MHz",
+        "desc": "断言重新登录后频宽仍为 20MHz（配置持久）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-048_persist",
+        "desc": "截图重新登录后的取值"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "bw"
+        ],
+        "desc": "清理：频宽恢复为设备原值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-049",
+    "title": "Wi-Fi 基本设置 2.4G 重启入口可达与取消重启后配置不变",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录重启前各字段取值"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_deviceManagement_L2",
+        "l3": "fhId_rebootDevice_L3",
+        "desc": "进入 设备管理 > 重启 页面"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Reboot",
+        "desc": "Reboot 按钮可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Reboot",
+        "desc": "点击 Reboot 触发确认框"
+      },
+      {
+        "action": "real.assert_confirm_visible",
+        "keyword": "reboot",
+        "desc": "断言重启确认框出现"
+      },
+      {
+        "action": "real.click_confirm",
+        "accept": false,
+        "desc": "取消重启（本用例不触发真实重启）"
+      },
+      {
+        "action": "real.assert_confirm_hidden",
+        "desc": "断言确认框已关闭"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-049_reboot_entry",
+        "desc": "截图重启入口与确认框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "返回 2.4G 基本设置页核对参数"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__wifiOrig",
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言取消重启后各字段取值与重启前一致"
+      }
+    ],
+    "note": "真实重启后的配置持久性耗时较长且会中断回归链路，按需求文档建议在独立环节执行；本用例只校验重启入口与取消后的配置一致性。"
+  },
+  {
+    "id": "INTL-WIFI-050",
+    "title": "Wi-Fi 基本设置 2.4G 未登录访问被拦截",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:security",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电；执行前设备端会话需可正常注销（用例内自带登录→登出前置）。",
+    "steps": [
+      {
+        "action": "real.navigate",
+        "path": "/login.html",
+        "desc": "访问登录页"
+      },
+      {
+        "action": "real.login",
+        "desc": "前置：先登录一次，激活设备端会话"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "main.html",
+        "desc": "前置：登录成功"
+      },
+      {
+        "action": "real.logout",
+        "desc": "前置：正确登出，注销设备端会话（残留会话会导致误判）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待会话注销完成"
+      },
+      {
+        "action": "real.navigate",
+        "path": "/main.html#/network/wifiSettings/wifiBasic",
+        "desc": "未登录状态直接访问 2.4G 基本设置路由"
+      },
+      {
+        "action": "real.assert_unauth_redirect",
+        "desc": "断言被重定向到登录页（未授权访问被拦截）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-050_unauth",
+        "desc": "截图未授权访问拦截结果"
+      }
+    ],
+    "note": "设备在存在活动会话时可能对新客户端放行受保护页，前置必须先登录再正确登出。"
+  },
+  {
+    "id": "INTL-WIFI-051",
+    "title": "Wi-Fi 基本设置 2.4G 信道非法值无法提交",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:boundary",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录。依赖页面路由 /network/wifiSettings/wifiBasic；TH_AIS 局方该路由挂载高级页（无本页），不适用本用例。",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "导航到 网络 > Wi-Fi 设置 > 2.4G 基本设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wifiBasic",
+        "desc": "URL 含 wifiBasic（确认挂载的是 2.4G 基础设置页）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待页面参数渲染完成"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__wifiOrig",
+        "fields": {
+          "std": "#fhId_OperatingStandards",
+          "bw": "#fhId_OperatingChannelBandwidth",
+          "ch": "#fhId_Channel",
+          "gi": "#fhId_GuardInterval",
+          "dom": "#fhId_RegulatoryDomain"
+        },
+        "desc": "记录当前频宽与信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz/40MHz",
+        "desc": "频宽先设为 20MHz/40MHz（Auto）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "1500",
+        "desc": "等待信道列表刷新"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_Channel",
+        "option_text": "channel 1",
+        "desc": "选择一个具体信道"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_OperatingChannelBandwidth",
+        "option_text": "20MHz",
+        "desc": "把频宽降到可能不支持该信道的档位（构造非法信道场景）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待前端修正信道取值"
+      },
+      {
+        "action": "real.assert_field_any_of",
+        "selector": "#fhId_Channel",
+        "equals": [
+          "Auto Selected"
+        ],
+        "prefix_number": [
+          "channel"
+        ],
+        "desc": "断言提交前信道值为合法值（前端已回退）"
+      },
+      {
+        "action": "real.snapshot",
+        "name": "__chBefore",
+        "fields": {
+          "ch": "#fhId_Channel"
+        },
+        "desc": "记录提交前信道值（供回读比对）"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wifiBasic_L3",
+        "desc": "重新进入页面（回读设备值）"
+      },
+      {
+        "action": "real.wait",
+        "ms": "2000",
+        "desc": "等待页面重新拉取设备参数"
+      },
+      {
+        "action": "real.assert_field_any_of",
+        "selector": "#fhId_Channel",
+        "equals": [
+          "Auto Selected"
+        ],
+        "prefix_number": [
+          "channel"
+        ],
+        "desc": "断言回读信道合法"
+      },
+      {
+        "action": "real.assert_unchanged",
+        "name": "__chBefore",
+        "fields": [
+          "ch"
+        ],
+        "timeout_ms": 12000,
+        "poll_ms": 500,
+        "desc": "断言回读信道与提交前一致（设备侧无非法信道写入）"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-051_no_illegal_channel",
+        "desc": "截图非法信道提交结果"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "bw"
+        ],
+        "desc": "清理：频宽恢复为设备原值"
+      },
+      {
+        "action": "real.restore",
+        "name": "__wifiOrig",
+        "fields": [
+          "ch"
+        ],
+        "desc": "清理：信道恢复为设备原值"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_onApply",
+        "desc": "点击 Apply 保存"
+      },
+      {
+        "action": "real.wait",
+        "ms": "3000",
+        "desc": "等待保存与页面回读完成"
+      },
+      {
+        "action": "real.close_boxes",
+        "desc": "关闭可能的保存结果提示框"
+      }
+    ]
+  }
+]

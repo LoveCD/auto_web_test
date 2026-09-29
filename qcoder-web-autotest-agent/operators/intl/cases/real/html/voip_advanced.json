@@ -1,0 +1,62 @@
+[
+  {
+    "id": "INTL-VOIP-003",
+    "title": "VoIP 高级设置页面可访问，传真模式选项完整",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:voip"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_voipSettings_L2",
+        "l3": "fhId_voipAdvanced_L3",
+        "desc": "导航到 VoIP 高级设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "voipAdvanced",
+        "desc": "URL 含 voipAdvanced"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_TelephoneEventPayloadType",
+        "desc": "电话事件负载类型输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_HeartbeatCount",
+        "desc": "心跳计数输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_HeartbeatCycle",
+        "desc": "心跳周期输入可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_FaxMode",
+        "option_text": "T38",
+        "desc": "传真模式含 T38"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-VOIP-003_adv",
+        "desc": "截图 VoIP 高级设置页"
+      }
+    ]
+  }
+]

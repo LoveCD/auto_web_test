@@ -1,0 +1,263 @@
+[
+  {
+    "id": "INTL-SYS-007",
+    "title": "NTP 时间设置页面可访问，服务器类型选项完整",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:system"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_deviceManagement_L2",
+        "l3": "fhId_ntp_L3",
+        "desc": "导航到 NTP 设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "ntp",
+        "desc": "URL 含 ntp"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "NTP 启用勾选可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_NTPInterval",
+        "desc": "校时间隔输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_NTPServer1",
+        "desc": "NTP 服务器 1 输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_NTPServer2",
+        "desc": "NTP 服务器 2 输入可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_LocalTimeZone",
+        "desc": "时区选择可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_NTPServerType",
+        "desc": "服务器类型选择可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_NTPServerType",
+        "option_text": "INTERNET",
+        "desc": "服务器类型含 INTERNET"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_NTPServerType",
+        "option_text": "TR069",
+        "desc": "服务器类型含 TR069"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_CheckTime",
+        "desc": "校时按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-007_ntp",
+        "desc": "截图 NTP 设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SYS-008",
+    "title": "NTP 校时间隔与服务器地址非法报错（不应用修改）",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:negative",
+      "module:system"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_deviceManagement_L2",
+        "l3": "fhId_ntp_L3",
+        "desc": "导航到 NTP 设置"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_NTPInterval",
+        "value": "0",
+        "desc": "校时间隔填 0"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1000,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_NTPServer2",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1000,
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter an integer between 1 and 99999",
+        "desc": "报间隔范围错误提示"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_NTPServer1",
+        "value": "abc#def",
+        "desc": "服务器 1 填非法地址 abc#def"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1000,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_NTPServer2",
+        "desc": "点击其他字段触发失焦校验"
+      },
+      {
+        "action": "real.wait",
+        "ms": 1000,
+        "desc": "等待校验提示渲染"
+      },
+      {
+        "action": "real.assert_text_contains",
+        "selector": "body",
+        "text": "Please enter a legal server address",
+        "desc": "报服务器地址非法提示"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-SYS-008_ntperr",
+        "desc": "截图 NTP 校验错误"
+      }
+    ]
+  },
+  {
+    "id": "INTL-SYS-013",
+    "title": "NTP 校时间隔配置回读一致性（保存后/重进页面回读一致并恢复）",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:system",
+      "专项:persist"
+    ],
+    "precondition": "设备已上电，可正常登录；执行后校时间隔将被置为 24（恢复基线，可重复执行）",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_deviceManagement_L2",
+        "l3": "fhId_ntp_L3",
+        "desc": "导航到 NTP 设置"
+      },
+      {
+        "action": "real.read_field",
+        "selector": "#fhId_NTPInterval",
+        "desc": "记录修改前校时间隔值"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_NTPInterval",
+        "value": "30",
+        "desc": "校时间隔改为 30"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_CheckTime",
+        "desc": "点击校时/应用按钮"
+      },
+      {
+        "action": "real.wait",
+        "ms": 2500,
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_NTPInterval",
+        "value": "30",
+        "desc": "保存后回读：校时间隔显示 30"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_management_L1",
+        "l2": "fhId_deviceManagement_L2",
+        "l3": "fhId_ntp_L3",
+        "desc": "重新进入 NTP 页面（刷新回读）"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_NTPInterval",
+        "value": "30",
+        "desc": "重进页面回读：校时间隔仍为 30，配置已持久化"
+      },
+      {
+        "action": "real.fill",
+        "selector": "#fhId_NTPInterval",
+        "value": "24",
+        "desc": "恢复基线：校时间隔改回 24"
+      },
+      {
+        "action": "real.wait",
+        "ms": 500,
+        "desc": "等待 blur 校验"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_CheckTime",
+        "desc": "再次应用"
+      },
+      {
+        "action": "real.wait",
+        "ms": 2500,
+        "desc": "等待保存生效"
+      },
+      {
+        "action": "real.assert_input_value",
+        "selector": "#fhId_NTPInterval",
+        "value": "24",
+        "desc": "恢复确认：校时间隔显示 24"
+      }
+    ]
+  }
+]

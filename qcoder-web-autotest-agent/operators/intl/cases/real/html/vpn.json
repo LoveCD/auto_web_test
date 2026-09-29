@@ -1,0 +1,65 @@
+[
+  {
+    "id": "INTL-APP-101",
+    "title": "VPN 透传页面可访问，IPSec/PPTP 开关显示",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:application"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_application_L1",
+        "l2": "fhId_vpn_L2",
+        "desc": "导航到 VPN 透传"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "vpn",
+        "desc": "URL 含 vpn"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPSEC_Enable",
+        "desc": "IPSec 透传 Enable 选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_IPSEC_Disable",
+        "desc": "IPSec 透传 Disable 选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PPTP_Enable",
+        "desc": "PPTP 透传 Enable 选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PPTP_Disable",
+        "desc": "PPTP 透传 Disable 选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onEnableApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onCancel",
+        "desc": "取消按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-APP-101_vpn",
+        "desc": "截图 VPN 透传页"
+      }
+    ]
+  }
+]

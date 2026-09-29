@@ -1,0 +1,61 @@
+[
+  {
+    "id": "INTL-WIFI-012",
+    "title": "Multi-AP 使能页面可访问，启用/禁用可切换",
+    "priority": "P2",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录；设备支持 Multi-AP",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_multiApEnable_L3",
+        "desc": "导航到 Multi-AP 使能"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "multiApEnable",
+        "desc": "URL 含 multiApEnable"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "启用单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Disable",
+        "desc": "禁用单选项可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Enable",
+        "desc": "切换为启用"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_Disable",
+        "desc": "切回禁用（不应用，无副作用）"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_onEnableApply",
+        "desc": "应用按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-012_multi_ap",
+        "desc": "截图 Multi-AP 使能页"
+      }
+    ]
+  }
+]

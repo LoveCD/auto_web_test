@@ -1,0 +1,123 @@
+[
+  {
+    "id": "INTL-WIFI-010",
+    "title": "WPS 页面可访问，频段选择包含 2.4G/5G",
+    "priority": "P1",
+    "tags": [
+      "suite:smoke",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wps_L3",
+        "desc": "导航到 WPS 设置"
+      },
+      {
+        "action": "real.assert_url_contains",
+        "substring": "wps",
+        "desc": "URL 含 wps"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_selSSID",
+        "desc": "频段选择可见"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_selSSID",
+        "option_text": "2.4G",
+        "desc": "频段含 2.4G"
+      },
+      {
+        "action": "real.assert_option_present",
+        "selector": "#fhId_selSSID",
+        "option_text": "5G",
+        "desc": "频段含 5G"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_Enable",
+        "desc": "WPS 启用勾选可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_WPSPIN",
+        "desc": "PIN 模式单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PushButton",
+        "desc": "按钮模式单选项可见"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PIN",
+        "desc": "PIN 按钮可见"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-010_wps",
+        "desc": "截图 WPS 设置页"
+      }
+    ]
+  },
+  {
+    "id": "INTL-WIFI-018",
+    "title": "WPS 频段切换与 PIN/按钮模式切换",
+    "priority": "P1",
+    "tags": [
+      "suite:regression",
+      "type:positive",
+      "module:wifi"
+    ],
+    "precondition": "设备已上电，可正常登录",
+    "steps": [
+      {
+        "action": "real.ensure_login",
+        "desc": "确保已登录（会话复用：整个 run 只登录一次；会话失效自动重登）"
+      },
+      {
+        "action": "real.click_menu",
+        "l1": "fhId_network_L1",
+        "l2": "fhId_wifiSettings_L2",
+        "l3": "fhId_wps_L3",
+        "desc": "导航到 WPS 设置"
+      },
+      {
+        "action": "real.select_option",
+        "selector": "#fhId_selSSID",
+        "desc": "切换频段到 5G",
+        "option_text": "5G"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_WPSPIN",
+        "desc": "选择 PIN 模式"
+      },
+      {
+        "action": "real.assert_visible",
+        "selector": "#fhId_PIN",
+        "desc": "PIN 按钮可见"
+      },
+      {
+        "action": "real.click",
+        "selector": "#fhId_PushButton",
+        "desc": "切回按钮模式"
+      },
+      {
+        "action": "real.screenshot",
+        "name": "INTL-WIFI-018_wps_mode",
+        "desc": "截图 WPS 模式切换"
+      }
+    ]
+  }
+]
